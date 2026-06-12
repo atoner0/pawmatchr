@@ -1,0 +1,20 @@
+# secrets & env (password stuff)
+.env
+.env.*
+!.env.example
+
+# node dependencies & build output
+node_modules/
+dist/
+build/
+
+# python
+__pycache__/
+*.pyc 
+venv/
+.venv/
+
+# editor & operating system 
+.DS_Store
+Thumbs.db
+.vscode/

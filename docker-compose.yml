@@ -1,0 +1,17 @@
+services:
+  db:
+    image: postgres:18
+    container_name: adoption_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: devpassword
+      POSTGRES_DB: adoption_app
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./backend/db:/docker-entrypoint-initdb.d
+
+volumes:
+ pgdata:
