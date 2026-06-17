@@ -7,15 +7,18 @@ CREATE TABLE adopters (
     phone               TEXT NOT NULL,
     postcode            TEXT,
     home_type           TEXT,
+    home_location       TEXT,
     outdoor_space       TEXT,
     current_pets        BOOLEAN,
     current_pet_type    JSONB DEFAULT '[]'::jsonb,
+    current_pet_count   INTEGER,
     children            BOOLEAN,
     youngest_child_age  INTEGER,
     hours_alone         INTEGER,
     activity_level      TEXT,
     first_time_owner    BOOLEAN,
-    multi_pet_exp       TEXT,
+    multi_pet_exp       BOOLEAN,
+    multi_pet_exp_level TEXT,
     size_pref           TEXT,
     shedding_pref       TEXT,
     training_commitment TEXT,
@@ -45,11 +48,12 @@ CREATE TABLE dogs (
     shelter_id          INTEGER NOT NULL REFERENCES shelters(shelter_id),
     name                TEXT NOT NULL,
     breed               TEXT NOT NULL,
-    age                 INTEGER NOT NULL,
+    age                 TEXT NOT NULL DEFAULT 'unknown'
+                        CHECK (age IN ('0_2', '3_5', '6_8', '8_plus', 'unknown')),
     gender              TEXT NOT NULL
                         CHECK (gender IN ('male', 'female')),
     size                TEXT NOT NULL
-                        CHECK (size IN ('small', 'medium', 'large', 'extra-large')),
+                        CHECK (size IN ('small', 'medium', 'large', 'giant')),
     colour              TEXT NOT NULL,
     neutered            TEXT NOT NULL DEFAULT 'unknown'
                         CHECK (neutered IN ('yes', 'no', 'unknown')),
@@ -63,13 +67,25 @@ CREATE TABLE dogs (
                         CHECK (good_with_cats IN ('yes', 'no', 'unknown')),
     good_with_children  TEXT NOT NULL DEFAULT 'unknown'
                         CHECK (good_with_children IN ('yes', 'no', 'unknown')),
+    children_age        TEXT,
+    alone_tolerance     TEXT NOT NULL DEFAULT 'unknown'
+                        CHECK (alone_tolerance IN ('0_2', '2_4', '4_6', '6_8', '8_plus', 'unknown')),
+    activity_level      TEXT NOT NULL DEFAULT 'unknown'
+                        CHECK (activity_level IN ('low', 'medium', 'moderate', 'high', 'very_high', 'unknown')),
+    training_level      TEXT NOT NULL DEFAULT 'unknown'
+                        CHECK (training_level IN ('none', 'basic', 'moderate', 'experienced_only', 'unknown')),
     coat_length         TEXT NOT NULL
                         CHECK (coat_length IN ('short', 'medium', 'long')),
+    coat_type           TEXT NOT NULL  
+                        CHECK (coat_type IN ('double', 'single', 'curly', 'silky', 'rough', 'wire', 'smooth', 'hairless')),
     shedding_level      TEXT NOT NULL
                         CHECK (shedding_level IN ('low', 'medium', 'high')),
     medical_issues      JSONB DEFAULT '[]'::jsonb,
+    medical_notes       TEXT,
     behavioural_flags   JSONB DEFAULT '[]'::jsonb,
+    behavioural_notes   TEXT,
     known_triggers      JSONB DEFAULT '[]'::jsonb,
+    trigger_notes       TEXT,
     status              TEXT NOT NULL DEFAULT 'available'
                         CHECK (status IN ('available', 'pending', 'adopted')),
     description         TEXT NOT NULL,
