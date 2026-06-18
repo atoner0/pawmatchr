@@ -19,6 +19,8 @@ CREATE TABLE adopters (
     first_time_owner    BOOLEAN,
     multi_pet_exp       BOOLEAN,
     multi_pet_exp_level TEXT,
+    age_pref            TEXT,
+    gender_pref         TEXT,
     size_pref           TEXT,
     shedding_pref       TEXT,
     training_commitment TEXT,
@@ -55,12 +57,9 @@ CREATE TABLE dogs (
     size                TEXT NOT NULL
                         CHECK (size IN ('small', 'medium', 'large', 'giant')),
     colour              TEXT NOT NULL,
-    neutered            TEXT NOT NULL DEFAULT 'unknown'
-                        CHECK (neutered IN ('yes', 'no', 'unknown')),
-    house_trained       TEXT NOT NULL DEFAULT 'unknown'
-                        CHECK (house_trained IN ('yes', 'no', 'unknown')),
-    vaccinated          TEXT NOT NULL DEFAULT 'unknown'
-                        CHECK (vaccinated IN ('yes', 'no', 'unknown')),
+    neutered            BOOLEAN,
+    house_trained       BOOLEAN,
+    vaccinated          BOOLEAN,
     good_with_dogs      TEXT NOT NULL DEFAULT 'unknown'
                         CHECK (good_with_dogs IN ('yes', 'no', 'unknown')),
     good_with_cats      TEXT NOT NULL DEFAULT 'unknown'
@@ -68,12 +67,12 @@ CREATE TABLE dogs (
     good_with_children  TEXT NOT NULL DEFAULT 'unknown'
                         CHECK (good_with_children IN ('yes', 'no', 'unknown')),
     children_age        TEXT,
-    alone_tolerance     TEXT NOT NULL DEFAULT 'unknown'
-                        CHECK (alone_tolerance IN ('0_2', '2_4', '4_6', '6_8', '8_plus', 'unknown')),
-    activity_level      TEXT NOT NULL DEFAULT 'unknown'
-                        CHECK (activity_level IN ('low', 'medium', 'moderate', 'high', 'very_high', 'unknown')),
-    training_level      TEXT NOT NULL DEFAULT 'unknown'
-                        CHECK (training_level IN ('none', 'basic', 'moderate', 'experienced_only', 'unknown')),
+    alone_tolerance     TEXT NOT NULL
+                        CHECK (alone_tolerance IN ('0_2', '2_4', '4_6', '6_8', '8_plus')),
+    activity_level      TEXT NOT NULL
+                        CHECK (activity_level IN ('low', 'medium', 'moderate', 'high', 'very_high')),
+    training_level      TEXT NOT NULL
+                        CHECK (training_level IN ('none', 'basic', 'moderate', 'experienced_only')),
     coat_length         TEXT NOT NULL
                         CHECK (coat_length IN ('short', 'medium', 'long')),
     coat_type           TEXT NOT NULL  
