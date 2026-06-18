@@ -130,7 +130,8 @@ CREATE TABLE applications(
                         CHECK (status IN ('incomplete', 'submitted', 'reviewing', 'complete', 'rejected')),
     readiness_checklist BOOLEAN NOT NULL DEFAULT false,
     submitted_at        TIMESTAMPTZ,
-    decision_at         TIMESTAMPTZ
+    decision_at         TIMESTAMPTZ,
+    adopted_at          TIMESTAMPTZ
 );
 
 CREATE TABLE availability(
