@@ -1,16 +1,16 @@
 services:
   db:
-    image: postgres:18
-    container_name: adoption_db
+    image: postgres:17
+    container_name: pawmatchr_db
     restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: devpassword
-      POSTGRES_DB: adoption_app
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: pawmatchr
     ports:
       - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql
+      - pgdata:/var/lib/postgresql/data
       - ./backend/db:/docker-entrypoint-initdb.d
 
 volumes:
