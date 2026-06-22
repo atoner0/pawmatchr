@@ -26,7 +26,8 @@
     "dev": "nodemon --watch src --ext ts --exec tsx src/app.ts",
     "build": "tsc",
     "start": "node dist/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "migrate:up": "node-pg-migrate up -m src/db/migrations",
+    "migrate:down": "node-pg-migrate down -m src/db/migrations"
   },
   "repository": {
     "type": "git",
