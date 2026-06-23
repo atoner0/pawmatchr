@@ -2,7 +2,7 @@
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
     // File Layout
-    "rootDir": "./src",
+    "rootDir": "./",
     "outDir": "./dist",
 
     // Environment Settings
@@ -12,7 +12,7 @@
     "target": "es2020",
     // For nodejs:
     "lib": ["esnext"],
-    "types": ["node"],
+    "types": ["node", "jest"],
     // and npm install -D @types/node
 
     // Other Outputs
@@ -33,7 +33,7 @@
     "moduleDetection": "force",
     "skipLibCheck": true,
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "tests/**/*"],
   "exclude": ["node_modules", "dist"],
   "ts-node": {
     "esm": true

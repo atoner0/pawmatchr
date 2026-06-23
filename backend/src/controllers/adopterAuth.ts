@@ -2,11 +2,17 @@ import type { Request, Response } from 'express';
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import {findAdopterByEmail, createAdopter} from '../models/adopter.js'
+import { signupSchema, signinSchema } from '../types/authSchemas.js';
 
 const JWT_SECRET = process.env.JWT_SECRET ?? ''
 
 export const signup = async ( req: Request, res: Response): Promise<void> => {
-    const { first_name, last_name, email, password, phone } = req.body
+    const result = signupSchema.safeParse(req.body)
+    if (!result.success){
+        res.status(400).json({ message: 'Invalid request', errors: result.error.issues})
+        return
+    }
+    const { first_name, last_name, email, password, phone } = result.data
     
     try {
         const existing = await findAdopterByEmail(email)
@@ -32,7 +38,13 @@ export const signup = async ( req: Request, res: Response): Promise<void> => {
 }
 
 export const signin = async ( req: Request, res: Response): Promise<void> => {
-    const {email, password} = req.body
+    const result = signinSchema.safeParse(req.body)
+    if (!result.success){
+        res.status(400).json({ message: 'Invalid request', errors: result.error.issues})
+        return
+    }
+    
+    const {email, password} = result.data
 
     try {
         const adopter = await findAdopterByEmail(email)
