@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { findDogById, findDogByShelterId, createDog, updateDog, deleteDog, hasApplications } from '../models/dog.js';
+import { findDogById, findDogByShelterId, createDog, updateDog, deleteDog, hasApplications, getAllDogs } from '../models/dog.js';
 import { createDogSchema } from '../types/dogSchemas.js';
 import type { AuthRequest } from '../middleware/auth.js';
 
@@ -22,19 +22,33 @@ export const getDogbyId = async ( req: Request, res: Response): Promise<void> =>
     }
 }
 
-export const getDogbyShelter = async ( req: AuthRequest, res: Response): Promise<void> => {
+export const getDogsForShelter = async ( req: AuthRequest, res: Response): Promise<void> => {
     const shelter_id = req.user.shelter_id
 
     try {
         const dogs = await findDogByShelterId(shelter_id)
         if(!dogs){
-            res.status(404).json({ message: 'Dog not found' })
+            res.status(404).json({ message: 'Dogs not found' })
             return
         }
 
         res.status(200).json(dogs)
     } catch (error) {
         res.status(500).json({ message: 'Error during dog search', error})
+    }
+}
+
+export const getAvailableDogs = async ( req: Request, res: Response): Promise<void> => {
+    try {
+        const dogs = await getAllDogs()
+        if(!dogs){
+            res.status(404).json({ message: 'Dogs not found' })
+            return
+        }
+
+        res.status(200).json(dogs)
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching available dogs', error})
     }
 }
 
