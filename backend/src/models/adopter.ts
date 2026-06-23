@@ -1,13 +1,6 @@
 import pool from '../config/db.js'
+import type { Adopter } from '../types/adopter.js'
 
-export interface Adopter {
-    adopter_id: number
-    first_name: string
-    last_name: string
-    email: string
-    password_hash: string
-    phone: string
-}
 
 export const findAdopterByEmail = async (email: string): Promise<Adopter | null> => {
     const result = await pool.query(

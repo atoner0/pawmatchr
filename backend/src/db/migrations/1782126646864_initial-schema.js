@@ -58,7 +58,7 @@ export const up = (pgm) => {
                           CHECK (gender IN ('male', 'female')),
       size                TEXT NOT NULL
                           CHECK (size IN ('small', 'medium', 'large', 'giant')),
-      colour              TEXT NOT NULL,
+      colour              JSONB DEFAULT '[]'::jsonb,
       neutered            BOOLEAN,
       house_trained       BOOLEAN,
       vaccinated          BOOLEAN,
@@ -68,7 +68,8 @@ export const up = (pgm) => {
                           CHECK (good_with_cats IN ('yes', 'no', 'unknown')),
       good_with_children  TEXT NOT NULL DEFAULT 'unknown'
                           CHECK (good_with_children IN ('yes', 'no', 'unknown')),
-      children_age        TEXT,
+      children_age        TEXT
+                          CHECK (children_age IN ('any', '5_12', '13_plus', 'unknown')),
       alone_tolerance     TEXT NOT NULL
                           CHECK (alone_tolerance IN ('0_2', '2_4', '4_6', '6_8', '8_plus')),
       activity_level      TEXT NOT NULL

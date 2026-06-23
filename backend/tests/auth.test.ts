@@ -1,7 +1,7 @@
 import { jest, describe, it, expect, beforeEach } from '@jest/globals'
 import request from 'supertest'
 import app from '../src/app.js'
-import type { Adopter } from '../src/models/adopter.js'
+import type { Adopter } from '../src/types/adopter.js'
 import * as AdopterModel from '../src/models/adopter.js'
 import bcrypt from 'bcrypt'
 
