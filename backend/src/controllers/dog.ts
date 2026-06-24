@@ -82,7 +82,7 @@ export const patchDog = async ( req: AuthRequest, res: Response): Promise<void> 
         const updates = req.body
 
         if (req.userType !== "shelter_admin"){
-            res.status(403).json({message: 'Only shelter admins can update dogs'})
+            res.status(403).json({message: 'Admin access only'})
             return
         }
 
@@ -115,10 +115,9 @@ export const patchDog = async ( req: AuthRequest, res: Response): Promise<void> 
 export const deleteDogController = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
         const dog_id = Number(req.params.id)
-        const updates = req.body
 
         if (req.userType !== "shelter_admin"){
-            res.status(403).json({message: 'Only shelter admins can delete dogs'})
+            res.status(403).json({message: 'Admin access only'})
             return
         }
 
