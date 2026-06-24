@@ -129,6 +129,193 @@ beforeEach(() => {
   jest.restoreAllMocks()
 })
 
+describe('GET /api/dogs/:id', () => {
+  it('gets the dog and returns 200', async () => {
+    jest.spyOn(DogModel, 'findDogById').mockResolvedValue(fakeDogSameShelter)
+
+      const res = await request(app)
+      .get('/api/dogs/4')
+
+    expect(res.status).toBe(200)
+    expect(res.body.name).toBe('Chewie')
+  })
+
+    it('should return 404 if dog doesnt exist', async () => {
+    jest.spyOn(DogModel, 'findDogById').mockResolvedValue(null)
+
+      const res = await request(app)
+      .get('/api/dogs/4')
+
+    expect(res.status).toBe(404)
+    expect(res.body.message).toBe('Dog not found')
+  })
+
+  it('should return 500 if a database error occurs', async() => {
+    jest.spyOn(DogModel, 'findDogById').mockRejectedValue(new Error('Database error'))
+
+    const res = await request(app)
+      .get('/api/dogs/4')
+
+      expect(res.status).toBe(500)
+      expect(res.body.message).toBe('Error during dog search')
+  })
+})
+
+describe('GET /api/dogs/available', () => {
+  it('gets all dogs and returns 200', async () => {
+    jest.spyOn(DogModel, 'getAllDogs').mockResolvedValue([fakeDogSameShelter, fakeDogUpdated, fakeDogWrongShelter])
+
+      const res = await request(app)
+      .get('/api/dogs/available')
+
+    expect(res.status).toBe(200)
+  })
+
+    it('should return 404 if dog doesnt exist', async () => {
+    jest.spyOn(DogModel, 'getAllDogs').mockResolvedValue([])
+
+      const res = await request(app)
+      .get('/api/dogs/available')
+
+    expect(res.status).toBe(404)
+    expect(res.body.message).toBe('Dogs not found')
+  })
+
+  it('should return 500 if a database error occurs', async() => {
+    jest.spyOn(DogModel, 'getAllDogs').mockRejectedValue(new Error('Database error'))
+
+    const res = await request(app)
+      .get('/api/dogs/available')
+
+      expect(res.status).toBe(500)
+      expect(res.body.message).toBe('Error fetching available dogs')
+  })
+})
+
+describe('GET /api/dogs', () => {
+  it('gets all dogs belonging to shelter and returns 200', async () => {
+    jest.spyOn(AdminModel, 'findAdminById').mockResolvedValue(fakeAdmin)
+
+    jest.spyOn(DogModel, 'findDogByShelterId').mockResolvedValue([fakeDogSameShelter])
+
+    const adminToken = createTestToken({ id: 1, type: 'shelter_admin' })
+
+      const res = await request(app)
+      .get('/api/dogs')
+      .set('Authorization', `Bearer ${adminToken}`)
+
+    expect(res.status).toBe(200)
+  })
+
+  it('should return 403 if userType is not shelter_admin', async () => {
+    jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopter)
+
+    jest.spyOn(DogModel, 'findDogByShelterId').mockResolvedValue([fakeDogSameShelter])
+
+    const adopterToken = createTestToken({ id: 1, type: 'adopter' })
+
+    const res = await request(app)
+      .get('/api/dogs')
+      .set('Authorization', `Bearer ${adopterToken}`)
+
+    expect(res.status).toBe(403)
+    expect(res.body.message).toBe('Admin access only')
+  })
+
+  it('should return 404 if dog doesnt exist', async () => {
+    jest.spyOn(AdminModel, 'findAdminById').mockResolvedValue(fakeAdmin)
+
+    jest.spyOn(DogModel, 'findDogByShelterId').mockResolvedValue([])
+
+    const adminToken = createTestToken({ id: 1, type: 'shelter_admin' })
+
+    const res = await request(app)
+      .get('/api/dogs')
+      .set('Authorization', `Bearer ${adminToken}`)
+
+    expect(res.status).toBe(404)
+    expect(res.body.message).toBe('Dogs not found')
+  })
+
+  it('should return 500 if a database error occurs', async() => {
+    jest.spyOn(AdminModel, 'findAdminById').mockResolvedValue(fakeAdmin)
+
+    jest.spyOn(DogModel, 'findDogByShelterId').mockRejectedValue(new Error('Database error'))
+
+    const adminToken = createTestToken({ id: 1, type: 'shelter_admin' })
+
+    const res = await request(app)
+      .get('/api/dogs')
+      .set('Authorization', `Bearer ${adminToken}`)
+
+      expect(res.status).toBe(500)
+      expect(res.body.message).toBe('Error during dog search')
+  })
+})
+
+describe('POST /api/dogs', () => {
+  it('creates dog and returns 201', async () => {
+    jest.spyOn(AdminModel, 'findAdminById').mockResolvedValue(fakeAdmin)
+
+    jest.spyOn(DogModel, 'createDog').mockResolvedValue(fakeDogSameShelter)
+
+    const adminToken = createTestToken({ id: 1, type: 'shelter_admin' })
+
+    const res = await request(app)
+      .post('/api/dogs')
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({ name: "Chewie", breed: "Cavapoo", age: "8_plus", gender: "male", size: "small", colour: ["brown"], neutered: true, house_trained: true, vaccinated: true, good_with_dogs: "yes", good_with_cats: "no", good_with_children: "yes", children_age: "any", alone_tolerance: "6_8", activity_level: "moderate", training_level: "basic", coat_length: "short", coat_type: "smooth", shedding_level: "medium", medical_issues: [], medical_notes: null, behavioural_flags: [], behavioural_notes: null, known_triggers: [], trigger_notes: null, description: "Friendly and relaxed dog looking for a loving home." })
+
+      expect(res.status).toBe(201)
+      expect(res.body.name).toBe('Chewie')
+  })
+  
+  it('should return 400 if request body is invalid', async () => {
+    jest.spyOn(AdminModel, 'findAdminById').mockResolvedValue(fakeAdmin)
+
+    jest.spyOn(DogModel, 'createDog').mockResolvedValue(fakeDogSameShelter)
+
+    const adminToken = createTestToken({ id: 1, type: 'shelter_admin' })
+
+    const res = await request(app)
+      .post('/api/dogs')
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({ name: "Chewie", breed: "Cavapoo", age: "4", gender: "male", size: "small", colour: ["brown"], neutered: true, house_trained: true, vaccinated: true, good_with_dogs: "yes", good_with_cats: "no", good_with_children: "yes", children_age: "any", alone_tolerance: "6_8", activity_level: "moderate", training_level: "basic", coat_length: "short", coat_type: "smooth", shedding_level: "medium", medical_issues: [], medical_notes: null, behavioural_flags: [], behavioural_notes: null, known_triggers: [], trigger_notes: null, description: "Friendly and relaxed dog looking for a loving home." })
+
+      expect(res.status).toBe(400)
+      expect(res.body.message).toBe('Invalid request')
+  })
+
+  it('should return 403 if userType is not shelter_admin', async () => {
+    jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopter)
+
+    const adopterToken = createTestToken({ id: 1, type: 'adopter' })
+
+    const res = await request(app)
+      .post('/api/dogs')
+      .set('Authorization', `Bearer ${adopterToken}`)
+
+    expect(res.status).toBe(403)
+    expect(res.body.message).toBe('Admin access only')
+  })
+
+  it('should return 500 if a database error occurs', async() => {
+    jest.spyOn(AdminModel, 'findAdminById').mockResolvedValue(fakeAdmin)
+
+    jest.spyOn(DogModel, 'createDog').mockRejectedValue(new Error('Database error'))
+
+    const adminToken = createTestToken({ id: 1, type: 'shelter_admin' })
+
+    const res = await request(app)
+      .post('/api/dogs')
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({ name: "Chewie", breed: "Cavapoo", age: "8_plus", gender: "male", size: "small", colour: ["brown"], neutered: true, house_trained: true, vaccinated: true, good_with_dogs: "yes", good_with_cats: "no", good_with_children: "yes", children_age: "any", alone_tolerance: "6_8", activity_level: "moderate", training_level: "basic", coat_length: "short", coat_type: "smooth", shedding_level: "medium", medical_issues: [], medical_notes: null, behavioural_flags: [], behavioural_notes: null, known_triggers: [], trigger_notes: null, description: "Friendly and relaxed dog looking for a loving home." })
+
+      expect(res.status).toBe(500)
+      expect(res.body.message).toBe('Error creating dog')
+  })
+})
+
 describe('PATCH /api/dogs/:id', () => {
   it('updates the dog and returns 200 with updated dog', async () => {
     jest.spyOn(AdminModel, 'findAdminById').mockResolvedValue(fakeAdmin)

@@ -14,6 +14,7 @@ export const getDogbyId = async ( req: Request, res: Response): Promise<void> =>
         const dog = await findDogById(id)
         if(!dog){
             res.status(404).json({ message: 'Dog not found' })
+            return
         }
 
         res.status(200).json(dog)
@@ -25,9 +26,14 @@ export const getDogbyId = async ( req: Request, res: Response): Promise<void> =>
 export const getDogsForShelter = async ( req: AuthRequest, res: Response): Promise<void> => {
     const shelter_id = req.user.shelter_id
 
+    if (req.userType !== "shelter_admin"){
+            res.status(403).json({message: 'Admin access only'})
+            return
+        }
+
     try {
         const dogs = await findDogByShelterId(shelter_id)
-        if(!dogs){
+        if(!dogs || dogs.length === 0){
             res.status(404).json({ message: 'Dogs not found' })
             return
         }
@@ -41,7 +47,7 @@ export const getDogsForShelter = async ( req: AuthRequest, res: Response): Promi
 export const getAvailableDogs = async ( req: Request, res: Response): Promise<void> => {
     try {
         const dogs = await getAllDogs()
-        if(!dogs){
+        if(!dogs || dogs.length === 0){
             res.status(404).json({ message: 'Dogs not found' })
             return
         }
@@ -61,7 +67,7 @@ export const postDog = async ( req: AuthRequest, res: Response): Promise<void> =
     const shelter_id = req.user.shelter_id
 
     if (req.userType !== "shelter_admin"){
-        res.status(403).json({message: 'Only shelter admins can create dogs'})
+        res.status(403).json({message: 'Admin access only'})
         return
     }
 

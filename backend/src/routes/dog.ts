@@ -4,8 +4,8 @@ import { requireAdmin } from "../middleware/auth.js";
 
 const router = Router()
 
-router.get('/dogs/:id', getDogbyId)
 router.get('/dogs/available', getAvailableDogs)
+router.get('/dogs/:id', getDogbyId)
 
 router.get('/dogs', requireAdmin, getDogsForShelter)
 router.post('/dogs', requireAdmin, postDog)
