@@ -22,6 +22,17 @@ export const getAllAdopterApps = async(adopter_id: number): Promise<Application[
     return result.rows
 }
 
+export const getAppsByShelter = async(shelter_id: number): Promise<Application[]> => {
+    const result = await pool.query(
+        `SELECT applications.* 
+         FROM applications 
+         JOIN dogs ON applications.dog_id = dogs.dog_id
+         WHERE dogs.shelter_id = $1`,
+        [shelter_id]
+    )
+    return result.rows
+}
+
 export const getOneAdopterApp = async(application_id: number): Promise<Application> => {
     const result = await pool.query(
         `SELECT * FROM applications WHERE application_id = $1`,
@@ -30,10 +41,14 @@ export const getOneAdopterApp = async(application_id: number): Promise<Applicati
     return result.rows[0]
 }
 
-export const updateApplicationStatus = async(application_id: number, status: ApplicationStatus): Promise<Application> => {
+export const updateApplicationStatus = async(
+    application_id: number, 
+    status: ApplicationStatus
+): Promise<Application> => {
     const result = await pool.query(
         `UPDATE applications 
-         SET status = $1
+         SET status = $1,
+            adopted_at = CASE WHEN $1 = 'adopted' THEN now() else adopted_at END
          WHERE application_id = $2
          RETURNING *`,
         [status, application_id]
@@ -51,3 +66,4 @@ export const updateReadinessCheck = async(application_id: number, readiness_chec
     )
     return result.rows[0]
 }
+

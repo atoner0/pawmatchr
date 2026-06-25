@@ -16,6 +16,45 @@ const extractToken = (req: AuthRequest): string | null => {
     return header.split(' ')[1] ?? null
 }
 
+export const requireAuth = async (
+    req: AuthRequest, res: Response, next: NextFunction
+): Promise<void> => {
+    const token = extractToken(req)
+    if (!token) {
+        res.status(401).json({ message: 'Authentication required' })
+        return
+    }
+
+    try {
+        const decoded = jwt.verify(token, JWT_SECRET) as { id: number; type: 'adopter' | 'shelter_admin' }
+
+        if (decoded.type === 'adopter') {
+            const adopter = await findAdopterById(decoded.id)
+            if (!adopter) {
+                res.status(401).json({ message: 'User not found' })
+                return
+            }
+            req.user = adopter
+            req.userType = 'adopter'
+        } else if (decoded.type === 'shelter_admin') {
+            const admin = await findAdminById(decoded.id)
+            if (!admin) {
+                res.status(401).json({ message: 'User not found' })
+                return
+            }
+            req.user = admin
+            req.userType = 'shelter_admin'
+        } else {
+            res.status(401).json({ message: 'Invalid token type' })
+            return
+        }
+
+        next()
+    } catch {
+        res.status(401).json({ message: 'Invalid or expired token' })
+    }
+}
+
 export const requireAdopter = async (
     req: AuthRequest, res: Response, next: NextFunction
 ): Promise<void> => {

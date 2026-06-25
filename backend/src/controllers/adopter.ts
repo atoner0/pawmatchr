@@ -1,4 +1,4 @@
-import type { Request, Response } from 'express';
+import type { Response } from 'express';
 import { findAdopterById, fillQuestionnaire, updateQuestionnaire } from '../models/adopter.js';
 import type { AuthRequest } from '../middleware/auth.js';
 import { createQuestionnaireSchema } from '../types/questionnaireSchema.js';
