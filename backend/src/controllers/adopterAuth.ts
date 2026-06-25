@@ -12,7 +12,7 @@ export const signup = async ( req: Request, res: Response): Promise<void> => {
         res.status(400).json({ message: 'Invalid request', errors: result.error.issues})
         return
     }
-    const { first_name, last_name, email, password, phone } = result.data
+    const { first_name, last_name, email, password, phone, postcode } = result.data
     
     try {
         const existing = await findAdopterByEmail(email)
@@ -22,7 +22,7 @@ export const signup = async ( req: Request, res: Response): Promise<void> => {
         }
 
         const password_hash = await bcrypt.hash(password, 10)
-        const adopter = await createAdopter(first_name, last_name, email, password_hash, phone)
+        const adopter = await createAdopter(first_name, last_name, email, password_hash, phone, postcode)
 
         const token = jwt.sign(
             { id: adopter.adopter_id, type: 'adopter '},

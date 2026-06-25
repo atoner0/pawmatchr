@@ -1,34 +1,47 @@
 export const up = (pgm) => {
   pgm.sql(`
     CREATE TABLE adopters (
-      adopter_id          INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-      first_name          TEXT NOT NULL,
-      last_name           TEXT NOT NULL,
-      email               TEXT UNIQUE NOT NULL,
-      password_hash       TEXT NOT NULL,
-      phone               TEXT NOT NULL,
-      postcode            TEXT,
-      home_type           TEXT,
-      home_location       TEXT,
-      outdoor_space       TEXT,
-      current_pets        BOOLEAN,
-      current_pet_type    JSONB DEFAULT '[]'::jsonb,
-      current_pet_count   INTEGER,
-      children            BOOLEAN,
-      youngest_child_age  INTEGER,
-      hours_alone         INTEGER,
-      activity_level      TEXT,
-      first_time_owner    BOOLEAN,
-      multi_pet_exp       BOOLEAN,
-      multi_pet_exp_level TEXT,
-      age_pref            TEXT,
-      gender_pref         TEXT,
-      size_pref           TEXT,
-      shedding_pref       TEXT,
-      training_commitment TEXT,
-      pref_notes          TEXT,
-      completed_at        TIMESTAMPTZ
-    );
+    adopter_id          INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    first_name          TEXT NOT NULL,
+    last_name           TEXT NOT NULL,
+    email               TEXT UNIQUE NOT NULL,
+    password_hash       TEXT NOT NULL,
+    phone               TEXT NOT NULL,
+    postcode            TEXT NOT NULL,
+    home_type           TEXT
+                        CHECK (home_type IN ('apartment', 'semi-detached', 'detached')),
+    home_location       TEXT
+                        CHECK (home_location IN ('urban', 'suburban', 'rural')),
+    outdoor_space       TEXT
+                        CHECK (outdoor_space IN ('large', 'medium', 'small', 'none')),
+    current_pets        BOOLEAN,
+    current_pet_type    JSONB DEFAULT '[]'::jsonb,
+    current_pet_count   INTEGER
+                        CHECK (current_pet_count IN (1, 2, 3, 4)),
+    children            BOOLEAN,
+    youngest_child_age  TEXT
+                        CHECK (youngest_child_age IN ('under_5', '5_12', '13_plus')),
+    hours_alone         TEXT
+                        CHECK (hours_alone IN ('0_2', '2_4', '4_6', '6_8', '8_plus')),
+    activity_level      TEXT
+                        CHECK (activity_level IN ('low', 'medium', 'moderate', 'high', 'very_high')),
+    first_time_owner    BOOLEAN,
+    multi_pet_exp       BOOLEAN,
+    multi_pet_exp_level TEXT
+                        CHECK (multi_pet_exp_level IN ('once_twice', 'several', 'extensive')),
+    age_pref            TEXT
+                        CHECK (age_pref IN ('0_2', '3_5', '6_8', '8_plus', 'none')),
+    gender_pref         TEXT
+                        CHECK (gender_pref IN ('male', 'female', 'none')),
+    size_pref           TEXT
+                        CHECK (size_pref IN ('small', 'medium', 'large', 'giant', 'none')),
+    shedding_pref       TEXT
+                        CHECK (shedding_pref IN ('none', 'low', 'medium', 'high')),
+    training_commitment TEXT
+                        CHECK (training_commitment IN ('none', 'basic', 'moderate', 'intensive')),
+    pref_notes          TEXT,
+    completed_at        TIMESTAMPTZ 
+);
 
     CREATE TABLE shelters (
       shelter_id          INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,

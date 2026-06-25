@@ -15,7 +15,8 @@ const fakeAdopter: Adopter = {
     last_name: 'Doe',
     email: 'jane@test.com',
     password_hash: 'hashed_password',
-    phone: '07700000000'
+    phone: '07700000000',
+    postcode: 'BT35 9SP'
 }
 
 describe('POST /api/auth/adopter/signup', () => {
@@ -26,7 +27,7 @@ describe('POST /api/auth/adopter/signup', () => {
 
         const res = await request(app)
             .post('/api/auth/adopter/signup')
-            .send({ first_name: 'Jane', last_name: 'Doe', email: 'jane@test.com', password: 'password123', phone: '07700000000' })
+            .send({ first_name: 'Jane', last_name: 'Doe', email: 'jane@test.com', password: 'password123', phone: '07700000000',postcode: 'BT35 9SP' })
 
         expect(res.status).toBe(201)
         expect(res.body.token).toBeDefined()
@@ -38,7 +39,7 @@ describe('POST /api/auth/adopter/signup', () => {
 
         const res = await request(app)
             .post('/api/auth/adopter/signup')
-            .send({ first_name: 'Jane', last_name: 'Doe', email: 'jane@test.com', password: 'password123', phone: '07700000000' })
+            .send({ first_name: 'Jane', last_name: 'Doe', email: 'jane@test.com', password: 'password123', phone: '07700000000', postcode: 'BT35 9SP' })
 
         expect(res.status).toBe(400)
         expect(res.body.message).toBe('Email is already registered')
@@ -47,7 +48,7 @@ describe('POST /api/auth/adopter/signup', () => {
     it('should return 400 if required fields are missing', async() => {
         const res = await request(app)
             .post('/api/auth/adopter/signup')
-            .send({ first_name: 'Jane', last_name: 'Doe', password: 'password123', phone: '07700000000' })
+            .send({ first_name: 'Jane', last_name: 'Doe', password: 'password123', phone: '07700000000', postcode: 'BT35 9SP' })
 
         expect(res.status).toBe(400)
         expect(res.body.message).toBe('Invalid request')
@@ -59,7 +60,7 @@ describe('POST /api/auth/adopter/signup', () => {
 
         const res = await request(app)
             .post('/api/auth/adopter/signup')
-            .send({ first_name: 'Jane', last_name: 'Doe', email: 'jane@test.com', password: 'password123', phone: '07700000000' })
+            .send({ first_name: 'Jane', last_name: 'Doe', email: 'jane@test.com', password: 'password123', phone: '07700000000', postcode: 'BT35 9SP' })
 
         expect(res.status).toBe(500)
         expect(res.body.message).toBe('Error during signup')
@@ -87,7 +88,7 @@ describe('POST /api/auth/adopter/signin', () => {
 
         const res = await request(app)
             .post('/api/auth/adopter/signin')
-            .send({ first_name: 'Jane', last_name: 'Doe', email: 'test@test.com', password: 'password123', phone: '07700000000' })
+            .send({ email: 'test@test.com', password: 'password123' })
 
         expect(res.status).toBe(400)
         expect(res.body.message).toBe('Invalid details')
@@ -113,7 +114,7 @@ describe('POST /api/auth/adopter/signin', () => {
 
         const res = await request(app)
             .post('/api/auth/adopter/signin')
-            .send({ first_name: 'Jane', last_name: 'Doe', email: 'jane@test.com', password: 'password123', phone: '07700000000' })
+            .send({ email: 'jane@test.com', password: 'password123' })
 
         expect(res.status).toBe(500)
         expect(res.body.message).toBe('Error during signin')
