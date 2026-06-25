@@ -140,8 +140,8 @@ CREATE TABLE applications(
     application_id      INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     dog_id              INTEGER NOT NULL REFERENCES dogs(dog_id) ON DELETE CASCADE,
     adopter_id          INTEGER NOT NULL REFERENCES adopters(adopter_id) ON DELETE CASCADE,
-    status              TEXT NOT NULL DEFAULT 'incomplete'
-                        CHECK (status IN ('incomplete', 'submitted', 'reviewing', 'complete', 'rejected')),
+    status              TEXT NOT NULL DEFAULT 'submitted'
+                        CHECK (status IN ('submitted', 'under_review', 'approved', 'adopted', 'rejected', 'withdrawn')),
     readiness_checklist BOOLEAN NOT NULL DEFAULT false,
     submitted_at        TIMESTAMPTZ,
     decision_at         TIMESTAMPTZ,
