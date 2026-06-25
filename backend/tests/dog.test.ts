@@ -14,7 +14,8 @@ const fakeAdopter = {
   last_name: "User",
   email: "test@test.com",
   password_hash: "hash",
-  phone: "07700000000"
+  phone: "07700000000",
+  postcode: "BT35 9SP"
 }
 
 const fakeAdmin = {

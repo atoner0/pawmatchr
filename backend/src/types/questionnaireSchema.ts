@@ -4,7 +4,7 @@ import { ActivityLevelEnum } from './dogSchemas.js'
 export const HomeTypeEnum = z.enum(['apartment', 'semi-detached', 'detached'])
 export const HomeLocationEnum = z.enum(['urban', 'suburban', 'rural'])
 export const OutdoorSpaceEnum = z.enum(['large', 'medium', 'small', 'none'])
-export const YoungestChildAgeEnum = z.enum(['under_5', '5_12', '13_plus'])
+export const YoungestChildAgeEnum = z.enum(['under_5', '5_12', '13_plus']).nullable().optional()
 export const HoursAloneEnum = z.enum(['0_2', '2_4', '4_6', '6_8', '8_plus'])
 export const MultiPetExpLevelEnum = z.enum(['once_twice', 'several', 'extensive']).nullable().optional()
 export const AgePrefEnum = z.enum(['0_2', '3_5', '6_8', '8_plus', 'none'])
