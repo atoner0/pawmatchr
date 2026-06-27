@@ -2,7 +2,10 @@
   "dependencies": {
     "bcrypt": "^6.0.0",
     "dotenv": "^17.4.2",
+    "ejs": "^6.0.1",
     "express": "^5.2.1",
+    "express-ejs-layouts": "^2.5.1",
+    "express-session": "^1.19.0",
     "jsonwebtoken": "^9.0.3",
     "node-pg-migrate": "^8.0.4",
     "pg": "^8.22.0",
@@ -10,7 +13,10 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
+    "@types/ejs": "^3.1.5",
     "@types/express": "^5.0.6",
+    "@types/express-ejs-layouts": "^2.5.4",
+    "@types/express-session": "^1.19.0",
     "@types/jest": "^30.0.0",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^26.0.0",
@@ -29,31 +35,37 @@
   "type": "module",
   "main": "dist/app.js",
   "scripts": {
-    "dev": "nodemon --watch src --ext ts --exec tsx src/app.ts",
+    "dev": "nodemon --watch src --ext ts --exec tsx src/server.ts",
     "build": "tsc",
     "start": "npx nodemon",
     "migrate:up": "node-pg-migrate up -m src/db/migrations",
     "migrate:down": "node-pg-migrate down -m src/db/migrations",
-    "test": "jest --forceExit"
+    "test": "jest --forceExit",
+    "seed": "tsx src/db/seed.ts"
   },
   "jest": {
-  "preset": "ts-jest",
-  "testEnvironment": "node",
-  "roots": ["<rootDir>/tests"],
-  "moduleNameMapper": {
-    "^(\\.{1,2}/.*)\\.js$": "$1"
-  },
-  "transform": {
-  "^.+\\.tsx?$": ["ts-jest", {
-    "useESM": false,
-    "tsconfig": {
-      "module": "commonjs",
-      "moduleResolution": "node",
-      "ignoreDeprecations": "6.0"
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "roots": [
+      "<rootDir>/tests"
+    ],
+    "moduleNameMapper": {
+      "^(\\.{1,2}/.*)\\.js$": "$1"
+    },
+    "transform": {
+      "^.+\\.tsx?$": [
+        "ts-jest",
+        {
+          "useESM": false,
+          "tsconfig": {
+            "module": "commonjs",
+            "moduleResolution": "node",
+            "ignoreDeprecations": "6.0"
+          }
+        }
+      ]
     }
-  }]
-}
-},
+  },
   "repository": {
     "type": "git",
     "url": "https://gitlab.eeecs.qub.ac.uk/40365038/pawmatchr.git"
