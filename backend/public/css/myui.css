@@ -19,13 +19,13 @@ body {
 .admin-navbar {
     background-color: var(--blue-slate);
     border-bottom: 3px solid var(--dusty-rose);
-    padding: 0.75rem 0;
+    padding: 1rem 0;
 }
 
 .admin-brand {
     color: var(--desert-sand) !important;
     font-weight: 600;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -36,7 +36,7 @@ body {
 }
 
 .brand-sub {
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     color: var(--powder-blush);
     font-weight: 400;
     letter-spacing: 0.05em;
@@ -47,8 +47,8 @@ body {
 
 .admin-navbar .nav-link {
     color: var(--desert-sand) !important;
-    font-size: 0.9rem;
-    padding: 0.5rem 1rem !important;
+    font-size: 1.3rem;
+    padding: 0.6rem 1.2rem !important;
     border-radius: 4px;
     transition: background 0.15s;
 }
