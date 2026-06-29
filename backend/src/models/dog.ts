@@ -3,7 +3,7 @@ import type { Dog } from '../types/dog.js'
 import type { DogAge, DogGender, DogSize, GoodWith, ChildrenAge, AloneTolerance, 
               ActivityLevel, TrainingLevel, CoatLength, CoatType, SheddingLevel, DogStatus } from '../types/dogSchemas.js'
 
-export const findDogById = async(id: number): Promise<Dog | null> => {
+export const getDogById = async(id: number): Promise<Dog | null> => {
     const result = await pool.query(
         `SELECT * FROM dogs WHERE dog_id = $1`,
         [id] 
@@ -11,7 +11,7 @@ export const findDogById = async(id: number): Promise<Dog | null> => {
     return result.rows[0] || null
 }
 
-export const findDogByShelterId = async(id: number): Promise<Dog[]> => {
+export const getDogsByShelterId = async(id: number): Promise<Dog[]> => {
     const result = await pool.query(
         `SELECT * FROM dogs WHERE shelter_id = $1`,
         [id] 
@@ -19,7 +19,16 @@ export const findDogByShelterId = async(id: number): Promise<Dog[]> => {
     return result.rows
 }
 
-export const getAllDogs = async(): Promise<Dog[]> => {
+export const getDogByIdAndShelterId = async(dog_id: number, shelter_id: number): Promise<Dog | null> => {
+    const result = await pool.query(
+        `SELECT * FROM dogs 
+        WHERE dog_id = $1 AND shelter_id = $2`,
+        [dog_id, shelter_id] 
+    )
+    return result.rows[0] || null
+}
+
+export const getAllAvailableDogs = async(): Promise<Dog[]> => {
     const result = await pool.query(
         `SELECT * FROM dogs WHERE status = 'available'`
     )
@@ -66,7 +75,8 @@ export const createDog = async (
 
 export const updateDog = async (
         dog_id: number,
-        updates: Partial<Dog>
+        updates: Partial<Dog>,
+        shelter_id: number
 ): Promise<Dog> => {   
     const fields = Object.keys(updates)
     const values = Object.values(updates)
@@ -80,9 +90,9 @@ export const updateDog = async (
     const result = await pool.query(
         `UPDATE dogs 
         SET ${setClause} 
-        WHERE dog_id = $${fields.length + 1}
+        WHERE dog_id = $${fields.length + 1} AND shelter_id = $${fields.length + 2}
         RETURNING *`,
-        [...values, dog_id]
+        [...values, dog_id, shelter_id]
     )
     return result.rows[0] 
 } 
@@ -95,10 +105,10 @@ export const hasApplications = async(dog_id: number): Promise<boolean> => {
     return (result.rowCount ?? 0) > 0
 }
 
-export const deleteDog = async(dog_id: number): Promise<void> => {
+export const deleteDog = async(dog_id: number, shelter_id: number): Promise<void> => {
     await pool.query(
         `DELETE FROM dogs
-        WHERE dog_id = $1`,
-        [dog_id]
+        WHERE dog_id = $1 AND shelter_id = $2`,
+        [dog_id, shelter_id]
     )
 }

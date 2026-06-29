@@ -3,7 +3,7 @@ import { findAdminByEmail } from '../../models/shelterAdmin.js'
 import { signinSchema } from '../../types/authSchemas.js';
 import bcrypt from 'bcrypt'
 
-export const getAdminLogin = async ( req: Request, res: Response): Promise<void> => {
+export const renderAdminLogin = async ( req: Request, res: Response): Promise<void> => {
     res.render('login', { 
         title: 'Shelter Login',
         error: null,

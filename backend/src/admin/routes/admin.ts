@@ -1,11 +1,11 @@
 import { Router } from 'express';
-import { getAdminLogin, adminSignin, adminSignOut } from '../controllers/login.js';
+import { renderAdminLogin, adminSignin, adminSignOut } from '../controllers/login.js';
 import { requireAdminWeb } from '../../middleware/adminWebAuth.js';
 import { renderDashboard } from '../controllers/dashboard.js';
 
 const router = Router()
 
-router.get('/login', getAdminLogin)
+router.get('/login', renderAdminLogin)
 router.post('/login', adminSignin)
 router.get('/logout', adminSignOut)
 
