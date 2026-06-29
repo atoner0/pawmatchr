@@ -12,6 +12,7 @@ export const renderAllDogsByShelter = async (req: AuthRequest, res: Response): P
         res.render('dogs/all', { title: 'Dogs', user: req.user, dogs: dogs })
     } catch (error) {
         res.status(500).render('error', { title: 'Error', message: 'Something went wrong' })
+        console.error(error)
     }
 }
 
@@ -52,9 +53,9 @@ export const postCreateDog = async (req: AuthRequest, res: Response): Promise<vo
 
         const normalised = {
             ...req.body,
-            neutered: req.body.neutered === 'on',
-            house_trained: req.body.house_trained === 'on',
-            vaccinated: req.body.vaccinated === 'on',
+            neutered: req.body.neutered === 'true',
+            house_trained: req.body.house_trained === 'true',
+            vaccinated: req.body.vaccinated === 'true',
             colour: [].concat(req.body.colour ?? []),
             medical_issues: [].concat(req.body.medical_issues ?? []),
             behavioural_flags: [].concat(req.body.behavioural_flags ?? []),
@@ -77,10 +78,11 @@ export const postCreateDog = async (req: AuthRequest, res: Response): Promise<vo
 
         const dog = await createDog(shelterId, name, breed, age, gender, size, colour, neutered, house_trained, vaccinated, good_with_dogs, good_with_cats, good_with_children, children_age ?? null, alone_tolerance, activity_level, training_level, coat_length, coat_type, shedding_level, medical_issues ?? [], medical_notes ?? null, behavioural_flags ?? [], behavioural_notes ?? null, known_triggers ?? [], trigger_notes ?? null, description)
 
-        res.redirect(`/admin/dogs/${dog.dog_id}`)
+        res.redirect(`/admin/dogs/`)
 
     } catch (error) {
         res.status(500).render('error', { title: 'Error', message: 'Something went wrong when creating dog' })
+        console.error(error)
     }
 }
 

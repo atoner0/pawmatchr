@@ -61,6 +61,7 @@ CREATE TABLE shelter_admins (
 CREATE TABLE dogs (
     dog_id              INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     shelter_id          INTEGER NOT NULL REFERENCES shelters(shelter_id),
+    photo_url           VARCHAR(255),
     name                TEXT NOT NULL,
     breed               TEXT NOT NULL,
     age                 TEXT NOT NULL DEFAULT 'unknown'

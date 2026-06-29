@@ -170,3 +170,9 @@ body {
 .login-header .brand-paw {
     font-size: 2.6rem;
 }
+
+/* All dogs */
+.card-img-top {
+    height: 280px;
+    object-fit: cover;
+}

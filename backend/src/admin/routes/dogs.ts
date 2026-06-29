@@ -3,14 +3,14 @@ import { renderAllDogsByShelter, renderShelterDogById, renderCreateDog, renderEd
 
 const router = Router()
 
-router.get('/dogs', renderAllDogsByShelter)
-router.get('/dogs/new', renderCreateDog)
-router.get('/dogs/:id', renderShelterDogById)
-router.get('/dogs/:id/edit', renderEditDog)
+router.get('/', renderAllDogsByShelter)
+router.get('/new', renderCreateDog)
+router.get('/:id', renderShelterDogById)
+router.get('/:id/edit', renderEditDog)
 
-router.post('/dogs', postCreateDog)
-router.post('/dogs/:id/edit', postUpdateDog)
-router.post('/dogs/:id/delete', postDeleteDog)
+router.post('/', postCreateDog)
+router.post('/:id/edit', postUpdateDog)
+router.post('/:id/delete', postDeleteDog)
 
 
 export default router

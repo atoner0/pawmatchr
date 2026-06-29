@@ -63,7 +63,7 @@ const seed = async () => {
         alone_tolerance, activity_level, training_level,
         coat_length, coat_type, shedding_level,
         behavioural_flags, known_triggers,
-        status, description
+        status, description, photo_url
       ) VALUES (
         $1, 'Biscuit', 'Golden Retriever', '3_5', 'male', 'large', '["golden"]',
         true, true, true,
@@ -72,7 +72,8 @@ const seed = async () => {
         'long', 'double', 'high',
         '["pulls_on_lead"]', '[]',
         'available',
-        'Biscuit is a gentle and affectionate golden retriever who loves nothing more than a long walk followed by a cuddle on the sofa. He gets on well with children of all ages and is learning to walk nicely on the lead. He would thrive in an active family home with a garden.'
+        'Biscuit is a gentle and affectionate golden retriever who loves nothing more than a long walk followed by a cuddle on the sofa. He gets on well with children of all ages and is learning to walk nicely on the lead. He would thrive in an active family home with a garden.',
+        'https://images.unsplash.com/photo-1626736637845-53045bb9695b?q=80&w=711&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D?w=400'
       )
     `, [shelterId1])
 
@@ -84,7 +85,7 @@ const seed = async () => {
         alone_tolerance, activity_level, training_level,
         coat_length, coat_type, shedding_level,
         behavioural_flags, known_triggers,
-        status, description
+        status, description, photo_url
       ) VALUES (
         $1, 'Luna', 'Border Collie', '0_2', 'female', 'medium', '["black", "white"]',
         true, true, true,
@@ -93,7 +94,8 @@ const seed = async () => {
         'medium', 'double', 'medium',
         '["pulls_on_lead", "jumps_at_people"]', '["cats"]',
         'available',
-        'Luna is a bright and energetic young border collie who needs a lot of mental and physical stimulation. She is not suitable for homes with cats but loves the company of other dogs. She would be best suited to an experienced owner who can channel her intelligence and energy through training and activities.'
+        'Luna is a bright and energetic young border collie who needs a lot of mental and physical stimulation. She is not suitable for homes with cats but loves the company of other dogs. She would be best suited to an experienced owner who can channel her intelligence and energy through training and activities.',
+        'https://images.unsplash.com/photo-1654256578072-b932c33cb92e?q=80&w=1176&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D?w=400'
       )
     `, [shelterId1])
 
@@ -105,16 +107,17 @@ const seed = async () => {
         alone_tolerance, activity_level, training_level,
         coat_length, coat_type, shedding_level,
         behavioural_flags, known_triggers,
-        status, description
+        status, description, photo_url
       ) VALUES (
-        $1, 'Archie', 'Staffordshire Bull Terrier', '3_5', 'male', 'medium', '["brindle"]',
+        $1, 'Archie', 'Staffordshire Bull Terrier', '3_5', 'male', 'medium', '["brown"]',
         true, true, true,
         'no', 'no', 'yes', '13_plus',
         '4_6', 'moderate', 'moderate',
         'short', 'smooth', 'low',
         '["reactive_to_dogs", "resource_guarding"]', '["other_dogs"]',
         'available',
-        'Archie is a loving and loyal staffy who bonds deeply with his people. He needs to be the only pet in the home as he does not get on with other dogs or cats. He is fine with older teenagers and would suit a calm, experienced owner who can give him the one-on-one attention he deserves.'
+        'Archie is a loving and loyal staffy who bonds deeply with his people. He needs to be the only pet in the home as he does not get on with other dogs or cats. He is fine with older teenagers and would suit a calm, experienced owner who can give him the one-on-one attention he deserves.',
+        'https://images.unsplash.com/photo-1700064777749-0ac818716100?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D?w=400'
       )
     `, [shelterId1])
 
@@ -129,7 +132,7 @@ const seed = async () => {
         alone_tolerance, activity_level, training_level,
         coat_length, coat_type, shedding_level,
         behavioural_flags, known_triggers,
-        status, description
+        status, description, photo_url
       ) VALUES (
         $1, 'Pepper', 'Cockapoo', '0_2', 'female', 'small', '["brown"]',
         true, true, true,
@@ -138,7 +141,8 @@ const seed = async () => {
         'medium', 'curly', 'low',
         '[]', '[]',
         'available',
-        'Pepper is a sweet and sociable cockapoo who gets along with everyone she meets — children, dogs, and cats alike. She is low shedding, which makes her a great choice for those with mild allergies. She enjoys playtime but is equally happy relaxing at home, making her a very adaptable companion.'
+        'Pepper is a sweet and sociable cockapoo who gets along with everyone she meets — children, dogs, and cats alike. She is low shedding, which makes her a great choice for those with mild allergies. She enjoys playtime but is equally happy relaxing at home, making her a very adaptable companion.',
+        'https://images.unsplash.com/photo-1724930438762-91cb791e0d13?q=80&w=766&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D?w=400'
       )
     `, [shelterId2])
 
@@ -150,7 +154,7 @@ const seed = async () => {
         alone_tolerance, activity_level, training_level,
         coat_length, coat_type, shedding_level,
         behavioural_flags, known_triggers,
-        status, description
+        status, description, photo_url
       ) VALUES (
         $1, 'Rex', 'German Shepherd', '6_8', 'male', 'large', '["black", "brown"]',
         true, true, true,
@@ -159,7 +163,8 @@ const seed = async () => {
         'medium', 'double', 'high',
         '["excessive_barking", "separation_anxiety"]', '["loud_noises", "strangers"]',
         'available',
-        'Rex is a dignified and intelligent older shepherd who has had a difficult past. He is nervous around strangers and loud environments, and needs a patient, experienced owner who understands the breed. He has shown no aggression and with the right home and routine he has a lot of love to give. His compatibility with other dogs is currently being assessed.'
+        'Rex is a dignified and intelligent older shepherd who has had a difficult past. He is nervous around strangers and loud environments, and needs a patient, experienced owner who understands the breed. He has shown no aggression and with the right home and routine he has a lot of love to give. His compatibility with other dogs is currently being assessed.',
+        'https://images.unsplash.com/photo-1621951714307-0f9b8070a9b0?q=80&w=1631&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D?w=400'
       )
     `, [shelterId2])
 
@@ -171,7 +176,7 @@ const seed = async () => {
         alone_tolerance, activity_level, training_level,
         coat_length, coat_type, shedding_level,
         behavioural_flags, known_triggers,
-        status, description
+        status, description, photo_url
       ) VALUES (
         $1, 'Daisy', 'Cavalier King Charles Spaniel', '8_plus', 'female', 'small', '["white", "brown"]',
         true, true, true,
@@ -180,7 +185,8 @@ const seed = async () => {
         'long', 'silky', 'medium',
         '[]', '[]',
         'available',
-        'Daisy is a gentle senior spaniel looking for a quiet home to spend her golden years. She is calm, affectionate, and wonderfully easy to live with. She gets along with everyone and asks for very little — just warmth, comfort, and company. She would suit a retired owner or anyone looking for a relaxed and loving companion.'
+        'Daisy is a gentle senior spaniel looking for a quiet home to spend her golden years. She is calm, affectionate, and wonderfully easy to live with. She gets along with everyone and asks for very little — just warmth, comfort, and company. She would suit a retired owner or anyone looking for a relaxed and loving companion.',
+        'https://images.unsplash.com/photo-1626571565169-9c853e9a7361?q=80&w=1604&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D?w=400'
       )
     `, [shelterId2])
 

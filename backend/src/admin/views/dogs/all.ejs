@@ -1,0 +1,29 @@
+<% if (!dogs || dogs.length === 0) { %>
+    <p>No dogs found.</p>
+<% } else { %>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        <% dogs.forEach((dog) => { %>
+            <div class="col">
+                <a href="/admin/dogs/" class="text-decoration-none text-dark">
+                    <div class="card">
+                        <img src="<%= dog.photo_url || '/images/placeholder-dog.jpg' %>" class="card-img-top" alt="<%= dog.name %>">
+                        <div class="card-body">
+                            <h5 class="card-title"><%= dog.name %></h5>
+                            <p class="card-text"><%= dog.breed %> | <%= dog.age %></p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="/admin/dogs/<%= dog.dog_id %>/edit" class="btn btn-sm btn-secondary">Edit</a>
+                            <form action="/admin/dogs/<%= dog.dog_id %>/delete" method="POST" class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        <% }) %>
+    </div> 
+<% } %>
+
+<div class="d-flex justify-content-center mt-4">
+        <a href="/admin/dogs/new" class="btn btn-secondary">Add New Dog</a>
+    </div>
