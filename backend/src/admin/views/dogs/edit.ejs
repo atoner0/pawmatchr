@@ -1,0 +1,372 @@
+<form action="/admin/dogs/<%= dog.dog_id %>/edit" method="POST">
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Basic Information</h5>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" name="name" class="form-control" id="name" value="<%= dog.name %>" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="breed" class="form-label">Breed</label>
+                <input type="text" name="breed" id="breedInput" class="form-control" placeholder="Search breed..." autocomplete="off" list="breedList" value="<%= dog.breed %>">
+                <datalist id="breedList"></datalist>
+            </div>
+
+            <div class="mb-3">
+                <label for="age" class="form-label">Age</label>
+                <select name="age" id="age" class="form-select" required>
+                    <option value="">Select dog's age</option>
+                    <option value="0_2" <%= dog.age === '0_2' ? 'selected' : '' %>>0-2 years</option>
+                    <option value="3_5" <%= dog.age === '3_5' ? 'selected' : '' %>>3-5 years</option>
+                    <option value="6_8" <%= dog.age === '6_8' ? 'selected' : '' %>>6-8 years</option>
+                    <option value="8_plus" <%= dog.age === '8_plus' ? 'selected' : '' %>>8+ years</option>
+                    <option value="unknown" <%= dog.age === 'unknown' ? 'selected' : '' %>>Unknown</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Gender</label>
+                <div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="gender" value="male" <%= dog.gender === 'male' ? 'checked' : '' %> required>
+                        <label class="form-check-label">Male</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="gender" value="female" <%= dog.gender === 'female' ? 'checked' : '' %>>
+                        <label class="form-check-label">Female</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="size" class="form-label">Size</label>
+                <select name="size" id="size" class="form-select" required>
+                    <option value="">Select dog's size</option>
+                    <option value="small" <%= dog.size === 'small' ? 'selected' : '' %>>Small</option>
+                    <option value="medium" <%= dog.size === 'medium' ? 'selected' : '' %>>Medium</option>
+                    <option value="large" <%= dog.size === 'large' ? 'selected' : '' %>>Large</option>
+                    <option value="giant" <%= dog.size === 'giant' ? 'selected' : '' %>>Giant</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Colour</label>
+                <div class="row">
+                    <% ['black', 'brown', 'white', 'red', 'yellow', 'blue', 'golden', 'gray', 'brindle', 'merle', 'spotted/patched'].forEach(c => { %>
+                        <div class="col-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="colour" value="<%= c %>" <%= dog.colour.includes(c) ? 'checked' : '' %>>
+                                <label class="form-check-label"><%= c.charAt(0).toUpperCase() + c.slice(1) %></label>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="photo_url" class="form-label">Photo URL</label>
+                <input type="text" name="photo_url" id="photo_url" class="form-control" value="<%= dog.photo_url || '' %>">
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">House & Care</h5>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label class="form-label">Neutered</label>
+                <div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="neutered" value="true" <%= dog.neutered ? 'checked' : '' %> required>
+                        <label class="form-check-label">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="neutered" value="false" <%= !dog.neutered ? 'checked' : '' %>>
+                        <label class="form-check-label">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">House Trained</label>
+                <div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="house_trained" value="true" <%= dog.house_trained ? 'checked' : '' %> required>
+                        <label class="form-check-label">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="house_trained" value="false" <%= !dog.house_trained ? 'checked' : '' %>>
+                        <label class="form-check-label">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Vaccinated</label>
+                <div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="vaccinated" value="true" <%= dog.vaccinated ? 'checked' : '' %> required>
+                        <label class="form-check-label">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="vaccinated" value="false" <%= !dog.vaccinated ? 'checked' : '' %>>
+                        <label class="form-check-label">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="coat_length" class="form-label">Coat Length</label>
+                <select name="coat_length" id="coat_length" class="form-select" required>
+                    <option value="">Select dog's coat length</option>
+                    <option value="short" <%= dog.coat_length === 'short' ? 'selected' : '' %>>Short</option>
+                    <option value="medium" <%= dog.coat_length === 'medium' ? 'selected' : '' %>>Medium</option>
+                    <option value="long" <%= dog.coat_length === 'long' ? 'selected' : '' %>>Long</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="coat_type" class="form-label">Coat Type</label>
+                <select name="coat_type" id="coat_type" class="form-select" required>
+                    <option value="">Select dog's coat type</option>
+                    <option value="double" <%= dog.coat_type === 'double' ? 'selected' : '' %>>Double</option>
+                    <option value="single" <%= dog.coat_type === 'single' ? 'selected' : '' %>>Single</option>
+                    <option value="curly" <%= dog.coat_type === 'curly' ? 'selected' : '' %>>Curly</option>
+                    <option value="silky" <%= dog.coat_type === 'silky' ? 'selected' : '' %>>Silky</option>
+                    <option value="rough" <%= dog.coat_type === 'rough' ? 'selected' : '' %>>Rough</option>
+                    <option value="wire" <%= dog.coat_type === 'wire' ? 'selected' : '' %>>Wire</option>
+                    <option value="smooth" <%= dog.coat_type === 'smooth' ? 'selected' : '' %>>Smooth</option>
+                    <option value="hairless" <%= dog.coat_type === 'hairless' ? 'selected' : '' %>>Hairless</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="shedding_level" class="form-label">Shedding Level</label>
+                <select name="shedding_level" id="shedding_level" class="form-select" required>
+                    <option value="">Select dog's shedding level</option>
+                    <option value="low" <%= dog.shedding_level === 'low' ? 'selected' : '' %>>Low</option>
+                    <option value="medium" <%= dog.shedding_level === 'medium' ? 'selected' : '' %>>Medium</option>
+                    <option value="high" <%= dog.shedding_level === 'high' ? 'selected' : '' %>>High</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Compatibility</h5>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label class="form-label">Good with Dogs</label>
+                <div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="good_with_dogs" value="yes" <%= dog.good_with_dogs === 'yes' ? 'checked' : '' %> required>
+                        <label class="form-check-label">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="good_with_dogs" value="no" <%= dog.good_with_dogs === 'no' ? 'checked' : '' %>>
+                        <label class="form-check-label">No</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="good_with_dogs" value="unknown" <%= dog.good_with_dogs === 'unknown' ? 'checked' : '' %>>
+                        <label class="form-check-label">Unknown</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Good with Cats</label>
+                <div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="good_with_cats" value="yes" <%= dog.good_with_cats === 'yes' ? 'checked' : '' %> required>
+                        <label class="form-check-label">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="good_with_cats" value="no" <%= dog.good_with_cats === 'no' ? 'checked' : '' %>>
+                        <label class="form-check-label">No</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="good_with_cats" value="unknown" <%= dog.good_with_cats === 'unknown' ? 'checked' : '' %>>
+                        <label class="form-check-label">Unknown</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Good with Children</label>
+                <div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="good_with_children" value="yes" <%= dog.good_with_children === 'yes' ? 'checked' : '' %> required>
+                        <label class="form-check-label">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="good_with_children" value="no" <%= dog.good_with_children === 'no' ? 'checked' : '' %>>
+                        <label class="form-check-label">No</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="good_with_children" value="unknown" <%= dog.good_with_children === 'unknown' ? 'checked' : '' %>>
+                        <label class="form-check-label">Unknown</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3" id="children_age_field" style="display: <%= dog.good_with_children === 'yes' ? 'block' : 'none' %>;">
+                <label for="children_age" class="form-label">What age range is the dog comfortable with?</label>
+                <select name="children_age" id="children_age" class="form-select">
+                    <option value="">Select option</option>
+                    <option value="any" <%= dog.children_age === 'any' ? 'selected' : '' %>>Any age</option>
+                    <option value="5_12" <%= dog.children_age === '5_12' ? 'selected' : '' %>>5-12</option>
+                    <option value="13_plus" <%= dog.children_age === '13_plus' ? 'selected' : '' %>>13+</option>
+                    <option value="unknown" <%= dog.children_age === 'unknown' ? 'selected' : '' %>>Unknown</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="alone_tolerance" class="form-label">How many hours can the dog be left alone?</label>
+                <select name="alone_tolerance" id="alone_tolerance" class="form-select" required>
+                    <option value="">Select option</option>
+                    <option value="0_2" <%= dog.alone_tolerance === '0_2' ? 'selected' : '' %>>Up to 2 hours</option>
+                    <option value="2_4" <%= dog.alone_tolerance === '2_4' ? 'selected' : '' %>>2-4 hours</option>
+                    <option value="4_6" <%= dog.alone_tolerance === '4_6' ? 'selected' : '' %>>4-6 hours</option>
+                    <option value="6_8" <%= dog.alone_tolerance === '6_8' ? 'selected' : '' %>>6-8 hours</option>
+                    <option value="8_plus" <%= dog.alone_tolerance === '8_plus' ? 'selected' : '' %>>8+ hours</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="activity_level" class="form-label">What level of activity does the dog require?</label>
+                <select name="activity_level" id="activity_level" class="form-select" required>
+                    <option value="">Select option</option>
+                    <option value="low" <%= dog.activity_level === 'low' ? 'selected' : '' %>>Low (under 30 mins)</option>
+                    <option value="medium" <%= dog.activity_level === 'medium' ? 'selected' : '' %>>Medium (30-60 mins)</option>
+                    <option value="moderate" <%= dog.activity_level === 'moderate' ? 'selected' : '' %>>Moderate (60-90 mins)</option>
+                    <option value="high" <%= dog.activity_level === 'high' ? 'selected' : '' %>>High (90-120 mins)</option>
+                    <option value="very_high" <%= dog.activity_level === 'very_high' ? 'selected' : '' %>>Very high (120+ mins)</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="training_level" class="form-label">What level of training does the dog require?</label>
+                <select name="training_level" id="training_level" class="form-select" required>
+                    <option value="">Select option</option>
+                    <option value="none" <%= dog.training_level === 'none' ? 'selected' : '' %>>None required</option>
+                    <option value="basic" <%= dog.training_level === 'basic' ? 'selected' : '' %>>Basic</option>
+                    <option value="moderate" <%= dog.training_level === 'moderate' ? 'selected' : '' %>>Moderate</option>
+                    <option value="experienced_only" <%= dog.training_level === 'experienced_only' ? 'selected' : '' %>>Experienced owner only</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Medical</h5>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label class="form-label">Medical Issues</label>
+                <div class="row">
+                    <% ['epilepsy', 'diabetes', 'hip dysplasia', 'heart condition', 'skin condition', 'allergies', 'dental issues', 'mobility issues', 'anxiety', 'requires medication', 'none known'].forEach(c => { %>
+                        <div class="col-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="medical_issues" value="<%= c %>" <%= dog.medical_issues.includes(c) ? 'checked' : '' %>>
+                                <label class="form-check-label"><%= c.charAt(0).toUpperCase() + c.slice(1) %></label>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="medical_notes" class="form-label">Please provide any additional medical notes where necessary</label>
+                <textarea name="medical_notes" class="form-control" id="medical_notes" rows="3"><%= dog.medical_notes || '' %></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Behaviour</h5>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label class="form-label">Behavioural Issues</label>
+                <div class="row">
+                    <% ['pulls on lead', 'jumps at people', 'separation anxiety', 'reactive to dogs', 'resource guarding', 'not recall trained', 'excessive barking', 'destructive when alone', 'none known'].forEach(c => { %>
+                        <div class="col-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="behavioural_flags" value="<%= c %>" <%= dog.behavioural_flags.includes(c) ? 'checked' : '' %>>
+                                <label class="form-check-label"><%= c.charAt(0).toUpperCase() + c.slice(1) %></label>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="behavioural_notes" class="form-label">Please provide any additional behavioural notes where necessary</label>
+                <textarea name="behavioural_notes" class="form-control" id="behavioural_notes" rows="3"><%= dog.behavioural_notes || '' %></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Known Triggers</label>
+                <div class="row">
+                    <% ['loud noises', 'strangers', 'other dogs', 'cats', 'children', 'fast movement', 'cars', 'none known'].forEach(c => { %>
+                        <div class="col-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="known_triggers" value="<%= c %>" <%= dog.known_triggers.includes(c) ? 'checked' : '' %>>
+                                <label class="form-check-label"><%= c.charAt(0).toUpperCase() + c.slice(1) %></label>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="trigger_notes" class="form-label">Please provide any additional trigger notes where necessary</label>
+                <textarea name="trigger_notes" class="form-control" id="trigger_notes" rows="3"><%= dog.trigger_notes || '' %></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Description</h5>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label for="description" class="form-label">Please provide a description of the dog to be included on their profile</label>
+                <textarea name="description" class="form-control" id="description" rows="4" required><%= dog.description %></textarea>
+            </div>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary mb-4">Save Changes</button>
+</form>
+
+<script>
+    fetch('https://dog.ceo/api/breeds/list/all')
+        .then(res => res.json())
+        .then(data => {
+            const breeds = Object.keys(data.message)
+            const datalist = document.getElementById('breedList')
+            breeds.forEach(breed => {
+                const option = document.createElement('option')
+                option.value = breed.charAt(0).toUpperCase() + breed.slice(1)
+                datalist.appendChild(option)
+            })
+        })
+
+    document.querySelectorAll('input[name="good_with_children"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            const childrenAgeField = document.getElementById('children_age_field')
+            childrenAgeField.style.display = this.value === 'yes' ? 'block' : 'none'
+        })
+    })
+</script>

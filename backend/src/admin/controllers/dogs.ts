@@ -2,6 +2,7 @@ import type { Response } from 'express'
 import type { AuthRequest } from '../../middleware/auth.js'
 import { createDog, updateDog, deleteDog, getDogsByShelterId, getDogByIdAndShelterId, hasApplications } from '../../models/dog.js'
 import { createDogSchema, updateDogSchema } from '../../types/dogSchemas.js'
+import type { Dog } from '../../types/dog.js'
 
 export const renderAllDogsByShelter = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
@@ -105,6 +106,7 @@ export const renderEditDog = async (req: AuthRequest, res: Response): Promise<vo
          res.render('dogs/edit', { title: 'Edit Dog', user: req.user, dog: dog })
     } catch (error) {
         res.status(500).render('error', { title: 'Error', message: 'Something went wrong' })
+        console.error(error)
     }
 } 
 
@@ -148,10 +150,20 @@ export const postUpdateDog = async (req: AuthRequest, res: Response): Promise<vo
             return
         }
 
-        await updateDog(dogId, result.data, shelterId)
+        const updates = {
+            ...result.data,
+            ...(result.data.colour && { colour: JSON.stringify(result.data.colour) }),
+            ...(result.data.medical_issues && { medical_issues: JSON.stringify(result.data.medical_issues) }),
+            ...(result.data.behavioural_flags && { behavioural_flags: JSON.stringify(result.data.behavioural_flags) }),
+            ...(result.data.known_triggers && { known_triggers: JSON.stringify(result.data.known_triggers) }),
+        }
+
+        await updateDog(dogId, updates as Partial<Dog>, shelterId)
+
         res.redirect(`/admin/dogs/${dog.dog_id}`)
     } catch (error) {
         res.status(500).render('error', { title: 'Error', message: 'Something went wrong when editing dog' })
+        console.error(error)
     }
 }
 
@@ -182,5 +194,6 @@ export const postDeleteDog = async (req: AuthRequest, res: Response): Promise<vo
         res.redirect(`/admin/dogs`)
     } catch (error) {
         res.status(500).render('error', { title: 'Error', message: 'Something went wrong when deleting dog' })
+        console.error(error)
     }
 }

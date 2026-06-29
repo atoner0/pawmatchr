@@ -1,0 +1,57 @@
+<div class="card">
+    <img src="<%= dog.photo_url || '/images/placeholder-dog.jpg' %>" class="card-img-top" alt="<%= dog.name %>">
+</div>
+<div class="card base-info">
+    <h3 class="card-title"><%= dog.name %></h3>
+    <p class="card-text">Breed: <%= dog.breed %></p>
+    <p class="card-text">Age: <%= dog.age %></p>
+    <p class="card-text">Size: <%= dog.size %></p>
+    <p class="card-text">Colour: <% dog.colour.forEach(c => { %>
+            <%= c %>
+        <% }) %>
+    </p>
+    <p class="card-text">Coat Length: <%= dog.coat_length %></p>
+    <p class="card-text">Coat Type: <%= dog.coat_type %></p>
+    <p class="card-text">Shedding Level: <%= dog.shedding_level %></p>
+</div>
+<div class="card">
+    <h3 class="card-title">Description</h3>
+    <p class="card-text"><%= dog.description %></p>
+
+    <h4>Home & Care</h4>
+    <p class="card-text">Neutered: <%= dog.neutered ? 'Yes' : 'No' %></p>
+    <p class="card-text">House Trained: <%= dog.house_trained ? 'Yes' : 'No' %></p>
+    <p class="card-text">Vaccinated: <%= dog.vaccinated ? 'Yes' : 'No' %></p>
+    <p class="card-text">Alone Tolerance: <%= dog.alone_tolerance %> hours</p>
+    <p class="card-text">Activity Level: <%= dog.activity_level %></p>
+    <p class="card-text">Training Level: <%= dog.training_level %></p>
+    <p class="card-text">Good with Dogs?: <%= dog.good_with_dogs %></p>
+    <p class="card-text">Good with Cats?: <%= dog.good_with_cats %></p>
+    <p class="card-text">Good with Children?: <%= dog.good_with_children %></p>
+    <% if (dog.good_with_children === 'yes' ) { %>
+        <p class="card-text">Minimum age of children: <%= dog.children_age %></p>
+    <% } %>
+    
+    <h4>Medical Issues</h4>
+    <p class="card-text">Known medical issues: <% dog.medical_issues.forEach(issue => { %>
+            <%= issue %>
+        <% }) %> 
+    </p>
+    <p class="card-text">Medical notes: <%= dog.medical_notes %></p>
+
+    <h4>Behavioural Issues</h4>
+    <p class="card-text">Known behavioural issues: <% dog.behavioural_flags.forEach(flag => { %>
+            <span class="badge bg-warning"><%= flag %></span>
+        <%}) %> </p>
+    <p class="card-text">Behavioural notes: <%= dog.behavioural_notes %></p>
+    <p class="card-text">Known triggers: <% dog.known_triggers.forEach(trigger => { %>
+            <%= trigger %>
+        <% }) %></p>
+    <p class="card-text">Trigger notes: <%= dog.trigger_notes %></p>
+</div>
+<div class="card-footer">
+    <a href="/admin/dogs/<%= dog.dog_id %>/edit" class="btn btn-sm btn-secondary">Edit</a>
+    <form action="/admin/dogs/<%= dog.dog_id %>/delete" method="POST" class="d-inline">
+        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+    </form>
+</div>

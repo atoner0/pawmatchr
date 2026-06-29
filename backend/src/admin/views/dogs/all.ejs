@@ -4,7 +4,7 @@
     <div class="row row-cols-1 row-cols-md-3 g-4">
         <% dogs.forEach((dog) => { %>
             <div class="col">
-                <a href="/admin/dogs/" class="text-decoration-none text-dark">
+                <a href="/admin/dogs/<%= dog.dog_id %>" class="text-decoration-none text-dark">
                     <div class="card">
                         <img src="<%= dog.photo_url || '/images/placeholder-dog.jpg' %>" class="card-img-top" alt="<%= dog.name %>">
                         <div class="card-body">
