@@ -1,9 +1,9 @@
 import type { Response } from 'express'
 import type { AuthRequest } from '../../middleware/auth.js'
-import { createDog, updateDog, deleteDog, getDogsByShelterId, getDogByIdAndShelterId } from '../../models/dog.js'
-import { createDogSchema } from '../../types/dogSchemas.js'
+import { createDog, updateDog, deleteDog, getDogsByShelterId, getDogByIdAndShelterId, hasApplications } from '../../models/dog.js'
+import { createDogSchema, updateDogSchema } from '../../types/dogSchemas.js'
 
-export const getAllDogsByShelter = async (req: AuthRequest, res: Response): Promise<void> => {
+export const renderAllDogsByShelter = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
         const shelterId = req.user.shelter_id
 
@@ -15,7 +15,7 @@ export const getAllDogsByShelter = async (req: AuthRequest, res: Response): Prom
     }
 }
 
-export const getShelterDogById = async (req: AuthRequest, res: Response): Promise<void> => {
+export const renderShelterDogById = async (req: AuthRequest, res: Response): Promise<void> => {
     const dogId = parseInt(req.params['id'] as string)
     if (isNaN(dogId)) {
         res.status(400).render('error', { title: 'Error', message: 'Invalid dog ID' })
@@ -80,7 +80,7 @@ export const postCreateDog = async (req: AuthRequest, res: Response): Promise<vo
         res.redirect(`/admin/dogs/${dog.dog_id}`)
 
     } catch (error) {
-        res.status(500).render('error', { title: 'Error', message: 'Something went wrong' })
+        res.status(500).render('error', { title: 'Error', message: 'Something went wrong when creating dog' })
     }
 }
 
@@ -121,7 +121,64 @@ export const postUpdateDog = async (req: AuthRequest, res: Response): Promise<vo
             res.status(404).render('error', { title: 'Error', message: 'Dog not found' })
             return
         }
+
+        const normalised = {
+            ...req.body,
+            neutered: req.body.neutered === 'on',
+            house_trained: req.body.house_trained === 'on',
+            vaccinated: req.body.vaccinated === 'on',
+            colour: [].concat(req.body.colour ?? []),
+            medical_issues: [].concat(req.body.medical_issues ?? []),
+            behavioural_flags: [].concat(req.body.behavioural_flags ?? []),
+            known_triggers: [].concat(req.body.known_triggers ?? []),
+            children_age: req.body.children_age ?? null
+        }
+
+        const result = updateDogSchema.safeParse(normalised)
+        if (!result.success) {
+            res.status(400).render('dogs/edit', { 
+                title: 'Edit Dog',
+                user: req.user,
+                dog: dog,
+                errors: result.error.issues,
+                formData: req.body
+            })
+            return
+        }
+
+        await updateDog(dogId, result.data, shelterId)
+        res.redirect(`/admin/dogs/${dog.dog_id}`)
     } catch (error) {
-        res.status(500).render('error', { title: 'Error', message: 'Something went wrong' })
+        res.status(500).render('error', { title: 'Error', message: 'Something went wrong when editing dog' })
+    }
+}
+
+export const postDeleteDog = async (req: AuthRequest, res: Response): Promise<void> => {
+    const dogId = parseInt(req.params['id'] as string)
+    if (isNaN(dogId)) {
+        res.status(400).render('error', { title: 'Error', message: 'Invalid dog ID' })
+        return
+    }
+
+    try {
+        const shelterId = req.user.shelter_id
+
+        const dog = await getDogByIdAndShelterId(dogId, shelterId)
+        if(!dog){
+            res.status(404).render('error', { title: 'Error', message: 'Dog not found' })
+            return
+        }
+
+        const hasApps = await hasApplications(dogId)
+        if (hasApps) {
+            res.status(400).render('error', { title: 'Error', message: 'Cannot delete dog with existing applications' })
+            return
+        }
+
+        await deleteDog(dogId, shelterId)
+        
+        res.redirect(`/admin/dogs`)
+    } catch (error) {
+        res.status(500).render('error', { title: 'Error', message: 'Something went wrong when deleting dog' })
     }
 }

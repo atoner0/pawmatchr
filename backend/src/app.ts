@@ -8,6 +8,7 @@ import dogRoutes from './routes/dog.js'
 import adopterRoutes from './routes/adopter.js'
 import applicationRoutes from './routes/application.js'
 import adminRoutes from './admin/routes/admin.js'
+import adminDogRoutes from './admin/routes/dogs.js'
 import { sessionMiddleware } from './config/session.js'
 
 
@@ -37,7 +38,7 @@ app.use('/api/auth', authRoutes)
 app.use('/api', dogRoutes, adopterRoutes, applicationRoutes )
 
 //Web app routes
-app.use('/admin', adminRoutes)
+app.use('/admin', adminRoutes, adminDogRoutes)
 
 
 app.get('/health', (req, res) => {

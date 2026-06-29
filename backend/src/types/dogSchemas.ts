@@ -54,3 +54,5 @@ export const createDogSchema = z.object({
     trigger_notes: z.string().nullable().optional(),
     description: z.string().min(1)
 })
+
+export const updateDogSchema = createDogSchema.partial()
