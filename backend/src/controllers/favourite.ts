@@ -46,9 +46,9 @@ export const getFavourites = async (req: AuthRequest, res: Response): Promise<vo
 }
 
 export const deleteFavouriteController = async (req: AuthRequest, res: Response): Promise<void> => {
-    const dogId = parseInt(req.params['id'] as string)
+    const dogId = parseInt(req.params['dogId'] as string)
     if (isNaN(dogId)) {
-        res.status(400).json({ message: 'Invalid application ID'})
+        res.status(400).json({ message: 'Invalid dog ID'})
         return
     }
     

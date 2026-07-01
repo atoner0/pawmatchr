@@ -4,6 +4,7 @@ import type { Application } from '../../src/types/application.js'
 import type { Dog } from '../../src/types/dog.js'
 
 import bcrypt from 'bcrypt'
+import type { Favourite } from '../../src/types/favourite.js'
 
 export const fakeAdminPlainPassword = 'TestPassword123!'
 
@@ -281,3 +282,15 @@ export const fakeDogforUpdateInvalid = {
   ...fakeDogforUpdate,
   size: "huge" 
 }
+
+export const fakeFavourite: Favourite = {
+    favourite_id: 1,
+    adopter_id: 1,
+    dog_id: 1,
+    saved_at: '2026-06-01T10:00:00Z'
+}
+
+export const fakeFavourites: Favourite[] = [
+    fakeFavourite,
+    { favourite_id: 2, adopter_id: 1, dog_id: 2, saved_at: '2026-06-02T10:00:00Z' }
+]

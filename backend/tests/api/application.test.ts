@@ -9,9 +9,6 @@ import { createTestToken } from '../utils/createTestToken.js'
 
 import { fakeAdopterPartial, fakeApplicationNotReady, fakeApplicationReady, fakeAdmin } from '../utils/fakeProfiles.js'
 
-
-
-
 beforeEach(() => {
   jest.restoreAllMocks()
 })
@@ -26,8 +23,8 @@ describe('GET /api/adopter/applications', () => {
         const adopterToken = createTestToken({ id: 1, type: 'adopter' })
 
         const res = await request(app)
-      .get('/api/adopter/applications')
-      .set('Authorization', `Bearer ${adopterToken}`)
+        .get('/api/adopter/applications')
+        .set('Authorization', `Bearer ${adopterToken}`)
 
       expect(res.status).toBe(200)
     })

@@ -1,10 +1,11 @@
 import { Router } from 'express';
 import { createFavourite, getFavourites, deleteFavouriteController } from '../controllers/favourite.js';
-import { requireAdopter } from '../middleware/auth.js';
 
 const router = Router()
 
-router.get('/adopter/favourites')
+router.get('/', getFavourites)
+router.post('/', createFavourite)
+router.delete('/:dogId', deleteFavouriteController)
 
 
 export default router
