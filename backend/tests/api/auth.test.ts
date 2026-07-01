@@ -1,29 +1,19 @@
 import { jest, describe, it, expect, beforeEach } from '@jest/globals'
 import request from 'supertest'
-import app from '../src/app.js'
-import type { Adopter } from '../src/types/adopter.js'
-import * as AdopterModel from '../src/models/adopter.js'
+import app from '../../src/app.js'
+import * as AdopterModel from '../../src/models/adopter.js'
 import bcrypt from 'bcrypt'
+import { fakeAdopterPartial } from '../utils/fakeProfiles.js'
 
 beforeEach(() => {
     jest.restoreAllMocks()
 })
 
-const fakeAdopter: Adopter = {
-    adopter_id: 1,
-    first_name: 'Jane',
-    last_name: 'Doe',
-    email: 'jane@test.com',
-    password_hash: 'hashed_password',
-    phone: '07700000000',
-    postcode: 'BT35 9SP'
-}
-
 describe('POST /api/auth/adopter/signup', () => {
     it('should return 201 and a token when details are valid', async () => {
         jest.spyOn(AdopterModel, 'findAdopterByEmail').mockResolvedValue(null)
 
-        jest.spyOn(AdopterModel, 'createAdopter').mockResolvedValue(fakeAdopter)
+        jest.spyOn(AdopterModel, 'createAdopter').mockResolvedValue(fakeAdopterPartial)
 
         const res = await request(app)
             .post('/api/auth/adopter/signup')
@@ -35,7 +25,7 @@ describe('POST /api/auth/adopter/signup', () => {
     })
 
     it('should return 400 if email is already registed', async () => { 
-        jest.spyOn(AdopterModel, 'findAdopterByEmail').mockResolvedValue(fakeAdopter)
+        jest.spyOn(AdopterModel, 'findAdopterByEmail').mockResolvedValue(fakeAdopterPartial)
 
         const res = await request(app)
             .post('/api/auth/adopter/signup')
@@ -70,7 +60,7 @@ describe('POST /api/auth/adopter/signup', () => {
 describe('POST /api/auth/adopter/signin', () => {
     it('should return 200 and a token when details are valid', async () => {
         const password_hash = await bcrypt.hash('password123', 10)
-        const fakeSignIn = {...fakeAdopter, password_hash}
+        const fakeSignIn = {...fakeAdopterPartial, password_hash}
 
         jest.spyOn(AdopterModel, 'findAdopterByEmail').mockResolvedValue(fakeSignIn)
 
@@ -96,7 +86,7 @@ describe('POST /api/auth/adopter/signin', () => {
 
     it('should return 400 if password is wrong', async() => {
         const password_hash = await bcrypt.hash('password123', 10)
-        const fakeSignIn = {...fakeAdopter, password_hash}
+        const fakeSignIn = {...fakeAdopterPartial, password_hash}
 
         jest.spyOn(AdopterModel, 'findAdopterByEmail').mockResolvedValue(fakeSignIn)
 
