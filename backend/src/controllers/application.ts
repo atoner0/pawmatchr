@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
 import type { AuthRequest } from '../middleware/auth.js';
-import { createApplication, getAllAdopterApps, getOneAdopterApp, updateReadinessCheck } from '../models/application.js';
-import { createApplicationSchema, updateChecklistSchema } from '../types/applicationSchema.js';
+import { createApplication, getAllAdopterApps, getOneAdopterApp, updateApplicationStatus, updateReadinessCheck } from '../models/application.js';
+import { createApplicationSchema, updateChecklistSchema, type ApplicationStatus } from '../types/applicationSchema.js';
 
 export const createApplicationController = async ( req: AuthRequest, res: Response): Promise<void> => {
     try {
@@ -80,5 +80,37 @@ export const updateChecklist = async ( req: AuthRequest, res: Response): Promise
         res.status(200).json({application})
     } catch (error) {
         res.status(500).json({ message: 'Error updating readiness checklist', error})
+    }
+}
+
+export const withdrawApplication = async (req: AuthRequest, res: Response): Promise<void> => {
+    const id = parseInt(req.params['id'] as string)
+    if (isNaN(id)) {
+        res.status(400).json({ message: 'Invalid application ID' })
+        return
+    }
+
+    try {
+        const application = await getOneAdopterApp(id)
+        if (!application) {
+            res.status(404).json({ message: 'Application not found' })
+            return
+        }
+
+        if (application.adopter_id !== req.user.adopter_id) {
+            res.status(403).json({ message: 'Not your application' })
+            return
+        }
+
+        const withdrawableStates: ApplicationStatus[] = ['submitted', 'under_review', 'approved']
+        if (!withdrawableStates.includes(application.status)) {
+            res.status(400).json({ message: 'Application cannot be withdrawn from its current status' })
+            return
+        }
+
+        const updated = await updateApplicationStatus(id, 'withdrawn')
+        res.status(200).json({ application: updated })
+    } catch (error) {
+        res.status(500).json({ message: 'Error withdrawing application', error })
     }
 }

@@ -7,7 +7,7 @@ import * as AdopterModel from '../../src/models/adopter.js'
 import * as AdminModel from '../../src/models/shelterAdmin.js'
 import { createTestToken } from '../utils/createTestToken.js'
 
-import { fakeAdopterPartial, fakeApplicationNotReady, fakeApplicationReady, fakeAdmin } from '../utils/fakeProfiles.js'
+import { fakeAdopterPartial, fakeApplicationNotReady, fakeApplicationReady, fakeAdmin, fakeApplicationSubmitted, fakeApplicationWithdrawn, fakeApplicationUnderReview, fakeApplicationApproved, fakeApplicationOtherAdopter, fakeApplicationAdopted, fakeApplicationWithdrawnUpdated } from '../utils/fakeProfiles.js'
 
 beforeEach(() => {
   jest.restoreAllMocks()
@@ -290,5 +290,161 @@ describe('PATCH /api/adopter/applications/:id/checklist', () => {
 
         expect(res.status).toBe(500)
         expect(res.body.message).toBe('Error updating readiness checklist')
+    })
+})
+
+describe('PATCH /adopter/applications/:id/withdraw', () => {
+    it('application moves from submitted to withdrawn and returns 200', async () => {
+        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+
+        jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(fakeApplicationSubmitted)
+        jest.spyOn(ApplicationModel, 'updateApplicationStatus').mockResolvedValue(fakeApplicationWithdrawn)
+
+        const adopterToken = createTestToken({ id: 1, type: 'adopter' })
+
+        const res = await request(app)
+        .patch('/api/adopter/applications/1/withdraw')
+        .set('Authorization', `Bearer ${adopterToken}`)
+
+        expect(res.status).toBe(200)
+        expect(res.body.application.status).toBe('withdrawn')
+    })
+
+    it('application moves from under review to withdrawn and returns 200', async () => {
+        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+
+        jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(fakeApplicationUnderReview)
+        jest.spyOn(ApplicationModel, 'updateApplicationStatus').mockResolvedValue(fakeApplicationWithdrawn)
+
+        const adopterToken = createTestToken({ id: 1, type: 'adopter' })
+
+        const res = await request(app)
+        .patch('/api/adopter/applications/1/withdraw')
+        .set('Authorization', `Bearer ${adopterToken}`)
+
+        expect(res.status).toBe(200)
+        expect(res.body.application.status).toBe('withdrawn')
+    })
+
+    it('application moves from approved to withdrawn and returns 200', async () => {
+        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+
+        jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(fakeApplicationApproved)
+        jest.spyOn(ApplicationModel, 'updateApplicationStatus').mockResolvedValue(fakeApplicationWithdrawn)
+
+        const adopterToken = createTestToken({ id: 1, type: 'adopter' })
+
+        const res = await request(app)
+        .patch('/api/adopter/applications/1/withdraw')
+        .set('Authorization', `Bearer ${adopterToken}`)
+
+        expect(res.status).toBe(200)
+        expect(res.body.application.status).toBe('withdrawn')
+    })
+
+    it('should return 400 if application id not valid', async () => {
+        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+
+        jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(fakeApplicationSubmitted)
+        jest.spyOn(ApplicationModel, 'updateApplicationStatus').mockResolvedValue(fakeApplicationWithdrawn)
+
+        const adopterToken = createTestToken({ id: 1, type: 'adopter' })
+
+        const res = await request(app)
+        .patch('/api/adopter/applications/abc/withdraw')
+        .set('Authorization', `Bearer ${adopterToken}`)
+
+        expect(res.status).toBe(400)
+        expect(res.body.message).toBe('Invalid application ID')
+    })
+
+    it('should return 404 if application not found', async () => {
+        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+
+        jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(null)
+
+        const adopterToken = createTestToken({ id: 1, type: 'adopter' })
+
+        const res = await request(app)
+        .patch('/api/adopter/applications/1/withdraw')
+        .set('Authorization', `Bearer ${adopterToken}`)
+
+        expect(res.status).toBe(404)
+        expect(res.body.message).toBe('Application not found')
+    })
+
+    it('should return 403 if userId does not match that on application', async () => {
+        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+
+        jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(fakeApplicationOtherAdopter)
+        jest.spyOn(ApplicationModel, 'updateApplicationStatus').mockResolvedValue(fakeApplicationWithdrawn)
+
+        const adopterToken = createTestToken({ id: 1, type: 'adopter' })
+
+        const res = await request(app)
+        .patch('/api/adopter/applications/1/withdraw')
+        .set('Authorization', `Bearer ${adopterToken}`)
+
+        expect(res.status).toBe(403)
+        expect(res.body.message).toBe('Not your application')
+    })
+
+    it('should return 400 if application status is adopted', async () => {
+        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+
+        jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(fakeApplicationAdopted)
+        jest.spyOn(ApplicationModel, 'updateApplicationStatus').mockResolvedValue(fakeApplicationWithdrawn)
+
+        const adopterToken = createTestToken({ id: 1, type: 'adopter' })
+
+        const res = await request(app)
+        .patch('/api/adopter/applications/1/withdraw')
+        .set('Authorization', `Bearer ${adopterToken}`)
+
+        expect(res.status).toBe(400)
+        expect(res.body.message).toBe('Application cannot be withdrawn from its current status')
+    })
+
+    it('should return 400 if application status is already withdrawn', async () => {
+        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+
+        jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(fakeApplicationWithdrawn)
+        jest.spyOn(ApplicationModel, 'updateApplicationStatus').mockResolvedValue(fakeApplicationWithdrawnUpdated)
+
+        const adopterToken = createTestToken({ id: 1, type: 'adopter' })
+
+        const res = await request(app)
+        .patch('/api/adopter/applications/1/withdraw')
+        .set('Authorization', `Bearer ${adopterToken}`)
+
+        expect(res.status).toBe(400)
+        expect(res.body.message).toBe('Application cannot be withdrawn from its current status')
+    })
+
+    it('should return 401 if missing token', async () => {
+        jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(fakeApplicationAdopted)
+        jest.spyOn(ApplicationModel, 'updateApplicationStatus').mockResolvedValue(fakeApplicationWithdrawn)
+
+        const res = await request(app)
+        .patch('/api/adopter/applications/1/withdraw')
+
+        expect(res.status).toBe(401)
+        expect(res.body.message).toBe('Authentication required')
+    })
+
+    it('should return 500 if a database error occurs', async () => {
+        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+
+        jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(fakeApplicationSubmitted)
+        jest.spyOn(ApplicationModel, 'updateApplicationStatus').mockRejectedValue(new Error('Database error'))
+
+        const adopterToken = createTestToken({ id: 1, type: 'adopter' })
+
+        const res = await request(app)
+        .patch('/api/adopter/applications/1/withdraw')
+        .set('Authorization', `Bearer ${adopterToken}`)
+
+        expect(res.status).toBe(500)
+        expect(res.body.message).toBe('Error withdrawing application')
     })
 })

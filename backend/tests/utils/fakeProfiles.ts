@@ -2,8 +2,6 @@ import type { Adopter } from '../../src/types/adopter.js'
 import type { QuestionnaireInput } from '../../src/types/questionnaireSchema.js'
 import type { Application } from '../../src/types/application.js'
 import type { Dog } from '../../src/types/dog.js'
-
-import bcrypt from 'bcrypt'
 import type { Favourite } from '../../src/types/favourite.js'
 
 export const fakeAdminPlainPassword = 'TestPassword123!'
@@ -294,3 +292,50 @@ export const fakeFavourites: Favourite[] = [
     fakeFavourite,
     { favourite_id: 2, adopter_id: 1, dog_id: 2, saved_at: '2026-06-02T10:00:00Z' }
 ]
+
+export const fakeApplicationSubmitted: Application = {
+    application_id: 1,
+    dog_id: 1,
+    adopter_id: 1,
+    status: 'submitted',
+    readiness_checklist: true,
+    submitted_at: '2026-06-01T10:00:00Z',
+    decision_at: null,
+    adopted_at: null
+}
+
+export const fakeApplicationUnderReview: Application = {
+    ...fakeApplicationSubmitted,
+    application_id: 2,
+    status: 'under_review'
+}
+
+export const fakeApplicationApproved: Application = {
+    ...fakeApplicationSubmitted,
+    application_id: 3,
+    status: 'approved'
+}
+
+export const fakeApplicationAdopted: Application = {
+    ...fakeApplicationSubmitted,
+    application_id: 4,
+    status: 'adopted',
+    adopted_at: '2026-06-15T10:00:00Z'
+}
+
+export const fakeApplicationWithdrawn: Application = {
+    ...fakeApplicationSubmitted,
+    application_id: 5,
+    status: 'withdrawn'
+}
+
+export const fakeApplicationOtherAdopter: Application = {
+    ...fakeApplicationSubmitted,
+    application_id: 6,
+    adopter_id: 2 // belongs to a different adopter than the test token
+}
+
+export const fakeApplicationWithdrawnUpdated: Application = {
+    ...fakeApplicationSubmitted,
+    status: 'withdrawn'
+}
