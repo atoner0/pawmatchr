@@ -59,11 +59,6 @@ export const updateChecklist = async ( req: AuthRequest, res: Response): Promise
             return
         }
 
-        if (req.userType !== "adopter"){
-            res.status(403).json({message: 'Adopter access only'})
-            return
-        }
-
     try {
         const result = updateChecklistSchema.safeParse(req.body)
         if (!result.success){
