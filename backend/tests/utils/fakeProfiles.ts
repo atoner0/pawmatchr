@@ -3,6 +3,8 @@ import type { QuestionnaireInput } from '../../src/types/questionnaireSchema.js'
 import type { Application } from '../../src/types/application.js'
 import type { Dog } from '../../src/types/dog.js'
 import type { Favourite } from '../../src/types/favourite.js'
+import type { Booking } from '../../src/types/booking.js'
+import type { Availability } from '../../src/types/availability.js'
 
 export const fakeAdminPlainPassword = 'TestPassword123!'
 
@@ -338,4 +340,46 @@ export const fakeApplicationOtherAdopter: Application = {
 export const fakeApplicationWithdrawnUpdated: Application = {
     ...fakeApplicationSubmitted,
     status: 'withdrawn'
+}
+
+export const fakeAvailability: Availability = {
+    availability_id: 1,
+    shelter_id: 1,
+    slot: '2026-08-15T10:00:00Z',
+    booking_type: 'initial_meet',
+    is_booked: false,
+}
+
+export const fakeAvailabilityPetIntroduction: Availability = {
+    availability_id: 2,
+    shelter_id: 1,
+    slot: '2026-08-16T14:00:00Z',
+    booking_type: 'pet_introduction',
+    is_booked: false,
+}
+
+export const fakeAvailabilityBooked: Availability = {
+    availability_id: 3,
+    shelter_id: 1,
+    slot: '2026-08-17T09:00:00Z',
+    booking_type: 'home_check',
+    is_booked: true,
+}
+
+export const fakeBooking: Booking = {
+    booking_id: 1,
+    application_id: 1,
+    availability_id: 1,
+    multi_pet_guidance: false,
+    status: 'booked',
+    created_at: '2026-07-01T12:00:00Z',
+}
+
+export const fakeBookingPetIntroduction: Booking = {
+    booking_id: 2,
+    application_id: 1,
+    availability_id: 2,
+    multi_pet_guidance: true,
+    status: 'booked',
+    created_at: '2026-07-01T12:00:00Z',
 }

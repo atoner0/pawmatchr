@@ -1,4 +1,4 @@
-import type { Request, Response } from 'express';
+import type { Response } from 'express';
 import type { AuthRequest } from '../middleware/auth.js';
 import { createApplication, getAllAdopterApps, getOneAdopterApp, updateApplicationStatus, updateReadinessCheck } from '../models/application.js';
 import { createApplicationSchema, updateChecklistSchema, type ApplicationStatus } from '../types/applicationSchema.js';

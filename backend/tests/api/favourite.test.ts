@@ -90,7 +90,7 @@ describe('POST /api/adopter/favourites', () => {
         .set('Authorization', `Bearer ${adopterToken}`)
         .send({ dog_id: 'four' })
 
-      expect(res.status).toBe(400)
+        expect(res.status).toBe(400)
         expect(res.body.message).toBe('Invalid request')
     })
 
@@ -136,7 +136,7 @@ describe('POST /api/adopter/favourites', () => {
         .set('Authorization', `Bearer ${adopterToken}`)
         .send({ dog_id: 4 })
 
-      expect(res.status).toBe(404)
+        expect(res.status).toBe(404)
         expect(res.body.message).toBe('Dog not found')
     })
 

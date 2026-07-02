@@ -41,6 +41,7 @@
     "migrate:up": "node-pg-migrate up -m src/db/migrations",
     "migrate:down": "node-pg-migrate down -m src/db/migrations",
     "test": "jest --forceExit",
+    "test:integration": "jest --config jest.integration.config.cjs --forceExit",
     "seed": "tsx src/db/seed.ts"
   },
   "jest": {
@@ -49,6 +50,7 @@
     "roots": [
       "<rootDir>/tests"
     ],
+    "testPathIgnorePatterns": ["<rootDir>/tests/integration/"],
     "moduleNameMapper": {
       "^(\\.{1,2}/.*)\\.js$": "$1"
     },
