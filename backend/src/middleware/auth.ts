@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 import {getAdopterById} from '../models/adopter.js'
-import {findAdminById} from '../models/shelterAdmin.js'
+import {getAdminById} from '../models/shelterAdmin.js'
 
 const JWT_SECRET = process.env.JWT_SECRET ?? ''
 
@@ -37,7 +37,7 @@ export const requireAuth = async (
             req.user = adopter
             req.userType = 'adopter'
         } else if (decoded.type === 'shelter_admin') {
-            const admin = await findAdminById(decoded.id)
+            const admin = await getAdminById(decoded.id)
             if (!admin) {
                 res.status(401).json({ message: 'User not found' })
                 return
@@ -101,7 +101,7 @@ export const requireAdmin = async (
             return
         }
 
-        const admin = await findAdminById(decoded.id)
+        const admin = await getAdminById(decoded.id)
         if (!admin) {
             res.status(401).json({ message: 'Admin not found' })
             return

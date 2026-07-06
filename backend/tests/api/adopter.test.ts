@@ -15,7 +15,7 @@ beforeEach(() => {
 
 describe('GET /api/adopter/questionnaire', () => {
     it('gets the adopter questionnaire and returns 200', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterFull)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterFull)
 
         const adopterToken = createTestToken({ id: 1, type: 'adopter' })
 
@@ -28,7 +28,7 @@ describe('GET /api/adopter/questionnaire', () => {
     })
 
     it('should return 401 if no token is found', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterFull)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterFull)
 
         const res = await request(app)
         .get('/api/adopter/questionnaire')
@@ -38,7 +38,7 @@ describe('GET /api/adopter/questionnaire', () => {
     })
 
     it('should return 404 if no adopter is found', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById')
+        jest.spyOn(AdopterModel, 'getAdopterById')
             .mockResolvedValueOnce(fakeAdopterFull)
             .mockResolvedValueOnce(null)
 
@@ -53,7 +53,7 @@ describe('GET /api/adopter/questionnaire', () => {
     })
 
     it('should return 500 if a database error occurs', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById')
+        jest.spyOn(AdopterModel, 'getAdopterById')
             .mockResolvedValueOnce(fakeAdopterFull)
             .mockRejectedValue(new Error('Database error'))
 
@@ -70,7 +70,7 @@ describe('GET /api/adopter/questionnaire', () => {
 
 describe('PUT /api/adopter/questionnaire', () => {
     it('updates adopter with full questionnaire fields and returns 200 with updated adopter', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterFull)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterFull)
 
         const adopterToken = createTestToken({ id: 1, type: 'adopter' })
 
@@ -86,7 +86,7 @@ describe('PUT /api/adopter/questionnaire', () => {
     })
 
     it('should return 401 if no token is found', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterFull)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterFull)
 
         jest.spyOn(AdopterModel, 'fillQuestionnaire').mockResolvedValue(fakeAdopterFull)
 
@@ -99,7 +99,7 @@ describe('PUT /api/adopter/questionnaire', () => {
     })
 
     it('should return 400 if validation check fails', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterFull)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterFull)
 
         const adopterToken = createTestToken({ id: 1, type: 'adopter' })
 
@@ -114,7 +114,7 @@ describe('PUT /api/adopter/questionnaire', () => {
     })
 
     it('should return 500 if a database error occurs', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterFull)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterFull)
 
         const adopterToken = createTestToken({ id: 1, type: 'adopter' })
 
@@ -132,7 +132,7 @@ describe('PUT /api/adopter/questionnaire', () => {
 
 describe('PATCH /api/adopter/questionnaire', () => {
     it('updates adopter with full questionnaire fields and returns 200 with updated adopter', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterFull)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterFull)
 
         const adopterToken = createTestToken({ id: 1, type: 'adopter' })
 
@@ -148,7 +148,7 @@ describe('PATCH /api/adopter/questionnaire', () => {
     })
 
     it('should return 401 if no token is found', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterFull)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterFull)
 
         jest.spyOn(AdopterModel, 'updateQuestionnaire').mockResolvedValue(fakeAdopterFull)
 
@@ -161,7 +161,7 @@ describe('PATCH /api/adopter/questionnaire', () => {
     })
 
     it('should return 400 if there are no fields to update', async () => {
-    jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterFull)
+    jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterFull)
 
     jest.spyOn(AdopterModel, 'updateQuestionnaire').mockResolvedValue(fakeAdopterFull)
 
@@ -177,7 +177,7 @@ describe('PATCH /api/adopter/questionnaire', () => {
   })
 
     it('should return 500 if a database error occurs', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterFull)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterFull)
 
         const adopterToken = createTestToken({ id: 1, type: 'adopter' })
 

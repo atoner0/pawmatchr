@@ -16,7 +16,7 @@ beforeEach(() => {
 
 describe('GET /api/adopter/favourites', () => {
     it('gets the adopters favourites and returns 200', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
 
         jest.spyOn(FavouriteModel, 'getFavouritesByAdopter').mockResolvedValue(fakeFavourites)
 
@@ -30,7 +30,7 @@ describe('GET /api/adopter/favourites', () => {
     })
 
     it('adopter has no favourites(empty array) and returns 200', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
 
         jest.spyOn(FavouriteModel, 'getFavouritesByAdopter').mockResolvedValue([])
 
@@ -44,7 +44,7 @@ describe('GET /api/adopter/favourites', () => {
     })
 
     it('should return 500 if a database error occurs', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
 
         jest.spyOn(FavouriteModel, 'getFavouritesByAdopter').mockRejectedValue(new Error('Database error'))
 
@@ -61,7 +61,7 @@ describe('GET /api/adopter/favourites', () => {
 
 describe('POST /api/adopter/favourites', () => {
     it('creates favourite and returns 201', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
         jest.spyOn(DogModel, 'getDogById').mockResolvedValue(fakeDogSameShelter)
 
         jest.spyOn(FavouriteModel, 'addFavourite').mockResolvedValue(fakeFavourite)
@@ -78,7 +78,7 @@ describe('POST /api/adopter/favourites', () => {
     })
 
     it('should return 400 if zod schema is invalid', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
         jest.spyOn(DogModel, 'getDogById').mockResolvedValue(fakeDogSameShelter)
 
         jest.spyOn(FavouriteModel, 'addFavourite').mockResolvedValue(fakeFavourite)
@@ -108,7 +108,7 @@ describe('POST /api/adopter/favourites', () => {
     })
 
     it('should return 403 if userType isnt adopter', async () => {
-        jest.spyOn(AdminModel, 'findAdminById').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminById').mockResolvedValue(fakeAdmin)
         jest.spyOn(DogModel, 'getDogById').mockResolvedValue(fakeDogSameShelter)
 
         jest.spyOn(FavouriteModel, 'addFavourite').mockResolvedValue(fakeFavourite)
@@ -125,7 +125,7 @@ describe('POST /api/adopter/favourites', () => {
     })
 
     it('should return 404 if dog not found', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
 
         jest.spyOn(DogModel, 'getDogById').mockResolvedValue(null)
 
@@ -141,7 +141,7 @@ describe('POST /api/adopter/favourites', () => {
     })
 
     it('should return 409 if dog is already favourited', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
 
         jest.spyOn(DogModel, 'getDogById').mockResolvedValue(fakeDogSameShelter)
 
@@ -162,7 +162,7 @@ describe('POST /api/adopter/favourites', () => {
     })
 
     it('should return 500 if a database error occurs', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
         jest.spyOn(DogModel, 'getDogById').mockResolvedValue(fakeDogSameShelter)
 
         jest.spyOn(FavouriteModel, 'addFavourite').mockRejectedValue(new Error('Database error'))
@@ -181,7 +181,7 @@ describe('POST /api/adopter/favourites', () => {
 
 describe('DELETE /api/adopter/favourites/:dogId', () => {
     it('deletes favourite and return 204', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
 
         jest.spyOn(FavouriteModel, 'deleteFavourite').mockResolvedValue(1)
 
@@ -195,7 +195,7 @@ describe('DELETE /api/adopter/favourites/:dogId', () => {
     })
 
     it('should return 400 if dogId is invalid', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
 
         jest.spyOn(FavouriteModel, 'deleteFavourite').mockResolvedValue(1)
 
@@ -210,7 +210,7 @@ describe('DELETE /api/adopter/favourites/:dogId', () => {
     })
 
     it('should return 404 if favourite not found', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
 
         jest.spyOn(FavouriteModel, 'deleteFavourite').mockResolvedValue(0)
 
@@ -225,7 +225,7 @@ describe('DELETE /api/adopter/favourites/:dogId', () => {
     })
 
     it('should return 500 if a database error occurs', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
 
         jest.spyOn(FavouriteModel, 'deleteFavourite').mockRejectedValue(new Error('Database error'))
 

@@ -8,7 +8,7 @@ export interface ShelterAdmin {
     name: string
 }
 
-export const findAdminByEmail = async (email: string): Promise<ShelterAdmin | null> => {
+export const getAdminByEmail = async (email: string): Promise<ShelterAdmin | null> => {
     const result = await pool.query(
         `SELECT * FROM shelter_admins WHERE email = $1`,
         [email]
@@ -16,7 +16,7 @@ export const findAdminByEmail = async (email: string): Promise<ShelterAdmin | nu
     return result.rows[0] || null
 }
 
-export const findAdminById = async (id: number): Promise<ShelterAdmin | null> => {
+export const getAdminById = async (id: number): Promise<ShelterAdmin | null> => {
     const result = await pool.query(
         `SELECT * FROM shelter_admins WHERE staff_id = $1`,
         [id]

@@ -1,10 +1,11 @@
 import type { Adopter } from '../../src/types/adopter.js'
 import type { QuestionnaireInput } from '../../src/types/questionnaireSchema.js'
-import type { Application } from '../../src/types/application.js'
+import type { Application, ApplicationWithDetails } from '../../src/types/application.js'
 import type { Dog } from '../../src/types/dog.js'
 import type { Favourite } from '../../src/types/favourite.js'
 import type { Booking } from '../../src/types/booking.js'
 import type { Availability } from '../../src/types/availability.js'
+import type { BookingProgress } from '../../src/models/application.js'
 
 export const fakeAdminPlainPassword = 'TestPassword123!'
 
@@ -383,3 +384,83 @@ export const fakeBookingPetIntroduction: Booking = {
     status: 'booked',
     created_at: '2026-07-01T12:00:00Z',
 }
+
+export const fakeAdopterNoPets: Adopter = {
+    ...fakeAdopterFull,
+    adopter_id: 1,
+    current_pets: false
+}
+
+export const fakeAdopterWithPets: Adopter = {
+    ...fakeAdopterFull,
+    adopter_id: 3,
+    current_pets: true,
+    current_pet_type: ['dog'],
+    current_pet_count: 1
+}
+
+export const fakeApplicationUnderReviewSameShelter: Application = {
+    application_id: 7,
+    dog_id: 4,
+    adopter_id: 1,
+    status: 'under_review',
+    readiness_checklist: true,
+    submitted_at: '2026-06-01T10:00:00Z',
+    decision_at: null,
+    adopted_at: null
+}
+
+export const fakeApplicationUnderReviewWithPetsAdopter: Application = {
+    application_id: 8,
+    dog_id: 4,
+    adopter_id: 3,
+    status: 'under_review',
+    readiness_checklist: true,
+    submitted_at: '2026-06-01T10:00:00Z',
+    decision_at: null,
+    adopted_at: null
+}
+
+export const fakeApplicationUnderReviewWrongShelter: Application = {
+    application_id: 9,
+    dog_id: 1, // belongs to fakeDogWrongShelter (shelter_id 10)
+    adopter_id: 1,
+    status: 'under_review',
+    readiness_checklist: true,
+    submitted_at: '2026-06-01T10:00:00Z',
+    decision_at: null,
+    adopted_at: null
+}
+
+export const fakeApplicationRejected: Application = {
+    ...fakeApplicationSubmitted,
+    application_id: 12,
+    status: 'rejected',
+    decision_at: '2026-06-15T10:00:00Z'
+}
+
+export const fakeBookingsAllCompletedNoPets: BookingProgress[] = [
+    { booking_type: fakeAvailability.booking_type, status: 'completed', slot: new Date(fakeAvailability.slot) },
+    { booking_type: fakeAvailabilityBooked.booking_type, status: 'completed', slot: new Date(fakeAvailabilityBooked.slot) }
+]
+
+export const fakeBookingsAllCompletedWithPets: BookingProgress[] = [
+    ...fakeBookingsAllCompletedNoPets,
+    { booking_type: fakeAvailabilityPetIntroduction.booking_type, status: 'completed', slot: new Date(fakeAvailabilityPetIntroduction.slot) }
+]
+
+export const fakeBookingsMissingPetIntroduction: BookingProgress[] = fakeBookingsAllCompletedNoPets
+
+export const fakeBookingsBookedNotCompleted: BookingProgress[] = [
+    { booking_type: fakeAvailability.booking_type, status: 'booked', slot: new Date(fakeAvailability.slot) },
+    { booking_type: fakeAvailabilityBooked.booking_type, status: 'booked', slot: new Date(fakeAvailabilityBooked.slot) }
+]
+
+export const withDetails = (app: Application, overrides?: Partial<Pick<ApplicationWithDetails, 'dog_name' | 'photo_url' | 'first_name' | 'last_name'>>): ApplicationWithDetails => ({
+    ...app,
+    dog_name: 'Buddy',
+    photo_url: 'https://example.com/photo.jpg',
+    first_name: 'Jane',
+    last_name: 'Doe',
+    ...overrides
+})

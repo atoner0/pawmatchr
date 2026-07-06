@@ -16,7 +16,7 @@ beforeEach(() => {
 //gets all applications from one adopter
 describe('GET /api/adopter/applications', () => {
     it('gets the adopters applications and returns 200', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
 
         jest.spyOn(ApplicationModel, 'getAllAdopterApps').mockResolvedValue([fakeApplicationReady, fakeApplicationNotReady])
 
@@ -40,7 +40,7 @@ describe('GET /api/adopter/applications', () => {
     })
 
     it('should return 500 if a database error occurs', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
 
         jest.spyOn(ApplicationModel, 'getAllAdopterApps').mockRejectedValue(new Error('Database error'))
 
@@ -58,7 +58,7 @@ describe('GET /api/adopter/applications', () => {
 //gets a single application based on its id
 describe('GET /api/adopter/applications/:id', () => {
     it('gets the adopter application and returns 200', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
 
         jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(fakeApplicationReady)
 
@@ -73,7 +73,7 @@ describe('GET /api/adopter/applications/:id', () => {
     })
 
     it('should return 400 if id is invalid', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
 
         jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(fakeApplicationReady)
 
@@ -98,7 +98,7 @@ describe('GET /api/adopter/applications/:id', () => {
     })
 
     it('should return 404 if application not found', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
 
         jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(null)
 
@@ -113,7 +113,7 @@ describe('GET /api/adopter/applications/:id', () => {
     })
 
     it('should return 500 if a database error occurs', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
 
         jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockRejectedValue(new Error('Database error'))
 
@@ -130,7 +130,7 @@ describe('GET /api/adopter/applications/:id', () => {
 
 describe('POST /api/adopter/applications', () => {
     it('creates the adopter applications and returns 201', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
 
         jest.spyOn(ApplicationModel, 'createApplication').mockResolvedValue(fakeApplicationReady)
 
@@ -146,7 +146,7 @@ describe('POST /api/adopter/applications', () => {
     })
 
     it('should return 400 if request body is invalid', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
 
         jest.spyOn(ApplicationModel, 'createApplication').mockResolvedValue(fakeApplicationReady)
 
@@ -173,7 +173,7 @@ describe('POST /api/adopter/applications', () => {
     })
 
     it('should return 500 if a database error occurs', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
 
         jest.spyOn(ApplicationModel, 'createApplication').mockRejectedValue(new Error('Database error'))
 
@@ -191,7 +191,7 @@ describe('POST /api/adopter/applications', () => {
 
 describe('PATCH /api/adopter/applications/:id/checklist', () => {
     it('updates the adopter application readiness checklist and returns 200', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
 
         jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(fakeApplicationReady)
         jest.spyOn(ApplicationModel, 'updateReadinessCheck').mockResolvedValue(fakeApplicationReady)
@@ -208,7 +208,7 @@ describe('PATCH /api/adopter/applications/:id/checklist', () => {
     })
 
     it('should return 400 if request body is invalid', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
 
         jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(fakeApplicationReady)
         jest.spyOn(ApplicationModel, 'updateReadinessCheck').mockResolvedValue(fakeApplicationReady)
@@ -225,7 +225,7 @@ describe('PATCH /api/adopter/applications/:id/checklist', () => {
     })
 
     it('should return 400 if id is invalid', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
 
         jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(fakeApplicationReady)
         jest.spyOn(ApplicationModel, 'updateReadinessCheck').mockResolvedValue(fakeApplicationReady)
@@ -242,7 +242,7 @@ describe('PATCH /api/adopter/applications/:id/checklist', () => {
     })
 
     it('should return 403 if userType is not adopter', async () => {
-        jest.spyOn(AdminModel, 'findAdminById').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminById').mockResolvedValue(fakeAdmin)
 
         jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(fakeApplicationReady)
         jest.spyOn(ApplicationModel, 'updateReadinessCheck').mockResolvedValue(fakeApplicationReady)
@@ -259,7 +259,7 @@ describe('PATCH /api/adopter/applications/:id/checklist', () => {
     })
 
     it('should return 404 if application not found', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
 
         jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(null)
         jest.spyOn(ApplicationModel, 'updateReadinessCheck').mockResolvedValue(fakeApplicationReady)
@@ -276,7 +276,7 @@ describe('PATCH /api/adopter/applications/:id/checklist', () => {
     })
 
     it('should return 500 if a database error occurs', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
 
         jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(fakeApplicationReady)
         jest.spyOn(ApplicationModel, 'updateReadinessCheck').mockRejectedValue(new Error('Database error'))
@@ -295,7 +295,7 @@ describe('PATCH /api/adopter/applications/:id/checklist', () => {
 
 describe('PATCH /adopter/applications/:id/withdraw', () => {
     it('application moves from submitted to withdrawn and returns 200', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
 
         jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(fakeApplicationSubmitted)
         jest.spyOn(ApplicationModel, 'updateApplicationStatus').mockResolvedValue(fakeApplicationWithdrawn)
@@ -311,7 +311,7 @@ describe('PATCH /adopter/applications/:id/withdraw', () => {
     })
 
     it('application moves from under review to withdrawn and returns 200', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
 
         jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(fakeApplicationUnderReview)
         jest.spyOn(ApplicationModel, 'updateApplicationStatus').mockResolvedValue(fakeApplicationWithdrawn)
@@ -327,7 +327,7 @@ describe('PATCH /adopter/applications/:id/withdraw', () => {
     })
 
     it('application moves from approved to withdrawn and returns 200', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
 
         jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(fakeApplicationApproved)
         jest.spyOn(ApplicationModel, 'updateApplicationStatus').mockResolvedValue(fakeApplicationWithdrawn)
@@ -343,7 +343,7 @@ describe('PATCH /adopter/applications/:id/withdraw', () => {
     })
 
     it('should return 400 if application id not valid', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
 
         jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(fakeApplicationSubmitted)
         jest.spyOn(ApplicationModel, 'updateApplicationStatus').mockResolvedValue(fakeApplicationWithdrawn)
@@ -359,7 +359,7 @@ describe('PATCH /adopter/applications/:id/withdraw', () => {
     })
 
     it('should return 404 if application not found', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
 
         jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(null)
 
@@ -374,7 +374,7 @@ describe('PATCH /adopter/applications/:id/withdraw', () => {
     })
 
     it('should return 403 if userId does not match that on application', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
 
         jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(fakeApplicationOtherAdopter)
         jest.spyOn(ApplicationModel, 'updateApplicationStatus').mockResolvedValue(fakeApplicationWithdrawn)
@@ -390,7 +390,7 @@ describe('PATCH /adopter/applications/:id/withdraw', () => {
     })
 
     it('should return 400 if application status is adopted', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
 
         jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(fakeApplicationAdopted)
         jest.spyOn(ApplicationModel, 'updateApplicationStatus').mockResolvedValue(fakeApplicationWithdrawn)
@@ -406,7 +406,7 @@ describe('PATCH /adopter/applications/:id/withdraw', () => {
     })
 
     it('should return 400 if application status is already withdrawn', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
 
         jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(fakeApplicationWithdrawn)
         jest.spyOn(ApplicationModel, 'updateApplicationStatus').mockResolvedValue(fakeApplicationWithdrawnUpdated)
@@ -433,7 +433,7 @@ describe('PATCH /adopter/applications/:id/withdraw', () => {
     })
 
     it('should return 500 if a database error occurs', async () => {
-        jest.spyOn(AdopterModel, 'findAdopterById').mockResolvedValue(fakeAdopterPartial)
+        jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
 
         jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(fakeApplicationSubmitted)
         jest.spyOn(ApplicationModel, 'updateApplicationStatus').mockRejectedValue(new Error('Database error'))

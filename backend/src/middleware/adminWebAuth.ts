@@ -1,6 +1,6 @@
 import type { Response, NextFunction } from 'express'
 import type { AuthRequest } from './auth.js'
-import {findAdminById} from '../models/shelterAdmin.js'
+import {getAdminById} from '../models/shelterAdmin.js'
 
 export const requireAdminWeb = async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
     const adminId = (req.session as any)?.adminId
@@ -10,7 +10,7 @@ export const requireAdminWeb = async (req: AuthRequest, res: Response, next: Nex
         return
     }
 
-    const admin = await findAdminById(adminId)
+    const admin = await getAdminById(adminId)
     if (!admin){
         res.redirect('/admin/login')
         return

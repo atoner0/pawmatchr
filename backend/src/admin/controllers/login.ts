@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express'
-import { findAdminByEmail } from '../../models/shelterAdmin.js'
+import { getAdminByEmail } from '../../models/shelterAdmin.js'
 import { signinSchema } from '../../types/authSchemas.js';
 import bcrypt from 'bcrypt'
 
@@ -21,7 +21,7 @@ export const adminSignin = async ( req: Request, res: Response): Promise<void> =
             
             const {email, password} = result.data
         
-            const admin = await findAdminByEmail(email)
+            const admin = await getAdminByEmail(email)
             if (!admin) {
                 res.render('login', { error: 'Invalid details' })
                 return

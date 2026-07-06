@@ -35,6 +35,10 @@ export const renderApplicationProfile = async (req: AuthRequest, res: Response):
         const adopter = await getAdopterById(application.adopter_id)
         const bookings = await getBookingsByApp(applicationId)
 
+        const missing = req.query['missing']
+            ? (req.query['missing'] as string).split(',')
+            : []
+
         // TODO: replace with real match record once matches feature is built
         const match = {
             overall_score: 0.87,
@@ -48,7 +52,8 @@ export const renderApplicationProfile = async (req: AuthRequest, res: Response):
             application: application,
             adopter: adopter,
             bookings: bookings,
-            match: match
+            match: match,
+            missing: missing
         })
     } catch (error) {
         console.error(error)
@@ -127,19 +132,7 @@ export const approveApplication = async (req: AuthRequest, res: Response): Promi
         const missing = requiredTypes.filter(type => !completedTypes.includes(type))
 
         if (missing.length > 0) {
-            res.status(409).render('applications/profile', {
-                title: 'Applications',
-                user: req.user,
-                application: application,
-                adopter: adopter,
-                bookings: bookings,
-                match: { // PLACEHOLDER
-                    overall_score: 0.87,
-                    explanation: 'Strong match on activity level and alone tolerance. Adopter\'s multi-pet experience offsets Buddy\'s reactivity to other dogs',
-                    warnings: ['Unknown: good with cats']
-                },
-                missing: missing
-            })
+            res.redirect(`/admin/applications/${applicationId}?missing=${missing.join(',')}`)
             return
         }
 

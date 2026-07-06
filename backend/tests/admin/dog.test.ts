@@ -13,8 +13,8 @@ beforeEach(() => {
 
 describe('POST /admin/dogs/', () => {
     it('creates the dog and returns 302', async () => {
-        jest.spyOn(AdminModel, 'findAdminByEmail').mockResolvedValue(fakeAdmin)
-        jest.spyOn(AdminModel, 'findAdminById').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminByEmail').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminById').mockResolvedValue(fakeAdmin)
         jest.spyOn(DogModel, 'createDog').mockResolvedValue(fakeDogSameShelter)
 
         const agent = request.agent(app)
@@ -38,8 +38,8 @@ describe('POST /admin/dogs/', () => {
     })
 
     it('should return 400 if invalid zod schema', async () => {
-        jest.spyOn(AdminModel, 'findAdminByEmail').mockResolvedValue(fakeAdmin)
-        jest.spyOn(AdminModel, 'findAdminById').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminByEmail').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminById').mockResolvedValue(fakeAdmin)
         jest.spyOn(DogModel, 'createDog').mockResolvedValue(fakeDogSameShelter)
 
         const agent = request.agent(app)
@@ -57,8 +57,8 @@ describe('POST /admin/dogs/', () => {
     })
 
     it('should return 500 if a database error occurs', async () => {
-        jest.spyOn(AdminModel, 'findAdminByEmail').mockResolvedValue(fakeAdmin)
-        jest.spyOn(AdminModel, 'findAdminById').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminByEmail').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminById').mockResolvedValue(fakeAdmin)
         jest.spyOn(DogModel, 'createDog').mockRejectedValue(new Error('Database error'))
 
         const agent = request.agent(app)
@@ -80,8 +80,8 @@ describe('POST /admin/dogs/ - field normalisation', () => {
     let agent: ReturnType<typeof request.agent>
 
     beforeEach(async () => {
-        jest.spyOn(AdminModel, 'findAdminByEmail').mockResolvedValue(fakeAdmin)
-        jest.spyOn(AdminModel, 'findAdminById').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminByEmail').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminById').mockResolvedValue(fakeAdmin)
         jest.spyOn(DogModel, 'createDog').mockResolvedValue(fakeDogSameShelter)
 
         agent = request.agent(app)
@@ -130,8 +130,8 @@ describe('POST /admin/dogs/ - field normalisation', () => {
 
 describe('GET /admin/dogs', () => {
     it('gets dogs belonging to shelter and return 200', async () => {
-        jest.spyOn(AdminModel, 'findAdminByEmail').mockResolvedValue(fakeAdmin)
-        jest.spyOn(AdminModel, 'findAdminById').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminByEmail').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminById').mockResolvedValue(fakeAdmin)
         jest.spyOn(DogModel, 'getDogsByShelterId').mockResolvedValue([fakeDogSameShelter])
 
         const agent = request.agent(app)
@@ -149,8 +149,8 @@ describe('GET /admin/dogs', () => {
     })
 
     it('should return 500 if a database error occurs', async () => {
-        jest.spyOn(AdminModel, 'findAdminByEmail').mockResolvedValue(fakeAdmin)
-        jest.spyOn(AdminModel, 'findAdminById').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminByEmail').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminById').mockResolvedValue(fakeAdmin)
         jest.spyOn(DogModel, 'getDogsByShelterId').mockRejectedValue(new Error('Database error'))
 
         const agent = request.agent(app)
@@ -169,8 +169,8 @@ describe('GET /admin/dogs', () => {
 
 describe('GET /admin/dogs/:id', () => {
     it('get dog belonging to shelter and returns 200', async () => {
-        jest.spyOn(AdminModel, 'findAdminByEmail').mockResolvedValue(fakeAdmin)
-        jest.spyOn(AdminModel, 'findAdminById').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminByEmail').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminById').mockResolvedValue(fakeAdmin)
         jest.spyOn(DogModel, 'getDogByIdAndShelterId').mockResolvedValue(fakeDogSameShelter)
 
         const agent = request.agent(app)
@@ -188,8 +188,8 @@ describe('GET /admin/dogs/:id', () => {
     })
 
     it('should return 404 if dog is not found', async () => {
-        jest.spyOn(AdminModel, 'findAdminByEmail').mockResolvedValue(fakeAdmin)
-        jest.spyOn(AdminModel, 'findAdminById').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminByEmail').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminById').mockResolvedValue(fakeAdmin)
         jest.spyOn(DogModel, 'getDogByIdAndShelterId').mockResolvedValue(null)
 
         const agent = request.agent(app)
@@ -206,8 +206,8 @@ describe('GET /admin/dogs/:id', () => {
     })
 
     it('should return 404 if dog belongs to a different shelter', async () => {
-        jest.spyOn(AdminModel, 'findAdminByEmail').mockResolvedValue(fakeAdmin)
-        jest.spyOn(AdminModel, 'findAdminById').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminByEmail').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminById').mockResolvedValue(fakeAdmin)
         jest.spyOn(DogModel, 'getDogByIdAndShelterId').mockResolvedValue(null)
 
         const agent = request.agent(app)
@@ -225,8 +225,8 @@ describe('GET /admin/dogs/:id', () => {
     })
 
     it('should return 400 if dog id is invalid', async () => {
-        jest.spyOn(AdminModel, 'findAdminByEmail').mockResolvedValue(fakeAdmin)
-        jest.spyOn(AdminModel, 'findAdminById').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminByEmail').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminById').mockResolvedValue(fakeAdmin)
         jest.spyOn(DogModel, 'getDogByIdAndShelterId').mockResolvedValue(fakeDogSameShelter)
 
         const agent = request.agent(app)
@@ -243,8 +243,8 @@ describe('GET /admin/dogs/:id', () => {
     })
 
     it('should return 500 if a database error occurs', async () => {
-        jest.spyOn(AdminModel, 'findAdminByEmail').mockResolvedValue(fakeAdmin)
-        jest.spyOn(AdminModel, 'findAdminById').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminByEmail').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminById').mockResolvedValue(fakeAdmin)
         jest.spyOn(DogModel, 'getDogByIdAndShelterId').mockRejectedValue(new Error('Database error'))
 
         const agent = request.agent(app)
@@ -263,8 +263,8 @@ describe('GET /admin/dogs/:id', () => {
 
 describe('POST /admin/dogs/:id/edit', () => {
     it('updates the dog and redirects to dog profile', async () => {
-        jest.spyOn(AdminModel, 'findAdminByEmail').mockResolvedValue(fakeAdmin)
-        jest.spyOn(AdminModel, 'findAdminById').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminByEmail').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminById').mockResolvedValue(fakeAdmin)
         jest.spyOn(DogModel, 'getDogByIdAndShelterId').mockResolvedValue(fakeDogSameShelter)
         
         jest.spyOn(DogModel, 'updateDog').mockResolvedValue(fakeDogUpdated)
@@ -289,8 +289,8 @@ describe('POST /admin/dogs/:id/edit', () => {
     })
 
     it('should return 404 if dog is not found', async () => {
-        jest.spyOn(AdminModel, 'findAdminByEmail').mockResolvedValue(fakeAdmin)
-        jest.spyOn(AdminModel, 'findAdminById').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminByEmail').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminById').mockResolvedValue(fakeAdmin)
         jest.spyOn(DogModel, 'getDogByIdAndShelterId').mockResolvedValue(null)
         
         jest.spyOn(DogModel, 'updateDog').mockResolvedValue(fakeDogUpdated)
@@ -310,8 +310,8 @@ describe('POST /admin/dogs/:id/edit', () => {
     })
 
     it('should return 404 if belongs to a different shelter', async () => {
-        jest.spyOn(AdminModel, 'findAdminByEmail').mockResolvedValue(fakeAdmin)
-        jest.spyOn(AdminModel, 'findAdminById').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminByEmail').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminById').mockResolvedValue(fakeAdmin)
         jest.spyOn(DogModel, 'getDogByIdAndShelterId').mockResolvedValue(null)
         
         jest.spyOn(DogModel, 'updateDog').mockResolvedValue(fakeDogUpdated)
@@ -332,8 +332,8 @@ describe('POST /admin/dogs/:id/edit', () => {
     })
 
     it('should return 400 if invalid zod schema', async () => {
-        jest.spyOn(AdminModel, 'findAdminByEmail').mockResolvedValue(fakeAdmin)
-        jest.spyOn(AdminModel, 'findAdminById').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminByEmail').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminById').mockResolvedValue(fakeAdmin)
         jest.spyOn(DogModel, 'getDogByIdAndShelterId').mockResolvedValue(fakeDogSameShelter)
         jest.spyOn(DogModel, 'updateDog')
 
@@ -352,8 +352,8 @@ describe('POST /admin/dogs/:id/edit', () => {
     })  
 
     it('should return 500 if a database error occurs', async () => {
-        jest.spyOn(AdminModel, 'findAdminByEmail').mockResolvedValue(fakeAdmin)
-        jest.spyOn(AdminModel, 'findAdminById').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminByEmail').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminById').mockResolvedValue(fakeAdmin)
         jest.spyOn(DogModel, 'getDogByIdAndShelterId').mockResolvedValue(fakeDogSameShelter)
         
         jest.spyOn(DogModel, 'updateDog').mockRejectedValue(new Error('Database error'))
@@ -376,8 +376,8 @@ describe('POST /admin/dogs/:id/edit', () => {
 
 describe('POST /admin/dogs/:id/delete', () => {
     it('deletes the dog and returns 302', async () => {
-        jest.spyOn(AdminModel, 'findAdminByEmail').mockResolvedValue(fakeAdmin)
-        jest.spyOn(AdminModel, 'findAdminById').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminByEmail').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminById').mockResolvedValue(fakeAdmin)
 
         jest.spyOn(DogModel, 'getDogByIdAndShelterId').mockResolvedValue(fakeDogSameShelter)
         jest.spyOn(DogModel, 'hasApplications').mockResolvedValue(false)
@@ -402,8 +402,8 @@ describe('POST /admin/dogs/:id/delete', () => {
     })
 
     it('should return 404 if dog is not found', async () => {
-        jest.spyOn(AdminModel, 'findAdminByEmail').mockResolvedValue(fakeAdmin)
-        jest.spyOn(AdminModel, 'findAdminById').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminByEmail').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminById').mockResolvedValue(fakeAdmin)
 
         jest.spyOn(DogModel, 'getDogByIdAndShelterId').mockResolvedValue(null)
         jest.spyOn(DogModel, 'hasApplications').mockResolvedValue(false)
@@ -424,8 +424,8 @@ describe('POST /admin/dogs/:id/delete', () => {
     })
 
     it('should return 404 if belongs to a different shelter', async () => {
-        jest.spyOn(AdminModel, 'findAdminByEmail').mockResolvedValue(fakeAdmin)
-        jest.spyOn(AdminModel, 'findAdminById').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminByEmail').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminById').mockResolvedValue(fakeAdmin)
 
         jest.spyOn(DogModel, 'getDogByIdAndShelterId').mockResolvedValue(null)
         jest.spyOn(DogModel, 'hasApplications').mockResolvedValue(false)
@@ -447,8 +447,8 @@ describe('POST /admin/dogs/:id/delete', () => {
     })
 
     it('should return 400 if dog has existing applications', async () => {
-        jest.spyOn(AdminModel, 'findAdminByEmail').mockResolvedValue(fakeAdmin)
-        jest.spyOn(AdminModel, 'findAdminById').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminByEmail').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminById').mockResolvedValue(fakeAdmin)
 
         jest.spyOn(DogModel, 'getDogByIdAndShelterId').mockResolvedValue(fakeDogSameShelter)
         jest.spyOn(DogModel, 'hasApplications').mockResolvedValue(true)
@@ -469,8 +469,8 @@ describe('POST /admin/dogs/:id/delete', () => {
     })
 
     it('should return 500 if a database error occurs', async () => {
-        jest.spyOn(AdminModel, 'findAdminByEmail').mockResolvedValue(fakeAdmin)
-        jest.spyOn(AdminModel, 'findAdminById').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminByEmail').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminById').mockResolvedValue(fakeAdmin)
 
         jest.spyOn(DogModel, 'getDogByIdAndShelterId').mockResolvedValue(fakeDogSameShelter)
         jest.spyOn(DogModel, 'hasApplications').mockResolvedValue(false)
@@ -494,8 +494,8 @@ describe('POST /admin/dogs/:id/delete', () => {
 
 describe('requireAdminWeb middleware', () => {
     it('allows the request through with a valid session', async () => {
-        jest.spyOn(AdminModel, 'findAdminByEmail').mockResolvedValue(fakeAdmin)
-        jest.spyOn(AdminModel, 'findAdminById').mockResolvedValue(fakeAdmin) 
+        jest.spyOn(AdminModel, 'getAdminByEmail').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminById').mockResolvedValue(fakeAdmin) 
         jest.spyOn(DogModel, 'getDogsByShelterId').mockResolvedValue([])
 
         const agent = request.agent(app)
@@ -514,8 +514,8 @@ describe('requireAdminWeb middleware', () => {
     })
 
     it('redirects to /admin/login if session exists but no admin is found', async () => {
-        jest.spyOn(AdminModel, 'findAdminByEmail').mockResolvedValue(fakeAdmin)
-        jest.spyOn(AdminModel, 'findAdminById').mockResolvedValue(null) //case when admin gets deleted
+        jest.spyOn(AdminModel, 'getAdminByEmail').mockResolvedValue(fakeAdmin)
+        jest.spyOn(AdminModel, 'getAdminById').mockResolvedValue(null) //case when admin gets deleted
 
         const agent = request.agent(app)
         await agent.post('/admin/login').send({ email: fakeAdmin.email, password: 'TestPassword123!' })

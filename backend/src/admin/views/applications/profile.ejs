@@ -52,56 +52,75 @@
         </div>
     </div>
 
-    <div class="profile-card mb-4">
-        <h5>Progress</h5>
-        <div class="progress-steps">
-            <div class="progress-step">
-                <div class="step-icon step-complete">✓</div>
-                <div class="step-label">Submitted</div>
-            </div>
-            <div class="progress-step">
-                <div class="step-icon <%= application.readiness_checklist ? 'step-complete' : 'step-incomplete' %>">
-                    <%= application.readiness_checklist ? '✓' : '' %>
-                </div>
-                <div class="step-label">Checklist</div>
-            </div>
-            <div class="progress-step">
-                <% const completedCount = bookings.filter(b => b.status === 'completed').length %>
-                <div class="step-icon step-count"><%= completedCount %>/3</div>
-                <div class="step-label">Visits</div>
-            </div>
-            <div class="progress-step">
-                <div class="step-icon step-decision">🏁</div>
-                <div class="step-label">Decision</div>
-            </div>
+    <% if (missing.length > 0) { %>
+        <div class="approval-blocked mb-4">
+            <strong>Cannot approve yet.</strong> Missing required visits: 
+            <%= missing.map(m => m.replace('_', ' ')).join(', ') %>
         </div>
+    <% } %>
 
-        <div class="row mt-4">
-            <% const types = [
-                { key: 'initial_meet', label: 'Kennel meet' },
-                { key: 'home_check', label: 'Home Visit' },
-                { key: 'pet_introduction', label: 'Pet introduction' }
-            ] %>
-            <% types.forEach(t => { %>
-                <% const booking = bookings.find(b => b.booking_type === t.key) %>
-                <div class="col-md-4">
-                    <div class="visit-label"><%= t.label %></div>
-                    <% if (booking && booking.status === 'completed') { %>
-                        <div class="visit-status visit-complete">Completed <%= new Date(booking.slot).toLocaleDateString('en-GB') %></div>
-                    <% } else { %>
-                        <div class="visit-status visit-incomplete">Incomplete</div>
-                    <% } %>
-                </div>
-            <% }); %>
+    <div class="profile-card mb-4">
+    <h5>Progress</h5>
+    <% 
+        const requiredTypes = ['initial_meet', 'home_check']
+        if (adopter.current_pets === true) requiredTypes.push('pet_introduction')
+        const completedCount = bookings.filter(b => b.status === 'completed' && requiredTypes.includes(b.booking_type)).length
+    %>
+    <div class="progress-steps">
+        <div class="progress-step">
+            <div class="step-icon step-complete">✓</div>
+            <div class="step-label">Submitted</div>
+        </div>
+        <div class="progress-step">
+            <div class="step-icon <%= application.readiness_checklist ? 'step-complete' : 'step-incomplete' %>">
+                <%= application.readiness_checklist ? '✓' : '' %>
+            </div>
+            <div class="step-label">Checklist</div>
+        </div>
+        <div class="progress-step">
+            <div class="step-icon step-count"><%= completedCount %>/<%= requiredTypes.length %></div>
+            <div class="step-label">Visits</div>
+        </div>
+        <div class="progress-step">
+            <div class="step-icon step-decision">🏁</div>
+            <div class="step-label">Decision</div>
         </div>
     </div>
 
+    <div class="row mt-4">
+        <% const typeLabels = {
+            initial_meet: 'Kennel meet',
+            home_check: 'Home Visit',
+            pet_introduction: 'Pet introduction'
+        } %>
+        <% requiredTypes.forEach(type => { %>
+            <% const booking = bookings.find(b => b.booking_type === type) %>
+            <div class="col-md-4">
+                <div class="visit-label"><%= typeLabels[type] %></div>
+                <% if (booking && booking.status === 'completed') { %>
+                    <div class="visit-status visit-complete">Completed <%= new Date(booking.slot).toLocaleDateString('en-GB') %></div>
+                <% } else { %>
+                    <div class="visit-status visit-incomplete">Incomplete</div>
+                <% } %>
+            </div>
+        <% }); %>
+    </div>
+</div>
+
     <div class="d-flex align-items-center gap-3">
+    <% if (application.status === 'submitted') { %>
+        <form action="/admin/applications/<%= application.application_id %>/review" method="POST">
+            <button type="submit" class="btn btn-review">Move to Under Review</button>
+        </form>
+    <% } %>
+
+    <% if (application.status === 'under_review') { %>
         <form action="/admin/applications/<%= application.application_id %>/approve" method="POST">
             <button type="submit" class="btn btn-approve">Approve</button>
         </form>
         <form action="/admin/applications/<%= application.application_id %>/reject" method="POST">
             <button type="submit" class="btn btn-reject">Reject</button>
         </form>
-    </div>
+    <% } %>
+</div>
 </div>

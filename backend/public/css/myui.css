@@ -350,6 +350,12 @@ body {
 .visit-incomplete {
     color: #999;
 }
+.btn-review {
+    background-color: var(--toasted-almond);
+    color: #fff;
+    border-radius: 50px;
+    padding: 0.6rem 2rem;
+}
 
 .btn-approve {
     background-color: var(--blue-slate);
@@ -363,4 +369,11 @@ body {
     color: var(--blue-slate);
     border-radius: 50px;
     padding: 0.6rem 2rem;
+}
+
+.approval-blocked {
+    background-color: var(--dusty-rose);
+    color: #fff;
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
 }
