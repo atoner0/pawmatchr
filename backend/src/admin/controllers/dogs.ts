@@ -12,8 +12,8 @@ export const renderAllDogsByShelter = async (req: AuthRequest, res: Response): P
 
         res.render('dogs/all', { title: 'Dogs', user: req.user, dogs: dogs })
     } catch (error) {
-        res.status(500).render('error', { title: 'Error', message: 'Something went wrong' })
         console.error(error)
+        res.status(500).render('error', { title: 'Error', message: 'Something went wrong' })
     }
 }
 
@@ -36,6 +36,7 @@ export const renderShelterDogById = async (req: AuthRequest, res: Response): Pro
 
         res.render('dogs/profile', { title: dog.name, user: req.user, dog: dog })
     } catch (error) {
+        console.error(error)
         res.status(500).render('error', { title: 'Error', message: 'Something went wrong' })
     }
 }
@@ -44,6 +45,7 @@ export const renderCreateDog = async (req: AuthRequest, res: Response): Promise<
     try {
          res.render('dogs/new', { title: 'New Dog', user: req.user })
     } catch (error) {
+        console.error(error)
         res.status(500).render('error', { title: 'Error', message: 'Something went wrong' })
     }
 } 
@@ -82,8 +84,8 @@ export const postCreateDog = async (req: AuthRequest, res: Response): Promise<vo
         res.redirect(`/admin/dogs/`)
 
     } catch (error) {
-        res.status(500).render('error', { title: 'Error', message: 'Something went wrong when creating dog' })
         console.error(error)
+        res.status(500).render('error', { title: 'Error', message: 'Something went wrong when creating dog' })
     }
 }
 
@@ -105,8 +107,8 @@ export const renderEditDog = async (req: AuthRequest, res: Response): Promise<vo
 
          res.render('dogs/edit', { title: 'Edit Dog', user: req.user, dog: dog })
     } catch (error) {
-        res.status(500).render('error', { title: 'Error', message: 'Something went wrong' })
         console.error(error)
+        res.status(500).render('error', { title: 'Error', message: 'Something went wrong' })
     }
 } 
 
@@ -162,8 +164,8 @@ export const postUpdateDog = async (req: AuthRequest, res: Response): Promise<vo
 
         res.redirect(`/admin/dogs/${dog.dog_id}`)
     } catch (error) {
-        res.status(500).render('error', { title: 'Error', message: 'Something went wrong when editing dog' })
         console.error(error)
+        res.status(500).render('error', { title: 'Error', message: 'Something went wrong when editing dog' })
     }
 }
 
@@ -193,7 +195,7 @@ export const postDeleteDog = async (req: AuthRequest, res: Response): Promise<vo
         
         res.redirect(`/admin/dogs`)
     } catch (error) {
-        res.status(500).render('error', { title: 'Error', message: 'Something went wrong when deleting dog' })
         console.error(error)
+        res.status(500).render('error', { title: 'Error', message: 'Something went wrong when deleting dog' })
     }
 }

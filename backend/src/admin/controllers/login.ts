@@ -36,7 +36,8 @@ export const adminSignin = async ( req: Request, res: Response): Promise<void> =
             (req.session as any).adminId = admin.staff_id
             res.redirect('/admin/dashboard')
     
-    } catch {
+    } catch (error) {
+        console.error(error)
         res.render('login', { error: 'Something went wrong, please try again' })
     }
 }

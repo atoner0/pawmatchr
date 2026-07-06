@@ -3,7 +3,7 @@ import type { Adopter } from '../types/adopter.js'
 import type { QuestionnaireInput } from '../types/questionnaireSchema.js'
 
 
-export const findAdopterByEmail = async (email: string): Promise<Adopter | null> => {
+export const getAdopterByEmail = async (email: string): Promise<Adopter | null> => {
     const result = await pool.query(
         `SELECT * FROM adopters WHERE email = $1`,
         [email]
@@ -11,7 +11,7 @@ export const findAdopterByEmail = async (email: string): Promise<Adopter | null>
     return result.rows[0] || null
 }
 
-export const findAdopterById = async (id: number): Promise<Adopter | null> => {
+export const getAdopterById = async (id: number): Promise<Adopter | null> => {
     const result = await pool.query(
         `SELECT * FROM adopters WHERE adopter_id = $1`,
         [id]

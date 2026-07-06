@@ -1,5 +1,5 @@
 import type { Response } from 'express';
-import { findAdopterById, fillQuestionnaire, updateQuestionnaire } from '../models/adopter.js';
+import { getAdopterById, fillQuestionnaire, updateQuestionnaire } from '../models/adopter.js';
 import type { AuthRequest } from '../middleware/auth.js';
 import { createQuestionnaireSchema } from '../types/questionnaireSchema.js';
 
@@ -45,7 +45,7 @@ export const updateQuestionnaireController = async ( req: AuthRequest, res: Resp
 export const getQuestionnaire = async ( req: AuthRequest, res: Response): Promise<void> => {
     try {
         const adopter = req.user
-        const profile = await findAdopterById(adopter.adopter_id)
+        const profile = await getAdopterById(adopter.adopter_id)
 
         if(!profile){
             res.status(404).json({ message: 'Profile not found' })

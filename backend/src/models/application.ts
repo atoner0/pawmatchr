@@ -1,5 +1,5 @@
 import pool from '../config/db.js'
-import type { Application } from '../types/application.js'
+import type { Application, ApplicationWithDetails } from '../types/application.js'
 import type { ApplicationStatus } from '../types/applicationSchema.js'
 
 export const createApplication = async (
@@ -22,23 +22,54 @@ export const getAllAdopterApps = async(adopter_id: number): Promise<Application[
     return result.rows
 }
 
-export const getAppsByShelter = async(shelter_id: number): Promise<Application[]> => {
+export const getAppsByShelter = async(shelter_id: number): Promise<ApplicationWithDetails[]> => {
     const result = await pool.query(
-        `SELECT applications.* 
+        `SELECT applications.*,
+            dogs.name AS dog_name, dogs.photo_url, adopters.first_name, adopters.last_name
          FROM applications 
          JOIN dogs ON applications.dog_id = dogs.dog_id
+         JOIN adopters ON applications.adopter_id = adopters.adopter_id
          WHERE dogs.shelter_id = $1`,
         [shelter_id]
     )
     return result.rows
 }
 
+export const getAppByIdAndShelter = async(application_id: number, shelter_id: number): Promise<ApplicationWithDetails | null > => {
+    const result = await pool.query(
+        `SELECT applications.*,
+            dogs.name AS dog_name, dogs.photo_url, adopters.first_name, adopters.last_name 
+         FROM applications 
+         JOIN dogs ON applications.dog_id = dogs.dog_id
+         JOIN adopters ON applications.adopter_id = adopters.adopter_id
+         WHERE application_id = $1 AND dogs.shelter_id = $2`,
+        [application_id, shelter_id]
+    )
+    return result.rows[0] ?? null
+}
 export const getOneAdopterApp = async(application_id: number): Promise<Application | null> => {
     const result = await pool.query(
         `SELECT * FROM applications WHERE application_id = $1`,
         [application_id]
     )
-    return result.rows[0]
+    return result.rows[0] ?? null
+}
+
+export interface BookingProgress {
+    booking_type: string
+    status: string
+    slot: Date
+}
+
+export const getBookingsByApp = async(application_id: number): Promise<BookingProgress[]> => {
+    const result = await pool.query(
+        `SELECT availability.booking_type, bookings.status, availability.slot
+         FROM bookings
+         JOIN availability ON bookings.availability_id = availability.availability_id
+         WHERE bookings.application_id = $1`,
+        [application_id]
+    )
+    return result.rows
 }
 
 export const updateApplicationStatus = async(
@@ -48,7 +79,8 @@ export const updateApplicationStatus = async(
     const result = await pool.query(
         `UPDATE applications 
          SET status = $1,
-            adopted_at = CASE WHEN $1 = 'adopted' THEN now() else adopted_at END
+            decision_at = CASE WHEN $1 IN ('approved', 'rejected') THEN now() ELSE decision_at END,
+            adopted_at = CASE WHEN $1 = 'adopted' THEN now() ELSE adopted_at END
          WHERE application_id = $2
          RETURNING *`,
         [status, application_id]

@@ -5,6 +5,7 @@ import ejsLayouts from 'express-ejs-layouts'
 import authRoutes from './routes/auth.js'
 import dogRoutes from './routes/dog.js'
 import adopterRoutes from './routes/adopter.js'
+import adminRoutes from './admin/routes/admin.js'
 import { sessionMiddleware } from './config/session.js'
 
 const projectRoot = process.cwd()
@@ -23,9 +24,13 @@ app.use(express.urlencoded({ extended: true }))
 
 app.use(sessionMiddleware)
 
+//api
 app.use('/api/adopter', authRoutes)
 app.use('/api/adopter', adopterRoutes)
 app.use('/api', dogRoutes )
+
+//web app
+app.use('/admin', adminRoutes)
 
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' })

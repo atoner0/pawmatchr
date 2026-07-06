@@ -10,3 +10,10 @@ export interface Application {
     decision_at: string | null
     adopted_at: string | null
 }
+
+export interface ApplicationWithDetails extends Application {
+    dog_name: string
+    photo_url: string 
+    first_name: string
+    last_name: string
+}

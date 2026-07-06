@@ -1,0 +1,69 @@
+<div class="admin-main">
+    <div class="applications-header mb-4">
+        <h4 class="mb-0">Current Applications</h4>
+    </div>
+
+    <div class="applications-toolbar">
+        <select id="statusFilter" class="btn btn-toolbar-action">
+            <option value="">All Statuses</option>
+            <option value="submitted">Submitted</option>
+            <option value="under_review">Under Review</option>
+            <option value="approved">Approved</option>
+            <option value="rejected">Rejected</option>
+        </select>
+        <input type="text" id="searchInput" class="btn btn-toolbar-action" placeholder="Search adopter or dog..." />
+    </div>
+
+    <table class="table table-bordered align-middle text-center bg-white applications-table" id="applicationsTable">
+        <thead>
+            <tr>
+                <th>Adopter Name</th>
+                <th>Dog Name</th>
+                <th>Status</th>
+                <th>Submitted Date</th>
+                <th>Readiness Checklist</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <% applications.forEach(app => { %>
+                <tr data-status="<%= app.status %>" data-search="<%= (app.first_name + ' ' + app.last_name + ' ' + app.dog_name).toLowerCase() %>">
+                    <td><%= app.first_name %> <%= app.last_name %></td>
+                    <td><%= app.dog_name %></td>
+                    <td>
+                        <span class="badge-status badge-<%= app.status %>">
+                            <%= app.status.replace('_', ' ') %>
+                        </span>
+                    </td>
+                    <td><%= new Date(app.submitted_at).toLocaleDateString('en-GB') %></td>
+                    <td>
+                        <input type="checkbox" disabled <%= app.readiness_checklist ? 'checked' : '' %> />
+                    </td>
+                    <td>
+                        <a href="/admin/applications/<%= app.application_id %>" class="btn btn-view">View</a>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    const statusFilter = document.getElementById('statusFilter')
+    const searchInput = document.getElementById('searchInput')
+    const rows = document.querySelectorAll('#applicationsTable tbody tr')
+
+    function applyFilters() {
+        const status = statusFilter.value
+        const search = searchInput.value.toLowerCase()
+
+        rows.forEach(row => {
+            const matchesStatus = !status || row.dataset.status === status
+            const matchesSearch = !search || row.dataset.search.includes(search)
+            row.style.display = (matchesStatus && matchesSearch) ? '' : 'none'
+        })
+    }
+
+    statusFilter.addEventListener('change', applyFilters)
+    searchInput.addEventListener('input', applyFilters)
+</script>

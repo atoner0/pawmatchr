@@ -190,6 +190,156 @@ const seed = async () => {
       )
     `, [shelterId2])
 
+    // ============================================================
+    // Adopters
+    // ============================================================
+    const adopterPassword = await bcrypt.hash('Adopter1234!', 10)
+
+    const adopter1 = await client.query(`
+      INSERT INTO adopters (
+        first_name, last_name, email, password_hash, phone, postcode,
+        home_type, home_location, outdoor_space,
+        current_pets, current_pet_type, current_pet_count,
+        children, youngest_child_age,
+        hours_alone, activity_level,
+        first_time_owner, multi_pet_exp, multi_pet_exp_level,
+        age_pref, gender_pref, size_pref, shedding_pref, training_commitment,
+        pref_notes, completed_at
+      ) VALUES (
+        'John', 'Doe', 'john.doe@example.com', $1, '07700900001', 'BT2 3CD',
+        'semi-detached', 'suburban', 'medium',
+        true, '["dog"]', 1,
+        false, NULL,
+        '2_4', 'moderate',
+        false, true, 'extensive',
+        'none', 'none', 'none', 'none', 'moderate',
+        'I go hiking most weekends and have a large garden, I currently have a friendly older dog at home',
+        now()
+      ) RETURNING adopter_id
+    `, [adopterPassword])
+
+    const adopter2 = await client.query(`
+      INSERT INTO adopters (
+        first_name, last_name, email, password_hash, phone, postcode,
+        home_type, home_location, outdoor_space,
+        current_pets, current_pet_type, current_pet_count,
+        children, youngest_child_age,
+        hours_alone, activity_level,
+        first_time_owner, multi_pet_exp, multi_pet_exp_level,
+        age_pref, gender_pref, size_pref, shedding_pref, training_commitment,
+        pref_notes, completed_at
+      ) VALUES (
+        'Robert', 'Jones', 'robert.jones@example.com', $1, '07700900002', 'BT9 5EF',
+        'detached', 'rural', 'large',
+        false, '[]', NULL,
+        true, '5_12',
+        '4_6', 'medium',
+        true, false, NULL,
+        'none', 'none', 'none', 'none', 'intensive',
+        'First time owner, keen to do things right and willing to commit to training',
+        now()
+      ) RETURNING adopter_id
+    `, [adopterPassword])
+
+    const adopter3 = await client.query(`
+      INSERT INTO adopters (
+        first_name, last_name, email, password_hash, phone, postcode,
+        home_type, home_location, outdoor_space,
+        current_pets, current_pet_type, current_pet_count,
+        children, youngest_child_age,
+        hours_alone, activity_level,
+        first_time_owner, multi_pet_exp, multi_pet_exp_level,
+        age_pref, gender_pref, size_pref, shedding_pref, training_commitment,
+        pref_notes, completed_at
+      ) VALUES (
+        'Jessica', 'Smith', 'jessica.smith@example.com', $1, '07700900003', 'BT4 1GH',
+        'apartment', 'urban', 'none',
+        true, '["cat"]', 1,
+        false, NULL,
+        '0_2', 'low',
+        false, false, NULL,
+        'none', 'none', 'small', 'low', 'basic',
+        'Looking for a calm companion to relax with in the evenings',
+        now()
+      ) RETURNING adopter_id
+    `, [adopterPassword])
+
+    const adopterId1 = adopter1.rows[0].adopter_id
+    const adopterId2 = adopter2.rows[0].adopter_id
+    const adopterId3 = adopter3.rows[0].adopter_id
+
+    // Get dog IDs for reference (Biscuit and Luna belong to shelter 1)
+    const dogsResult = await client.query(`SELECT dog_id, name FROM dogs WHERE shelter_id = $1 ORDER BY dog_id`, [shelterId1])
+    const dogIdBiscuit = dogsResult.rows[0].dog_id
+    const dogIdLuna = dogsResult.rows[1].dog_id
+
+    // ============================================================
+    // Applications
+    // ============================================================
+    // John Doe → Biscuit, submitted, checklist done
+    const app1 = await client.query(`
+      INSERT INTO applications (dog_id, adopter_id, status, readiness_checklist, submitted_at)
+      VALUES ($1, $2, 'submitted', true, '2026-06-04')
+      RETURNING application_id
+    `, [dogIdBiscuit, adopterId1])
+
+    // Robert Jones → Luna, under review, checklist not done
+    const app2 = await client.query(`
+      INSERT INTO applications (dog_id, adopter_id, status, readiness_checklist, submitted_at)
+      VALUES ($1, $2, 'under_review', false, '2026-05-20')
+      RETURNING application_id
+    `, [dogIdLuna, adopterId2])
+
+    // Jessica Smith → Biscuit, under review, checklist done
+    const app3 = await client.query(`
+      INSERT INTO applications (dog_id, adopter_id, status, readiness_checklist, submitted_at)
+      VALUES ($1, $2, 'under_review', true, '2026-05-10')
+      RETURNING application_id
+    `, [dogIdBiscuit, adopterId3])
+
+    const applicationId1 = app1.rows[0].application_id
+    const applicationId2 = app2.rows[0].application_id
+    const applicationId3 = app3.rows[0].application_id
+
+    // ============================================================
+    // Availability — Shelter 1
+    // ============================================================
+    const avail1 = await client.query(`
+      INSERT INTO availability (shelter_id, slot, booking_type, is_booked)
+      VALUES ($1, '2026-05-15 10:00', 'initial_meet', true)
+      RETURNING availability_id
+    `, [shelterId1])
+
+    const avail2 = await client.query(`
+      INSERT INTO availability (shelter_id, slot, booking_type, is_booked)
+      VALUES ($1, '2026-05-22 14:00', 'home_check', true)
+      RETURNING availability_id
+    `, [shelterId1])
+
+    const avail3 = await client.query(`
+      INSERT INTO availability (shelter_id, slot, booking_type, is_booked)
+      VALUES ($1, '2026-06-10 11:00', 'pet_introduction', false)
+      RETURNING availability_id
+    `, [shelterId1])
+
+    const availabilityId1 = avail1.rows[0].availability_id
+    const availabilityId2 = avail2.rows[0].availability_id
+    const availabilityId3 = avail3.rows[0].availability_id
+
+    // ============================================================
+    // Bookings
+    // ============================================================
+    // App2 (Robert Jones/Luna): kennel meet + home visit completed, pet intro not yet booked
+    await client.query(`
+      INSERT INTO bookings (application_id, availability_id, multi_pet_guidance, status)
+      VALUES ($1, $2, false, 'completed')
+    `, [applicationId2, availabilityId1])
+
+    await client.query(`
+      INSERT INTO bookings (application_id, availability_id, multi_pet_guidance, status)
+      VALUES ($1, $2, false, 'completed')
+    `, [applicationId2, availabilityId2])
+
     await client.query('COMMIT')
 
     const shelterCount = await pool.query('SELECT COUNT(*) FROM shelters')

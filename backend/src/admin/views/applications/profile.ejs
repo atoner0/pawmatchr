@@ -1,0 +1,107 @@
+<div class="admin-main">
+    <a href="/admin/applications" class="back-link mb-3 d-inline-block">← Back to applications</a>
+
+    <div class="profile-card d-flex align-items-center gap-3 mb-4">
+        <img src="<%= application.photo_url %>" alt="<%= application.dog_name %>" class="profile-thumb" />
+        <div class="flex-grow-1">
+            <h4 class="mb-1"><%= application.dog_name %></h4>
+            <div>Application from <%= application.first_name %> <%= application.last_name %></div>
+            <small class="text-muted">submitted <%= new Date(application.submitted_at).toLocaleDateString('en-GB') %></small>
+        </div>
+        <span class="badge-status badge-<%= application.status %>">
+            <%= application.status.replace('_', ' ') %>
+        </span>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-6">
+            <div class="profile-card h-100">
+                <h5>Adopter Summary</h5>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="summary-label">Home type</div>
+                        <div class="summary-value"><%= adopter.home_type %></div>
+                        <div class="summary-label">Current pets</div>
+                        <div class="summary-value"><%= adopter.current_pets ? adopter.current_pet_count + ' dog(s)' : 'None' %></div>
+                        <div class="summary-label">Experience</div>
+                        <div class="summary-value"><%= adopter.first_time_owner ? 'First-time owner' : 'Experienced, multi-pet' %></div>
+                    </div>
+                    <div class="col-6">
+                        <div class="summary-label">Outdoor space</div>
+                        <div class="summary-value"><%= adopter.outdoor_space %></div>
+                        <div class="summary-label">Children</div>
+                        <div class="summary-value"><%= adopter.children ? adopter.youngest_child_age : 'None' %></div>
+                        <div class="summary-label">Activity Level</div>
+                        <div class="summary-value"><%= adopter.activity_level %></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="profile-card h-100">
+                <div class="d-flex justify-content-between align-items-start">
+                    <h5>Match Details</h5>
+                    <span class="match-score"><%= Math.round(match.overall_score * 100) %>%</span>
+                </div>
+                <p><%= match.explanation %></p>
+                <% match.warnings.forEach(warning => { %>
+                    <span class="warning-flag"><%= warning %></span>
+                <% }); %>
+            </div>
+        </div>
+    </div>
+
+    <div class="profile-card mb-4">
+        <h5>Progress</h5>
+        <div class="progress-steps">
+            <div class="progress-step">
+                <div class="step-icon step-complete">✓</div>
+                <div class="step-label">Submitted</div>
+            </div>
+            <div class="progress-step">
+                <div class="step-icon <%= application.readiness_checklist ? 'step-complete' : 'step-incomplete' %>">
+                    <%= application.readiness_checklist ? '✓' : '' %>
+                </div>
+                <div class="step-label">Checklist</div>
+            </div>
+            <div class="progress-step">
+                <% const completedCount = bookings.filter(b => b.status === 'completed').length %>
+                <div class="step-icon step-count"><%= completedCount %>/3</div>
+                <div class="step-label">Visits</div>
+            </div>
+            <div class="progress-step">
+                <div class="step-icon step-decision">🏁</div>
+                <div class="step-label">Decision</div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <% const types = [
+                { key: 'initial_meet', label: 'Kennel meet' },
+                { key: 'home_check', label: 'Home Visit' },
+                { key: 'pet_introduction', label: 'Pet introduction' }
+            ] %>
+            <% types.forEach(t => { %>
+                <% const booking = bookings.find(b => b.booking_type === t.key) %>
+                <div class="col-md-4">
+                    <div class="visit-label"><%= t.label %></div>
+                    <% if (booking && booking.status === 'completed') { %>
+                        <div class="visit-status visit-complete">Completed <%= new Date(booking.slot).toLocaleDateString('en-GB') %></div>
+                    <% } else { %>
+                        <div class="visit-status visit-incomplete">Incomplete</div>
+                    <% } %>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+
+    <div class="d-flex align-items-center gap-3">
+        <form action="/admin/applications/<%= application.application_id %>/approve" method="POST">
+            <button type="submit" class="btn btn-approve">Approve</button>
+        </form>
+        <form action="/admin/applications/<%= application.application_id %>/reject" method="POST">
+            <button type="submit" class="btn btn-reject">Reject</button>
+        </form>
+    </div>
+</div>
