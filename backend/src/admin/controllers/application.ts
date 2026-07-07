@@ -77,7 +77,7 @@ export const applicationToUnderReview = async (req: AuthRequest, res: Response):
             return
         }
 
-        if (application.status !== "submitted"){
+        if (application.status !== 'submitted'){
             res.status(400).render('error', { title: 'Error', message: 'Application cannot be moved to review from its current status' })
             return
         }

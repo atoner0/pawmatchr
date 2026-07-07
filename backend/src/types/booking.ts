@@ -8,3 +8,10 @@ export interface Booking {
     status: BookingStatus
     created_at: string
 }
+
+export interface BookingWithDetails extends Booking {
+    dog_name: string
+    photo_url: string 
+    first_name: string
+    last_name: string
+}

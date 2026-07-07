@@ -1,6 +1,5 @@
 import pool from '../config/db.js'
-import type { Availability } from '../types/availability.js';
-import type { Booking } from '../types/booking.js'
+import type { Booking, BookingWithDetails } from '../types/booking.js'
 import type { BookingStatus } from '../types/bookingSchema.js'
 
 type CreateBookingResult = 
@@ -16,7 +15,7 @@ export const createBooking = async (
     try {
         await client.query('BEGIN')
 
-        const availabilityResult = await client.query<Availability>(
+        const availabilityResult = await client.query(
             `SELECT * FROM availability
             WHERE availability_id = $1
             FOR UPDATE`,
@@ -41,7 +40,7 @@ export const createBooking = async (
             return { success: false, error: 'guidance_required'}
         }
 
-        const bookingResult = await client.query<Booking>(
+        const bookingResult = await client.query(
             `INSERT INTO bookings (application_id, availability_id, multi_pet_guidance)
             VALUES ($1, $2, $3) RETURNING *`,
             [application_id, availability_id, multi_pet_guidance]
@@ -72,10 +71,92 @@ export const createBooking = async (
 }
 
 export const getBookingByApplication = async (application_id: number): Promise<Booking[]> => {
-    const result = await pool.query<Booking>(
+    const result = await pool.query(
         `SELECT * FROM bookings
         WHERE application_id = $1`,
         [application_id]
     )
     return result.rows
+}
+
+export const getBookingsByShelter = async (shelter_id: number): Promise<BookingWithDetails[]> => {
+    const result = await pool.query(
+        `SELECT bookings.*,
+            availability.slot, availability.booking_type,
+            dogs.name AS dog_name,
+            adopters.first_name, adopters.last_name
+        FROM bookings
+        JOIN availability ON bookings.availability_id = availability.availability_id
+        JOIN applications on bookings.application_id = applications.application_id
+        JOIN dogs on applications.dog_id = dogs.dog_id
+        JOIN adopters on applications.adopter_id = adopters.adopter_id
+        WHERE dogs.shelter_id = $1
+        ORDER BY availability.slot ASC`,
+        [shelter_id]
+    )
+    return result.rows
+}
+
+export const getBookingByIdAndShelter = async (booking_id: number, shelter_id: number): Promise<BookingWithDetails> => {
+    const result = await pool.query(
+        `SELECT bookings.*,
+            availability.slot, availability.booking_type,
+            dogs.name AS dog_name,
+            adopters.first_name, adopters.last_name
+        FROM bookings
+        JOIN availability ON bookings.availability_id = availability.availability_id
+        JOIN applications on bookings.application_id = applications.application_id
+        JOIN dogs on applications.dog_id = dogs.dog_id
+        JOIN adopters on applications.adopter_id = adopters.adopter_id
+        WHERE booking_id = $1 AND dogs.shelter_id = $2`,
+        [booking_id, shelter_id]
+    )
+    return result.rows[0] ?? null
+}
+
+export const updateBookingStatus = async (
+    booking_id: number, 
+    status: BookingStatus, 
+    shelter_id: number
+): Promise<Booking | null > => {
+    const client = await pool.connect()
+    try {
+        await client.query('BEGIN')
+
+        const result = await pool.query(
+            `UPDATE bookings
+            SET status = $1
+            FROM applications, dogs
+            WHERE bookings.booking_id = $2
+            AND bookings.application_id = applications.application_id
+            AND applications.dog_id = dogs.dog_id
+            AND dogs.shelter_id = $3
+            RETURNING bookings.*`,
+            [status, booking_id, shelter_id]
+        )
+
+        const booking = result.rows[0]
+
+        if (!booking) {
+            await client.query('ROLLBACK')
+            return null
+        }
+
+        if(status === 'cancelled'){
+            await client.query(
+                `UPDATE availability
+                SET is_booked = false
+                WHERE availability_id = $1`,
+                [booking.availability_id]
+            )
+        }
+
+        await client.query('COMMIT')
+        return booking
+    } catch (error) {
+        await client.query('ROLLBACK')
+        throw error
+    } finally {
+        client.release()
+    }
 }

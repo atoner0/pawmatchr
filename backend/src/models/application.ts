@@ -47,6 +47,7 @@ export const getAppByIdAndShelter = async(application_id: number, shelter_id: nu
     )
     return result.rows[0] ?? null
 }
+
 export const getOneAdopterApp = async(application_id: number): Promise<Application | null> => {
     const result = await pool.query(
         `SELECT * FROM applications WHERE application_id = $1`,

@@ -4,6 +4,8 @@ import { requireAdminWeb } from '../../middleware/adminWebAuth.js';
 import { renderDashboard } from '../controllers/dashboard.js';
 import dogRoutes from './dogs.js'
 import applicationRoutes from './application.js'
+import availabilityRoutes from './availability.js'
+import bookingRoutes from './booking.js'
 
 const router = Router()
 
@@ -15,5 +17,7 @@ router.get('/dashboard', requireAdminWeb, renderDashboard)
 
 router.use('/dogs', requireAdminWeb, dogRoutes)
 router.use('/applications', requireAdminWeb, applicationRoutes)
+router.use('/availability', requireAdminWeb, availabilityRoutes)
+router.use('/bookings', requireAdminWeb, bookingRoutes)
 
 export default router
