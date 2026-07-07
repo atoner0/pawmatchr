@@ -27,7 +27,8 @@ export const createBookingController = async ( req: AuthRequest, res: Response):
 
         const bookingResult = await createBooking(
             application.application_id, 
-            result.data.availability_id, 
+            result.data.availability_id,
+            result.data.booking_type, 
             result.data.multi_pet_guidance
         )
 

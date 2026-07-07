@@ -1,0 +1,84 @@
+<form method="POST" action="<%= actionUrl %>" id="availabilityForm">
+    <div class="mb-3">
+        <label for="slotDate" class="form-label">Date</label>
+        <input 
+            type="date" 
+            id="slotDate" 
+            class="form-control"
+            required
+        >
+    </div>
+
+    <div class="mb-3">
+        <label for="slotTime" class="form-label">Time</label>
+        <select id="slotTime" class="form-select" required>
+            <option value="" disabled <%= !formData.slot ? 'selected' : '' %>>Select a time</option>
+        </select>
+    </div>
+
+    <input type="hidden" name="slot" id="slot">
+
+    <% if (errors && errors.length) { %>
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                <% errors.forEach(err => { %>
+                    <li><%= err.message %></li>
+                <% }) %>
+            </ul>
+        </div>
+    <% } %>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a href="/admin/availability" class="btn btn-secondary">Cancel</a>
+</form>
+
+<script>
+    const rawSlot = "<%= formData.slot || '' %>";
+
+    if(rawSlot){
+        const asDate = new Date(rawSlot);
+        const pad = n => String(n).padStart(2, '0');
+
+        document.getElementById('slotDate').value = 
+            `${asDate.getFullYear()}-${pad(asDate.getMonth() + 1)}-${pad(asDate.getDate())}`;
+
+        var existingTime = `${pad(asDate.getHours())}:${pad(asDate.getMinutes())}`;
+    } else {
+        var existingTime = '';
+    }
+    const timeSelect = document.getElementById('slotTime');
+
+    for (let h = 9; h <= 19; h++){
+        for (let m = 0; m < 60; m += 15){
+            if (h === 19 && m > 0) break;
+            const hh = String(h).padStart(2, '0');
+            const mm = String(m).padStart(2, '0');
+            const value = `${hh}:${mm}`;
+            const option = document.createElement('option');
+            option.value = value
+            option.textContent = value
+            if (value === existingTime) {
+                option.selected = true;
+            }
+            timeSelect.appendChild(option);
+
+        }
+    }
+
+    const slotDate = document.getElementById('slotDate');
+    slotDate.addEventListener('keydown', function(event) {
+        event.preventDefault();
+    });
+
+    const form = document.getElementById('availabilityForm');
+
+    form.addEventListener('submit', function() {
+        const dateValue = document.getElementById('slotDate').value;
+        const timeValue = document.getElementById('slotTime').value;
+        const combined = `${dateValue}T${timeValue}`;
+        
+        const asDate = new Date(combined);
+        document.getElementById('slot').value = asDate.toISOString();
+    });
+
+</script>

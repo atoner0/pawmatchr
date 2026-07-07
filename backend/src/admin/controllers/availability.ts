@@ -17,7 +17,12 @@ export const renderAvailability = async (req: AuthRequest, res: Response) => {
 
 export const renderCreateAvailability = async (req: AuthRequest, res: Response) => {
     try {
-        res.render('availability/new', { title: 'New Availability Slot', user: req.user })
+        res.render('availability/new', { 
+            title: 'New Availability Slot', 
+            user: req.user,
+            formData: {},
+            errors: []
+        })
     } catch (error) {
         console.error(error)
         res.status(500).render('error', { title: 'Error', message: 'Something went wrong' })
@@ -39,8 +44,8 @@ export const postCreateAvailability = async (req: AuthRequest, res: Response) =>
             return
         }
 
-        await createAvailability(shelterId, result.data.slot, result.data.booking_type)
-        res.redirect('/availability')
+        await createAvailability(shelterId, result.data.slot)
+        res.redirect('/admin/availability')
     } catch (error) {
         console.error(error)
         res.status(500).render('error', { title: 'Error', message: 'Something went wrong when creating slot' })
@@ -63,7 +68,14 @@ export const renderEditAvailability = async (req: AuthRequest, res: Response) =>
             return
         }
 
-        res.render('availability/edit', { title: 'Edit Availability Slot', user: req.user, slot: slot })
+        res.render('availability/edit', { 
+            title: 'Edit Availability Slot', 
+            user: req.user, 
+            slot: slot,
+            formData: { slot: new Date(slot.slot).toISOString() },
+            errors: [],
+            availability_id: availabilityId 
+        })
     } catch (error) {
         console.error(error)
         res.status(500).render('error', { title: 'Error', message: 'Something went wrong' })
@@ -97,7 +109,7 @@ export const postEditAvailability = async (req: AuthRequest, res: Response) => {
             return
         }
 
-        const updated = await updateAvailability(result.data.slot, result.data.booking_type, availabilityId, shelterId )
+        const updated = await updateAvailability(result.data.slot, availabilityId, shelterId )
         if (!updated) {
             res.status(400).render('error', {
                 title: 'Cannot edit',
@@ -105,7 +117,7 @@ export const postEditAvailability = async (req: AuthRequest, res: Response) => {
             })
             return
         }
-        res.redirect('/availability')
+        res.redirect('/admin/availability')
     } catch (error) {
         console.error(error)
         res.status(500).render('error', { title: 'Error', message: 'Something went wrong when editing slot' })
@@ -136,7 +148,7 @@ export const postDeleteAvailability = async (req: AuthRequest, res: Response) =>
             })
             return
         }
-        res.redirect('/availability')
+        res.redirect('/admin/availability')
         
     } catch (error) {
         console.error(error)

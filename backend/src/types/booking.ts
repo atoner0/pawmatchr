@@ -1,4 +1,4 @@
-import type { BookingStatus } from "./bookingSchema.js"
+import type { BookingStatus, BookingType } from "./bookingSchema.js"
 
 export interface Booking {
     booking_id: number
@@ -6,6 +6,7 @@ export interface Booking {
     availability_id: number
     multi_pet_guidance: boolean
     status: BookingStatus
+    booking_type: BookingType
     created_at: string
 }
 

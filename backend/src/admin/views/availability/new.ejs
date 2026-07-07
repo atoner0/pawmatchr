@@ -1,0 +1,8 @@
+<div class="container mt-4">
+    <h1><%= title %></h1>
+    <%- include('form', { 
+        formData: formData || {}, 
+        errors: errors || [], 
+        actionUrl: '/admin/availability' 
+    }) %>
+</div>

@@ -1,0 +1,31 @@
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Availability</h1>
+        <a href="/admin/availability/new" class="btn btn-primary">Add Slot</a>
+    </div>
+
+    <div id="calendar"></div>
+</div>
+
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.21/index.global.min.js'></script>
+<script>
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridWeek',
+            events: <%- JSON.stringify(slots.map(slot => {
+                return { 
+                    id: slot.availability_id,
+                    start: slot.slot, 
+                    title: slot.is_booked ? 'Booked' : 'Available', 
+                    color: slot.is_booked ? '#dc3545' : '#28a745'
+                }
+            })) %>,
+            eventClick: function(info) {
+                window.location.href = '/admin/availability/' + info.event.id + '/edit';
+            }
+        });
+        calendar.render();
+      });
+</script>

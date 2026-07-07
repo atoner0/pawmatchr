@@ -301,24 +301,24 @@ const seed = async () => {
     const applicationId2 = app2.rows[0].application_id
     const applicationId3 = app3.rows[0].application_id
 
-    // ============================================================
+  // ============================================================
     // Availability — Shelter 1
     // ============================================================
     const avail1 = await client.query(`
-      INSERT INTO availability (shelter_id, slot, booking_type, is_booked)
-      VALUES ($1, '2026-05-15 10:00', 'initial_meet', true)
+      INSERT INTO availability (shelter_id, slot, is_booked)
+      VALUES ($1, '2026-05-15 10:00', true)
       RETURNING availability_id
     `, [shelterId1])
 
     const avail2 = await client.query(`
-      INSERT INTO availability (shelter_id, slot, booking_type, is_booked)
-      VALUES ($1, '2026-05-22 14:00', 'home_check', true)
+      INSERT INTO availability (shelter_id, slot, is_booked)
+      VALUES ($1, '2026-05-22 14:00', true)
       RETURNING availability_id
     `, [shelterId1])
 
     const avail3 = await client.query(`
-      INSERT INTO availability (shelter_id, slot, booking_type, is_booked)
-      VALUES ($1, '2026-06-10 11:00', 'pet_introduction', false)
+      INSERT INTO availability (shelter_id, slot, is_booked)
+      VALUES ($1, '2026-06-10 11:00', false)
       RETURNING availability_id
     `, [shelterId1])
 
@@ -331,13 +331,13 @@ const seed = async () => {
     // ============================================================
     // App2 (Robert Jones/Luna): kennel meet + home visit completed, pet intro not yet booked
     await client.query(`
-      INSERT INTO bookings (application_id, availability_id, multi_pet_guidance, status)
-      VALUES ($1, $2, false, 'completed')
+      INSERT INTO bookings (application_id, availability_id, booking_type, multi_pet_guidance, status)
+      VALUES ($1, $2, 'initial_meet', false, 'completed')
     `, [applicationId2, availabilityId1])
 
     await client.query(`
-      INSERT INTO bookings (application_id, availability_id, multi_pet_guidance, status)
-      VALUES ($1, $2, false, 'completed')
+      INSERT INTO bookings (application_id, availability_id, booking_type, multi_pet_guidance, status)
+      VALUES ($1, $2, 'home_check', false, 'completed')
     `, [applicationId2, availabilityId2])
 
     await client.query('COMMIT')

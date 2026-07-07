@@ -153,8 +153,6 @@ CREATE TABLE availability(
     availability_id     INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     shelter_id          INTEGER NOT NULL REFERENCES shelters(shelter_id) ON DELETE CASCADE,
     slot                TIMESTAMPTZ NOT NULL,
-    booking_type        TEXT NOT NULL
-                        CHECK (booking_type IN ('initial_meet', 'home_check', 'pet_introduction')),
     is_booked           BOOLEAN NOT NULL DEFAULT false
 );
 
@@ -165,6 +163,8 @@ CREATE TABLE bookings(
     multi_pet_guidance  BOOLEAN NOT NULL DEFAULT false,
     status              TEXT NOT NULL DEFAULT 'booked'
                         CHECK (status IN ('booked', 'completed', 'cancelled')),
+    booking_type        TEXT NOT NULL
+                        CHECK (booking_type IN ('initial_meet', 'home_check', 'pet_introduction')),
     created_at          TIMESTAMPTZ DEFAULT now()
 );
 

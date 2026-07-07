@@ -1,6 +1,6 @@
 import pool from '../config/db.js'
 import type { Booking, BookingWithDetails } from '../types/booking.js'
-import type { BookingStatus } from '../types/bookingSchema.js'
+import type { BookingStatus, BookingType } from '../types/bookingSchema.js'
 
 type CreateBookingResult = 
     | { success: true; booking: Booking }
@@ -9,6 +9,7 @@ type CreateBookingResult =
 export const createBooking = async (
     application_id: number,
     availability_id: number,
+    booking_type: BookingType,
     multi_pet_guidance: boolean
 ): Promise<CreateBookingResult> => {
     const client = await pool.connect()
@@ -35,15 +36,15 @@ export const createBooking = async (
             return { success: false, error: 'already_booked'}
         }
 
-        if (availability.booking_type === 'pet_introduction' && !multi_pet_guidance) {
+        if (booking_type === 'pet_introduction' && !multi_pet_guidance) {
             await client.query('ROLLBACK')
             return { success: false, error: 'guidance_required'}
         }
 
         const bookingResult = await client.query(
-            `INSERT INTO bookings (application_id, availability_id, multi_pet_guidance)
-            VALUES ($1, $2, $3) RETURNING *`,
-            [application_id, availability_id, multi_pet_guidance]
+            `INSERT INTO bookings (application_id, availability_id, booking_type, multi_pet_guidance)
+            VALUES ($1, $2, $3, $4) RETURNING *`,
+            [application_id, availability_id, booking_type, multi_pet_guidance]
         )
 
         const booking = bookingResult.rows[0]
@@ -82,7 +83,7 @@ export const getBookingByApplication = async (application_id: number): Promise<B
 export const getBookingsByShelter = async (shelter_id: number): Promise<BookingWithDetails[]> => {
     const result = await pool.query(
         `SELECT bookings.*,
-            availability.slot, availability.booking_type,
+            availability.slot,
             dogs.name AS dog_name,
             adopters.first_name, adopters.last_name
         FROM bookings
@@ -97,10 +98,10 @@ export const getBookingsByShelter = async (shelter_id: number): Promise<BookingW
     return result.rows
 }
 
-export const getBookingByIdAndShelter = async (booking_id: number, shelter_id: number): Promise<BookingWithDetails> => {
+export const getBookingByIdAndShelter = async (booking_id: number, shelter_id: number): Promise<BookingWithDetails | null> => {
     const result = await pool.query(
         `SELECT bookings.*,
-            availability.slot, availability.booking_type,
+            availability.slot, 
             dogs.name AS dog_name,
             adopters.first_name, adopters.last_name
         FROM bookings
@@ -123,7 +124,7 @@ export const updateBookingStatus = async (
     try {
         await client.query('BEGIN')
 
-        const result = await pool.query(
+        const result = await client.query(
             `UPDATE bookings
             SET status = $1
             FROM applications, dogs
