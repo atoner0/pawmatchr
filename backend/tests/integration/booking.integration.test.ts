@@ -104,4 +104,4 @@ describe('updateBookingStatus (integration, real DB)', () => {
         )
         expect(availabilityCheck.rows[0].is_booked).toBe(true)
     })
-})
+})       
