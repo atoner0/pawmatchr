@@ -98,6 +98,53 @@ export const getBookingsByShelter = async (shelter_id: number): Promise<BookingW
     return result.rows
 }
 
+export const getUpcomingBookingsByShelter = async (shelter_id: number, limit: number = 3): Promise<BookingWithDetails[]> => {
+    const result = await pool.query(
+        `SELECT bookings.*,
+            availability.slot,
+            dogs.name AS dog_name,
+            adopters.first_name, adopters.last_name
+        FROM bookings
+        JOIN availability ON bookings.availability_id = availability.availability_id
+        JOIN applications ON bookings.application_id = applications.application_id
+        JOIN dogs ON applications.dog_id = dogs.dog_id
+        JOIN adopters ON applications.adopter_id = adopters.adopter_id
+        WHERE dogs.shelter_id = $1
+        AND availability.slot > now()
+        AND bookings.status = 'booked'
+        ORDER BY availability.slot ASC
+        LIMIT $2`,
+        [shelter_id, limit]
+    )
+    return result.rows
+}
+
+export const getBookingStats = async (shelter_id: number) => {
+    const result = await pool.query(
+        `SELECT bookings.booking_type, COUNT(*) as count
+        FROM bookings
+        JOIN applications ON bookings.application_id = applications.application_id
+        JOIN dogs ON applications.dog_id = dogs.dog_id
+        WHERE dogs.shelter_id = $1
+        GROUP BY bookings.booking_type`,
+        [shelter_id]
+    )
+
+    const stats = {
+        total: 0,
+        initial_meet: 0,
+        home_check: 0,
+        pet_introduction: 0
+    }
+
+    for (const row of result.rows) {
+        stats[row.booking_type as BookingType] = parseInt(row.count)
+        stats.total += parseInt(row.count)
+    }
+
+    return stats
+}
+
 export const getBookingByIdAndShelter = async (booking_id: number, shelter_id: number): Promise<BookingWithDetails | null> => {
     const result = await pool.query(
         `SELECT bookings.*,

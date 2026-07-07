@@ -306,25 +306,32 @@ const seed = async () => {
     // ============================================================
     const avail1 = await client.query(`
       INSERT INTO availability (shelter_id, slot, is_booked)
-      VALUES ($1, '2026-05-15 10:00', true)
+      VALUES ($1, '2026-07-15 10:00', true)
       RETURNING availability_id
     `, [shelterId1])
 
     const avail2 = await client.query(`
       INSERT INTO availability (shelter_id, slot, is_booked)
-      VALUES ($1, '2026-05-22 14:00', true)
+      VALUES ($1, '2026-07-10 14:00', true)
       RETURNING availability_id
     `, [shelterId1])
 
     const avail3 = await client.query(`
       INSERT INTO availability (shelter_id, slot, is_booked)
-      VALUES ($1, '2026-06-10 11:00', false)
+      VALUES ($1, '2026-07-10 11:00', false)
+      RETURNING availability_id
+    `, [shelterId1])
+
+    const avail4 = await client.query(`
+      INSERT INTO availability (shelter_id, slot, is_booked)
+      VALUES ($1, '2026-07-15 15:00', true)
       RETURNING availability_id
     `, [shelterId1])
 
     const availabilityId1 = avail1.rows[0].availability_id
     const availabilityId2 = avail2.rows[0].availability_id
     const availabilityId3 = avail3.rows[0].availability_id
+    const availabilityId4 = avail4.rows[0].availability_id
 
     // ============================================================
     // Bookings
@@ -339,6 +346,12 @@ const seed = async () => {
       INSERT INTO bookings (application_id, availability_id, booking_type, multi_pet_guidance, status)
       VALUES ($1, $2, 'home_check', false, 'completed')
     `, [applicationId2, availabilityId2])
+
+    // App1 (John Doe/Biscuit): upcoming pet introduction, still booked
+    await client.query(`
+      INSERT INTO bookings (application_id, availability_id, booking_type, multi_pet_guidance, status)
+      VALUES ($1, $2, 'pet_introduction', true, 'booked')
+    `, [applicationId1, availabilityId4])
 
     await client.query('COMMIT')
 

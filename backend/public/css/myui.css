@@ -252,6 +252,27 @@ body {
     color: #333;
 }
 
+.badge-booked {
+    background-color: var(--blue-slate);
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+}
+
+.badge-completed {
+    background-color: var(--sage);
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+}
+
+.badge-cancelled {
+    background-color: var(--dusty-rose);
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+}
+
 .profile-card {
     background-color: #fdf6f2;
     border-radius: 0.75rem;
@@ -375,5 +396,51 @@ body {
     background-color: var(--dusty-rose);
     color: #fff;
     padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+}
+
+/* Bookings Dashboard */
+.bookings-stats {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.stat-card {
+    background-color: #fff;
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    text-align: center;
+    flex: 1;
+    box-shadow: 0 2px 8px rgba(73, 88, 103, 0.08);
+}
+
+.stat-card h2 {
+    color: var(--blue-slate);
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.stat-card p {
+    color: #8a8a8a;
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+.upcoming-visits-card {
+    background-color: #fdf6f2;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.upcoming-visits-card h4 {
+    color: var(--blue-slate);
+}
+
+.upcoming-visit-item {
+    display: block;
+    background-color: var(--sage);
+    color: #fff;
     border-radius: 0.5rem;
 }

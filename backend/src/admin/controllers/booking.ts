@@ -1,6 +1,6 @@
 import type { Response } from 'express';
 import type { AuthRequest } from '../../middleware/auth.js';
-import { getBookingByIdAndShelter, getBookingsByShelter, updateBookingStatus } from '../../models/booking.js';
+import { getBookingByIdAndShelter, getBookingsByShelter, getBookingStats, getUpcomingBookingsByShelter, updateBookingStatus } from '../../models/booking.js';
 import { getAdopterById } from '../../models/adopter.js';
 import { getAppByIdAndShelter } from '../../models/application.js';
 
@@ -8,8 +8,10 @@ export const renderBookings = async (req: AuthRequest, res: Response) => {
     try {
         const shelterId = req.user.shelter_id
         const bookings = await getBookingsByShelter(shelterId)
+        const stats = await getBookingStats(shelterId)
+        const upcoming = await getUpcomingBookingsByShelter(shelterId)
 
-        res.render('bookings/all', { title: 'Bookings', bookings: bookings})
+        res.render('bookings/all', { title: 'Bookings', bookings, stats, upcoming})
     } catch (error) {
         console.error(error)
         res.status(500).render('error', { title: 'Error', message: 'Something went wrong' })

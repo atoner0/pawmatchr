@@ -1,0 +1,59 @@
+<div class="bookings-stats">
+    <div class="stat-card">
+        <h2><%= stats.total %></h2>
+        <p>Total bookings</p>
+    </div>
+    <div class="stat-card">
+        <h2><%= stats.initial_meet %></h2>
+        <p>Kennel meets</p>
+    </div>
+    <div class="stat-card">
+        <h2><%= stats.home_check %></h2>
+        <p>Home visits</p>
+    </div>
+    <div class="stat-card">
+        <h2><%= stats.pet_introduction %></h2>
+        <p>Pet introductions</p>
+    </div>
+</div>
+
+<div class="upcoming-visits-card">
+    <h4>Upcoming visits</h4>
+    <% if (upcoming.length === 0) { %>
+        <p class="text-muted mb-0">No upcoming visits.</p>
+    <% } else { %>
+        <% upcoming.forEach(b => { %>
+            <a href="/admin/bookings/<%= b.booking_id %>" class="upcoming-visit-item">
+                <strong><%= b.booking_type.replace('_', ' ') %> – <%= b.dog_name %></strong><br>
+                <span><%= b.first_name %> <%= b.last_name %> — <%= new Date(b.slot).toLocaleString() %></span>
+                <% if (b.booking_type === 'pet_introduction') { %>
+                    <br><small>Guidance read: <%= b.multi_pet_guidance ? 'Yes' : 'No' %></small>
+                <% } %>
+            </a>
+        <% }) %>
+    <% } %>
+</div>
+
+<h4>All bookings</h4>
+<table class="table bookings-table">
+    <thead>
+        <tr>
+            <th>Date/Time</th>
+            <th>Dog</th>
+            <th>Adopter</th>
+            <th>Visit Type</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% bookings.forEach(b => { %>
+            <tr>
+                <td><a href="/admin/bookings/<%= b.booking_id %>"><%= new Date(b.slot).toLocaleString() %></a></td>
+                <td><%= b.dog_name %></td>
+                <td><%= b.first_name %> <%= b.last_name %></td>
+                <td><span class="badge-booking-type"><%= b.booking_type.replace('_', ' ') %></span></td>
+                <td><span class="badge-status badge-<%= b.status %>"><%= b.status %></span></td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>
