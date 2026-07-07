@@ -6,7 +6,7 @@ import * as ApplicationModel from '../../src/models/application.js'
 import * as AdopterModel from '../../src/models/adopter.js'
 import * as AdminModel from '../../src/models/shelterAdmin.js'
 
-import { fakeAdopterPartial, fakeApplicationNotReady, fakeApplicationReady, fakeAdmin, fakeApplicationSubmitted, fakeApplicationWithdrawn, fakeApplicationUnderReview, fakeApplicationApproved, fakeApplicationOtherAdopter, fakeApplicationAdopted, fakeApplicationWithdrawnUpdated, withDetails, fakeApplicationUnderReviewWrongShelter, fakeBookingsAllCompletedWithPets, fakeAdopterNoPets, fakeBookingsAllCompletedNoPets, fakeApplicationUnderReviewSameShelter, fakeApplicationUnderReviewWithPetsAdopter, fakeAdopterWithPets, fakeBookingsBookedNotCompleted, fakeBookingsMissingPetIntroduction, fakeApplicationRejected } from '../utils/fakeProfiles.js'
+import { fakeAdmin, fakeApplicationSubmitted, fakeApplicationUnderReview, fakeApplicationApproved, withDetails, fakeApplicationUnderReviewWrongShelter, fakeBookingsAllCompletedWithPets, fakeAdopterNoPets, fakeBookingsAllCompletedNoPets,  fakeApplicationUnderReviewWithPetsAdopter, fakeAdopterWithPets, fakeBookingsBookedNotCompleted, fakeBookingsMissingPetIntroduction, fakeApplicationRejected } from '../utils/fakeProfiles.js'
 
 beforeEach(() => {
   jest.restoreAllMocks()

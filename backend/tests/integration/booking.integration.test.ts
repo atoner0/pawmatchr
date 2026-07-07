@@ -1,9 +1,13 @@
 import { describe, it, expect, beforeEach, afterEach, afterAll } from '@jest/globals'
-import { createBooking } from '../../src/models/booking.js'
+import { createBooking, updateBookingStatus } from '../../src/models/booking.js'
 import { seedBookingTestData, clearBookingTestData } from './seedHelpers.js'
 import testPool from './testPool.js'
 
-describe('createBooking (integration, real DB', () => {
+afterAll(async () => {
+    await testPool.end()
+})
+
+describe('createBooking (integration, real DB)', () => {
     let ids: Awaited<ReturnType<typeof seedBookingTestData>>
 
     beforeEach(async () => {
@@ -14,12 +18,8 @@ describe('createBooking (integration, real DB', () => {
         await clearBookingTestData()
     })
 
-    afterAll(async () => {
-        await testPool.end()
-    })
-
     it('sets is_booked to true after a successful booking', async () => {
-        const result = await createBooking(ids.application1Id, ids.availabilityId, false)
+        const result = await createBooking(ids.application1Id, ids.availabilityId, 'initial_meet', false)
         expect(result.success).toBe(true)
 
         const check = await testPool.query(
@@ -32,8 +32,8 @@ describe('createBooking (integration, real DB', () => {
 
     it('only allows one of two concurrent bookings on the same slot to succeed', async () => {
         const [res1, res2] = await Promise.all([
-            createBooking(ids.application1Id, ids.availabilityId, false),
-            createBooking(ids.application2Id, ids.availabilityId, false),
+            createBooking(ids.application1Id, ids.availabilityId, 'initial_meet', false),
+            createBooking(ids.application2Id, ids.availabilityId, 'initial_meet', false),
         ])
 
         const results = [res1, res2]
@@ -50,5 +50,58 @@ describe('createBooking (integration, real DB', () => {
             [ids.availabilityId]
         )
         expect(bookingsCheck.rows).toHaveLength(1)
+    })
+})
+
+describe('updateBookingStatus (integration, real DB)', () => {
+    let ids: Awaited<ReturnType<typeof seedBookingTestData>>
+
+    beforeEach(async () => {
+        ids = await seedBookingTestData()
+    })
+
+    afterEach(async () => {
+        await clearBookingTestData()
+    })
+
+    it('sets availability is_booked to false when booking is cancelled', async () => {
+        const result = await updateBookingStatus(ids.bookingId, 'cancelled', ids.shelterId)
+        expect(result).not.toBeNull()
+        expect(result!.status).toBe('cancelled')
+
+        const check = await testPool.query(
+            `SELECT is_booked FROM availability WHERE availability_id = $1`,
+            [ids.bookedAvailabilityId]
+        )
+        expect(check.rows[0].is_booked).toBe(false)
+    })
+
+    it('does not change availability is_booked when booking is completed', async () => {
+        const result = await updateBookingStatus(ids.bookingId, 'completed', ids.shelterId)
+        expect(result).not.toBeNull()
+        expect(result!.status).toBe('completed')
+
+        const check = await testPool.query(
+            `SELECT is_booked FROM availability WHERE availability_id = $1`,
+            [ids.bookedAvailabilityId]
+        )
+        expect(check.rows[0].is_booked).toBe(true)
+    })
+
+    it('returns null and does not update when booking belongs to a different shelter', async () => {
+        const result = await updateBookingStatus(ids.bookingId, 'cancelled', ids.otherShelterId)
+        expect(result).toBeNull()
+
+        const check = await testPool.query(
+            `SELECT status FROM bookings WHERE booking_id = $1`,
+            [ids.bookingId]
+        )
+        expect(check.rows[0].status).toBe('booked')
+
+        const availabilityCheck = await testPool.query(
+            `SELECT is_booked FROM availability WHERE availability_id = $1`,
+            [ids.bookedAvailabilityId]
+        )
+        expect(availabilityCheck.rows[0].is_booked).toBe(true)
     })
 })

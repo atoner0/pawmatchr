@@ -3,11 +3,9 @@ import type { QuestionnaireInput } from '../../src/types/questionnaireSchema.js'
 import type { Application, ApplicationWithDetails } from '../../src/types/application.js'
 import type { Dog } from '../../src/types/dog.js'
 import type { Favourite } from '../../src/types/favourite.js'
-import type { Booking } from '../../src/types/booking.js'
+import type { Booking, BookingWithDetails } from '../../src/types/booking.js'
 import type { Availability } from '../../src/types/availability.js'
 import type { BookingProgress } from '../../src/models/application.js'
-
-export const fakeAdminPlainPassword = 'TestPassword123!'
 
 export const fakeAdopterFull: Adopter = {
     adopter_id: 1,
@@ -90,7 +88,6 @@ export const fakeApplicationReady: Application = {
     decision_at: null,
     adopted_at: null
 }
-
 
 export const fakeApplicationNotReady: Application = {
     application_id: 2,
@@ -347,7 +344,6 @@ export const fakeAvailability: Availability = {
     availability_id: 1,
     shelter_id: 1,
     slot: '2026-08-15T10:00:00Z',
-    booking_type: 'initial_meet',
     is_booked: false,
 }
 
@@ -355,7 +351,6 @@ export const fakeAvailabilityPetIntroduction: Availability = {
     availability_id: 2,
     shelter_id: 1,
     slot: '2026-08-16T14:00:00Z',
-    booking_type: 'pet_introduction',
     is_booked: false,
 }
 
@@ -363,7 +358,6 @@ export const fakeAvailabilityBooked: Availability = {
     availability_id: 3,
     shelter_id: 1,
     slot: '2026-08-17T09:00:00Z',
-    booking_type: 'home_check',
     is_booked: true,
 }
 
@@ -371,6 +365,7 @@ export const fakeBooking: Booking = {
     booking_id: 1,
     application_id: 1,
     availability_id: 1,
+    booking_type: 'initial_meet',
     multi_pet_guidance: false,
     status: 'booked',
     created_at: '2026-07-01T12:00:00Z',
@@ -380,6 +375,7 @@ export const fakeBookingPetIntroduction: Booking = {
     booking_id: 2,
     application_id: 1,
     availability_id: 2,
+    booking_type: 'pet_introduction',
     multi_pet_guidance: true,
     status: 'booked',
     created_at: '2026-07-01T12:00:00Z',
@@ -397,17 +393,6 @@ export const fakeAdopterWithPets: Adopter = {
     current_pets: true,
     current_pet_type: ['dog'],
     current_pet_count: 1
-}
-
-export const fakeApplicationUnderReviewSameShelter: Application = {
-    application_id: 7,
-    dog_id: 4,
-    adopter_id: 1,
-    status: 'under_review',
-    readiness_checklist: true,
-    submitted_at: '2026-06-01T10:00:00Z',
-    decision_at: null,
-    adopted_at: null
 }
 
 export const fakeApplicationUnderReviewWithPetsAdopter: Application = {
@@ -440,20 +425,20 @@ export const fakeApplicationRejected: Application = {
 }
 
 export const fakeBookingsAllCompletedNoPets: BookingProgress[] = [
-    { booking_type: fakeAvailability.booking_type, status: 'completed', slot: new Date(fakeAvailability.slot) },
-    { booking_type: fakeAvailabilityBooked.booking_type, status: 'completed', slot: new Date(fakeAvailabilityBooked.slot) }
+    { booking_type: 'initial_meet', status: 'completed', slot: new Date(fakeAvailability.slot) },
+    { booking_type: 'home_check', status: 'completed', slot: new Date(fakeAvailabilityBooked.slot) }
 ]
 
 export const fakeBookingsAllCompletedWithPets: BookingProgress[] = [
     ...fakeBookingsAllCompletedNoPets,
-    { booking_type: fakeAvailabilityPetIntroduction.booking_type, status: 'completed', slot: new Date(fakeAvailabilityPetIntroduction.slot) }
+    { booking_type: 'pet_introduction', status: 'completed', slot: new Date(fakeAvailabilityPetIntroduction.slot) }
 ]
 
 export const fakeBookingsMissingPetIntroduction: BookingProgress[] = fakeBookingsAllCompletedNoPets
 
 export const fakeBookingsBookedNotCompleted: BookingProgress[] = [
-    { booking_type: fakeAvailability.booking_type, status: 'booked', slot: new Date(fakeAvailability.slot) },
-    { booking_type: fakeAvailabilityBooked.booking_type, status: 'booked', slot: new Date(fakeAvailabilityBooked.slot) }
+    { booking_type: 'initial_meet', status: 'booked', slot: new Date(fakeAvailability.slot) },
+    { booking_type: 'home_check', status: 'booked', slot: new Date(fakeAvailabilityBooked.slot) }
 ]
 
 export const withDetails = (app: Application, overrides?: Partial<Pick<ApplicationWithDetails, 'dog_name' | 'photo_url' | 'first_name' | 'last_name'>>): ApplicationWithDetails => ({
@@ -464,3 +449,38 @@ export const withDetails = (app: Application, overrides?: Partial<Pick<Applicati
     last_name: 'Doe',
     ...overrides
 })
+
+export const fakeBookingWithDetails: BookingWithDetails = {
+    booking_id: 1,
+    application_id: 1,
+    availability_id: 1,
+    booking_type: 'initial_meet',
+    multi_pet_guidance: false,
+    status: 'booked',
+    created_at: '2026-07-01T12:00:00Z',
+    slot: '2026-08-15T10:00:00Z',
+    dog_name: 'Buddy',
+    first_name: 'Jane',
+    last_name: 'Doe',
+}
+
+export const fakeBookingPetIntroductionWithDetails: BookingWithDetails = {
+    booking_id: 2,
+    application_id: 1,
+    availability_id: 2,
+    booking_type: 'pet_introduction',
+    multi_pet_guidance: true,
+    status: 'booked',
+    created_at: '2026-07-01T12:00:00Z',
+    slot: '2026-08-16T14:00:00Z',
+    dog_name: 'Luna',
+    first_name: 'Robert',
+    last_name: 'Jones',
+}
+
+export const fakeBookingStats = {
+    total: 2,
+    initial_meet: 1,
+    home_check: 0,
+    pet_introduction: 1,
+}

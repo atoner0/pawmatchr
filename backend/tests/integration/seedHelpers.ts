@@ -9,9 +9,9 @@ export async function seedBookingTestData() {
     const shelterId = shelterResult.rows[0].shelter_id
 
     const dogResult = await testPool.query(
-        `INSERT INTO dogs (shelter_id, name, breed, age, gender, size, alone_tolerance, activity_level, training_level, coat_length, coat_type, shedding_level, description)
-         VALUES ($1, 'Buddy', 'Labrador', '3_5', 'male', 'large', '2_4', 'moderate', 'basic', 'short', 'smooth', 'medium', 'Friendly dog')
-         RETURNING dog_id`,
+        `INSERT INTO dogs (shelter_id, name, breed, age, gender, size, alone_tolerance, activity_level, training_level, coat_length, coat_type, shedding_level, description, photo_url)
+        VALUES ($1, 'Buddy', 'Labrador', '3_5', 'male', 'large', '2_4', 'moderate', 'basic', 'short', 'smooth', 'medium', 'Friendly dog', 'https://example.com/buddy.jpg')
+        RETURNING dog_id`,
         [shelterId]
     )
     const dogId = dogResult.rows[0].dog_id
@@ -47,14 +47,39 @@ export async function seedBookingTestData() {
     const application2Id = application2Result.rows[0].application_id
 
     const availabilityResult = await testPool.query(
-        `INSERT INTO availability (shelter_id, slot, booking_type, is_booked)
-         VALUES ($1, '2026-08-15T10:00:00Z', 'initial_meet', false)
+        `INSERT INTO availability (shelter_id, slot, is_booked)
+         VALUES ($1, '2026-08-15T10:00:00Z', false)
          RETURNING availability_id`,
         [shelterId]
     )
     const availabilityId = availabilityResult.rows[0].availability_id
 
-    return { shelterId, dogId, adopter1Id, adopter2Id, application1Id, application2Id, availabilityId }
+    // NEW: a second, already-booked slot + its linked booking
+    const bookedAvailabilityResult = await testPool.query(
+        `INSERT INTO availability (shelter_id, slot, is_booked)
+         VALUES ($1, '2026-08-16T14:00:00Z', true)
+         RETURNING availability_id`,
+        [shelterId]
+    )
+    const bookedAvailabilityId = bookedAvailabilityResult.rows[0].availability_id
+
+    const bookingResult = await testPool.query(
+        `INSERT INTO bookings (application_id, availability_id, booking_type, multi_pet_guidance, status)
+         VALUES ($1, $2, 'initial_meet', false, 'booked')
+         RETURNING booking_id`,
+        [application1Id, bookedAvailabilityId]
+    )
+    const bookingId = bookingResult.rows[0].booking_id
+
+    // NEW: a second shelter, to test cross-shelter scoping
+    const otherShelterResult = await testPool.query(
+        `INSERT INTO shelters (name, city, postcode, email, phone)
+         VALUES ('Other Shelter', 'Lisburn', 'BT28 2BB', 'other@test.com', '02892000000')
+         RETURNING shelter_id`
+    )
+    const otherShelterId = otherShelterResult.rows[0].shelter_id
+
+    return { shelterId, otherShelterId, dogId, adopter1Id, adopter2Id, application1Id, application2Id, availabilityId, bookedAvailabilityId, bookingId }
 }
 
 export async function clearBookingTestData() {
