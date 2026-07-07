@@ -56,6 +56,22 @@ export const getOneAdopterApp = async(application_id: number): Promise<Applicati
     return result.rows[0] ?? null
 }
 
+export const getRecentAppsByShelter = async (shelter_id: number, limit: number = 2): Promise<ApplicationWithDetails[]> => {
+    const result = await pool.query(
+        `SELECT applications.*,
+            dogs.name AS dog_name, dogs.photo_url,
+            adopters.first_name, adopters.last_name
+        FROM applications
+        JOIN dogs ON applications.dog_id = dogs.dog_id
+        JOIN adopters ON applications.adopter_id = adopters.adopter_id
+        WHERE dogs.shelter_id = $1
+        ORDER BY applications.submitted_at DESC
+        LIMIT $2`,
+        [shelter_id, limit]
+    )
+    return result.rows
+}
+
 export interface BookingProgress {
     booking_type: string
     status: string
@@ -64,7 +80,7 @@ export interface BookingProgress {
 
 export const getBookingsByApp = async(application_id: number): Promise<BookingProgress[]> => {
     const result = await pool.query(
-        `SELECT availability.booking_type, bookings.status, availability.slot
+        `SELECT bookings.booking_type, bookings.status, availability.slot
          FROM bookings
          JOIN availability ON bookings.availability_id = availability.availability_id
          WHERE bookings.application_id = $1`,

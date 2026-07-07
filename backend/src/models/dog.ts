@@ -112,3 +112,29 @@ export const deleteDog = async(dog_id: number, shelter_id: number): Promise<void
         [dog_id, shelter_id]
     )
 }
+
+export const getDashboardStats = async (shelter_id: number) => {
+    const result = await pool.query(
+        `SELECT
+            COUNT(*) FILTER (WHERE status = 'available') AS dogs_in_shelter,
+            COUNT(*) FILTER (WHERE status = 'adopted') AS dogs_adopted
+        FROM dogs
+        WHERE shelter_id = $1`,
+        [shelter_id]
+    )
+
+    const appCountResult = await pool.query(
+        `SELECT COUNT(*) AS current_applications
+        FROM applications
+        JOIN dogs ON applications.dog_id = dogs.dog_id
+        WHERE dogs.shelter_id = $1
+        AND applications.status NOT IN ('adopted', 'rejected', 'withdrawn')`,
+        [shelter_id]
+    )
+
+    return {
+        dogs_in_shelter: parseInt(result.rows[0].dogs_in_shelter),
+        dogs_adopted: parseInt(result.rows[0].dogs_adopted),
+        current_applications: parseInt(appCountResult.rows[0].current_applications)
+    }
+}
