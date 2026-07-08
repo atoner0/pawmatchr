@@ -1,0 +1,4 @@
+[tool.pytest.ini_options]
+# Ensures `from app import create_app` resolves in tests regardless of
+# where pytest is invoked from, without needing an __init__.py in tests/.
+pythonpath = ["."]

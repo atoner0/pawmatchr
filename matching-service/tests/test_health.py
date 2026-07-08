@@ -1,0 +1,23 @@
+from fastapi.testclient import TestClient
+
+from app import app
+
+client = TestClient(app)
+
+
+def test_health_check():
+    response = client.get("/health")
+    assert response.status_code == 200
+    assert response.json() == {"status": "ok"}
+
+
+def test_match_stub_returns_not_implemented():
+    response = client.post("/match", json={"adopter": {}, "dogs": []})
+    assert response.status_code == 501
+
+
+def test_match_rejects_malformed_body():
+    # "dogs" must be a list per MatchRequest - FastAPI/Pydantic should 422
+    # before the route body even runs, proving request validation is wired up.
+    response = client.post("/match", json={"adopter": {}, "dogs": "not-a-list"})
+    assert response.status_code == 422
