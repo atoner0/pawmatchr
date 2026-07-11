@@ -27,8 +27,7 @@ CREATE TABLE adopters (
     multi_pet_exp       BOOLEAN,
     multi_pet_exp_level TEXT
                         CHECK (multi_pet_exp_level IN ('once_twice', 'several', 'extensive')),
-    age_pref            TEXT
-                        CHECK (age_pref IN ('0_2', '3_5', '6_8', '8_plus', 'none')),
+    age_pref            JSONB DEFAULT '[]'::jsonb,
     gender_pref         TEXT
                         CHECK (gender_pref IN ('male', 'female', 'none')),
     size_pref           TEXT

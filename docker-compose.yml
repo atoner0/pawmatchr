@@ -11,7 +11,17 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
-      - ./backend/db:/docker-entrypoint-initdb.d
+      - ./backend/src/db:/docker-entrypoint-initdb.d
+
+  matching-service:
+    build:
+      context: ./matching-service
+    container_name: pawmatchr_matching_service
+    restart: unless-stopped
+    env_file:
+      - ./matching-service/.env
+    ports:
+      - "5001:5001"
 
 volumes:
  pgdata:
