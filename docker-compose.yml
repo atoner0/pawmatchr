@@ -22,6 +22,8 @@ services:
       - ./matching-service/.env
     ports:
       - "5001:5001"
+    volumes:
+      - ./matching-service:/app
 
 volumes:
  pgdata:
