@@ -1,6 +1,7 @@
 from fastapi.testclient import TestClient
 
 from app import app
+from helpers import make_adopter
 
 client = TestClient(app)
 
@@ -11,8 +12,13 @@ def test_health_check():
     assert response.json() == {"status": "ok"}
 
 
-def test_match_stub_returns_not_implemented():
+def test_match_rejects_invalid_payload():
     response = client.post("/match", json={"adopter": {}, "dogs": []})
+    assert response.status_code == 422
+
+def test_match_stub_returns_not_implemented():
+    adopter_dict = make_adopter().model_dump()
+    response = client.post("/match", json={"adopter": adopter_dict, "dogs": []})
     assert response.status_code == 501
 
 
