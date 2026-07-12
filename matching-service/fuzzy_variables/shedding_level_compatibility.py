@@ -1,11 +1,5 @@
 from schemas import Adopter, Dog
-
-SHEDDING_RANK = {
-    "none": 0,
-    "low": 1,
-    "medium": 2,
-    "high": 3,
-}
+from fuzzy_variables.constants import SHEDDING_RANK
 
 def shedding_level_compatibility(adopter: Adopter, dog: Dog) -> tuple[float, str | None]:
     """

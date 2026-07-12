@@ -1,14 +1,6 @@
 from schemas import Adopter, Dog
 from membership_functions import triangular
-
-#hourly bands converted to upper band for use in calculation
-HOURS_UPPER_BOUND = {
-    "0_2": 2,
-    "2_4": 4,
-    "4_6": 6,
-    "6_8": 8,
-    "8_plus": 10,
-}
+from fuzzy_variables.constants import HOURS_UPPER_BOUND
 
 def alone_tolerance_compatibility(adopter: Adopter, dog: Dog) -> tuple[float, str | None]:
     """

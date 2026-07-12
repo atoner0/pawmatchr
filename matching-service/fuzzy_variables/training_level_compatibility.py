@@ -1,18 +1,6 @@
 from schemas import Adopter, Dog
+from fuzzy_variables.constants import DOG_TRAINING_RANK, ADOPTER_COMMITMENT_RANK
 
-DOG_TRAINING_RANK = {
-    "none": 0,
-    "basic": 1,
-    "moderate": 2,
-    "experienced_only": 3,
-}
-
-ADOPTER_COMMITMENT_RANK = {
-    "none": 0,
-    "basic": 1,
-    "moderate": 2,
-    "intensive": 3,
-}
 
 def training_level_compatibility(adopter: Adopter, dog: Dog) -> tuple[float, str | None]:
     """

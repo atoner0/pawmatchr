@@ -1,14 +1,6 @@
 from schemas import Adopter, Dog
 from membership_functions import trapezoidal
-
-#activity level being converted to minutes
-ACTIVITY_LEVEL_MINS = {
-    "low": 30,
-    "medium" : 60,
-    "moderate": 90,
-    "high": 120,
-    "very_high": 150
-}
+from fuzzy_variables.constants import ACTIVITY_LEVEL_MINS
 
 def activity_level_compatibility(adopter: Adopter, dog: Dog) -> tuple[float, str | None]:
     """

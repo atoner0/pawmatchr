@@ -1,11 +1,5 @@
 from schemas import Adopter, Dog
-
-OUTDOOR_SPACE_SCORE = {
-    "large": 1.0,
-    "medium": 0.75,
-    "small": 0.25,
-    "none": 0.0,
-}
+from fuzzy_variables.constants import OUTDOOR_SPACE_SCORE
 
 def outdoor_space_compatibility(adopter: Adopter, dog: Dog) -> tuple[float, str | None]:
     """
