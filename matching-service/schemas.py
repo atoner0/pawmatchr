@@ -24,7 +24,7 @@ class Adopter(BaseModel):
     multi_pet_exp_level: Literal["once_twice", "several", "extensive"] | None = None
 
     age_pref: list[Literal["0_2", "3_5", "6_8", "8_plus", "none"]]
-    size_pref: Literal["small", "medium", "large", "giant", "none"]
+    size_pref: list[Literal["small", "medium", "large", "giant", "none"]]
     shedding_pref: Literal["none", "low", "medium", "high"]
     training_commitment: Literal["none", "basic", "moderate", "intensive"]
     pref_notes: str | None = None
@@ -32,7 +32,7 @@ class Adopter(BaseModel):
 class Dog(BaseModel):
     dog_id: int
     name: str
-    age: Literal["0_2", "3_5", "6_8", "8_plus", "unknown"]
+    age: Literal["0_2", "3_5", "6_8", "8_plus"]
     size: Literal["small", "medium", "large", "giant"]
 
     good_with_dogs: Literal["yes", "no", "unknown"]
@@ -43,7 +43,7 @@ class Dog(BaseModel):
     alone_tolerance: Literal["0_2", "2_4", "4_6", "6_8", "8_plus"]
     activity_level: Literal["low", "medium", "moderate", "high", "very_high"]
     training_level: Literal["none", "basic", "moderate", "experienced_only"]
-    shedding_level: Literal["low", "medium", "high"]
+    shedding_level: Literal["none", "low", "medium", "high"]
 
     behavioural_flags: list[Literal[
         "Pulls on lead",

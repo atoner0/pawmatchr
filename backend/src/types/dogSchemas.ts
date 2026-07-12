@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const DogAgeEnum = z.enum(['0_2', '3_5', '6_8', '8_plus', 'unknown'])
+export const DogAgeEnum = z.enum(['0_2', '3_5', '6_8', '8_plus'])
 export const DogGenderEnum = z.enum(['male', 'female'])
 export const DogSizeEnum = z.enum(['small', 'medium', 'large', 'giant'])
 export const GoodWithEnum = z.enum(['yes', 'no', 'unknown'])

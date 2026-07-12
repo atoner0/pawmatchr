@@ -30,8 +30,7 @@ CREATE TABLE adopters (
     age_pref            JSONB DEFAULT '[]'::jsonb,
     gender_pref         TEXT
                         CHECK (gender_pref IN ('male', 'female', 'none')),
-    size_pref           TEXT
-                        CHECK (size_pref IN ('small', 'medium', 'large', 'giant', 'none')),
+    size_pref           JSONB DEFAULT '[]'::jsonb,
     shedding_pref       TEXT
                         CHECK (shedding_pref IN ('none', 'low', 'medium', 'high')),
     training_commitment TEXT
@@ -64,7 +63,7 @@ CREATE TABLE dogs (
     name                TEXT NOT NULL,
     breed               TEXT NOT NULL,
     age                 TEXT NOT NULL DEFAULT 'unknown'
-                        CHECK (age IN ('0_2', '3_5', '6_8', '8_plus', 'unknown')),
+                        CHECK (age IN ('0_2', '3_5', '6_8', '8_plus')),
     gender              TEXT NOT NULL
                         CHECK (gender IN ('male', 'female')),
     size                TEXT NOT NULL
@@ -92,7 +91,7 @@ CREATE TABLE dogs (
     coat_type           TEXT NOT NULL  
                         CHECK (coat_type IN ('double', 'single', 'curly', 'silky', 'rough', 'wire', 'smooth', 'hairless')),
     shedding_level      TEXT NOT NULL
-                        CHECK (shedding_level IN ('low', 'medium', 'high')),
+                        CHECK (shedding_level IN ('none', 'low', 'medium', 'high')),
     medical_issues      JSONB DEFAULT '[]'::jsonb,
     medical_notes       TEXT,
     behavioural_flags   JSONB DEFAULT '[]'::jsonb,

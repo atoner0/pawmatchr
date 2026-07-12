@@ -23,7 +23,6 @@
                     <option value="3_5" <%= dog.age === '3_5' ? 'selected' : '' %>>3-5 years</option>
                     <option value="6_8" <%= dog.age === '6_8' ? 'selected' : '' %>>6-8 years</option>
                     <option value="8_plus" <%= dog.age === '8_plus' ? 'selected' : '' %>>8+ years</option>
-                    <option value="unknown" <%= dog.age === 'unknown' ? 'selected' : '' %>>Unknown</option>
                 </select>
             </div>
 
@@ -149,6 +148,7 @@
                 <label for="shedding_level" class="form-label">Shedding Level</label>
                 <select name="shedding_level" id="shedding_level" class="form-select" required>
                     <option value="">Select dog's shedding level</option>
+                    <option value="none" <%= dog.shedding_level === 'none' ? 'selected' : '' %>>None</option>
                     <option value="low" <%= dog.shedding_level === 'low' ? 'selected' : '' %>>Low</option>
                     <option value="medium" <%= dog.shedding_level === 'medium' ? 'selected' : '' %>>Medium</option>
                     <option value="high" <%= dog.shedding_level === 'high' ? 'selected' : '' %>>High</option>
