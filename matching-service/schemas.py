@@ -27,7 +27,7 @@ class Adopter(BaseModel):
     size_pref: list[Literal["small", "medium", "large", "giant", "none"]]
     shedding_pref: Literal["none", "low", "medium", "high"]
     training_commitment: Literal["none", "basic", "moderate", "intensive"]
-    pref_notes: str | None = None
+    pref_notes: str 
 
 class Dog(BaseModel):
     dog_id: int
@@ -64,7 +64,7 @@ class Dog(BaseModel):
         "Fast movement",
         "Cars"
         ]] = []
-    description: str | None = None
+    description: str 
 
 
 class MatchRequest(BaseModel):
