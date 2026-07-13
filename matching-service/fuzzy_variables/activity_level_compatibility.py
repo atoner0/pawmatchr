@@ -1,5 +1,5 @@
 from schemas import Adopter, Dog
-from membership_functions import trapezoidal
+from membership_functions.trapezoidal import trapezoidal
 from fuzzy_variables.constants import ACTIVITY_LEVEL_MINS
 
 def activity_level_compatibility(adopter: Adopter, dog: Dog) -> tuple[float, str | None]:

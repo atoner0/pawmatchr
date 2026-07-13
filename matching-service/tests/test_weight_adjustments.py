@@ -20,8 +20,6 @@ from weighting.weight_adjustments import (
     HOME_LARGE_SIZE_MODIFIER,
     HOME_HIGH_ACTIVITY_MODIFIER,
     HOME_LOW_ACTIVITY_MODIFIER,
-    LOCATION_FLAGS,
-    LOCATION_TRIGGERS
 )
 
 class TestDogCompatibilityAdjustment:

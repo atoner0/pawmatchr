@@ -21,8 +21,8 @@ def make_adopter(**overrides) -> Adopter:
         multi_pet_exp_level = None,
 
         age_pref = ["none"],
-        size_pref = "none",
-        shedding_pref = "none",
+        size_pref = ["none"],      
+        shedding_pref = "none",    
         training_commitment = "moderate",
         pref_notes = None,
     )

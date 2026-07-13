@@ -1,5 +1,5 @@
 from schemas import Adopter, Dog
-from membership_functions import triangular
+from membership_functions.triangular import triangular
 from fuzzy_variables.constants import HOURS_UPPER_BOUND
 
 def alone_tolerance_compatibility(adopter: Adopter, dog: Dog) -> tuple[float, str | None]:
@@ -9,9 +9,9 @@ def alone_tolerance_compatibility(adopter: Adopter, dog: Dog) -> tuple[float, st
     Gap calculated as the adopter upper bound - dog upper bound
     Gap <= 0, score 1
     Gap >= 1, score 0
-    Score will be linear in between
-
     A negative gap will always score 1
+
+    Note: given band spacing (minimum 2-hour steps) is wider than c=1, this behaves as a hard cutoff rather than a graduated score in practice - intentional, since exceeding a dog's alone-tolerance limit is treated as a welfare concern rather than a soft mismatch.
     """
     adopter_hours = HOURS_UPPER_BOUND[adopter.hours_alone]
     dog_hours = HOURS_UPPER_BOUND[dog.alone_tolerance]
