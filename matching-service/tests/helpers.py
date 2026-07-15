@@ -24,7 +24,7 @@ def make_adopter(**overrides) -> Adopter:
         size_pref = ["none"],      
         shedding_pref = "none",    
         training_commitment = "moderate",
-        pref_notes = None,
+        pref_notes = "Looking for a friendly dog",
     )
     return Adopter(**{**defaults, **overrides})
 
@@ -47,6 +47,6 @@ def make_dog(**overrides) -> Dog:
 
         behavioural_flags = [],
         known_triggers = [],
-        description = None,
+        description = "Friendly, easygoing dog looking for a loving home",
     )
     return Dog(**{**defaults, **overrides})

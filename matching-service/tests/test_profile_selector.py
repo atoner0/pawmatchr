@@ -9,7 +9,7 @@ class TestSelectProfile:
         assert select_profile(adopter) == "first_time_no_pets"
 
     def test_first_time_owner_has_pets(self):
-        adopter = make_adopter(first_time_owner=True, current_pets=True)
+        adopter = make_adopter(first_time_owner=True, current_pets=True, current_pet_type = ["dog"])
 
         assert select_profile(adopter) == "first_time_multi_pet"
 
@@ -19,7 +19,7 @@ class TestSelectProfile:
         assert select_profile(adopter) == "experienced_no_pets"
 
     def test_experienced_owner_has_pets(self):
-        adopter = make_adopter(first_time_owner=False, current_pets=True)
+        adopter = make_adopter(first_time_owner=False, current_pets=True, current_pet_type = ["dog"])
 
         assert select_profile(adopter) == "experienced_multi_pet"   
 

@@ -14,7 +14,7 @@ class TestAdopterSchema:
             make_adopter(home_type="mansion")
 
     def test_optional_fields_can_be_none(self):
-        adopter = make_adopter(multi_pet_exp_level=None, pref_notes=None)
+        adopter = make_adopter(multi_pet_exp_level=None)
         
         assert adopter.multi_pet_exp_level is None
 

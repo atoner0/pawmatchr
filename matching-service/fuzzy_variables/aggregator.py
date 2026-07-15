@@ -1,4 +1,4 @@
-from schemas import Adopter, Dog, MatchResult
+from schemas import Adopter, Dog
 from weighting.profiles import WEIGHT_PROFILES
 from weighting.weight_adjustments import (
     adjust_cat_compatibility_weight,
@@ -76,13 +76,13 @@ def aggregate_fuzzy_score(
     accumulate(score, warning, adjust_training_level_weight(weights["training_level"], adopter))
 
     score, warning = outdoor_space_compatibility(adopter, dog)
-    accumulate(score, warning, adjust_outdoor_space_weight(weights["outdoor_space"], adopter))
+    accumulate(score, warning, adjust_outdoor_space_weight(weights["outdoor_space"], dog))
 
     score, warning = home_type_compatibility(adopter, dog)
-    accumulate(score, warning, adjust_home_type_weight(weights["home_type"], adopter))
+    accumulate(score, warning, adjust_home_type_weight(weights["home_type"], dog))
 
     score, warning = home_location_compatibility(adopter, dog)
-    accumulate(score, warning, adjust_home_location_weight(weights["home_location"], adopter))
+    accumulate(score, warning, adjust_home_location_weight(weights["home_location"], adopter, dog))
 
     fuzzy_score = round(weighted_sum / total_weight, 3) if total_weight else 0.0 #guarding against division by 0
     return fuzzy_score, warnings
