@@ -77,6 +77,7 @@ class MatchResult(BaseModel):
     overall_score: float
     fuzzy_score: float
     semantic_score: float
+    warnings: list[str]
     explanation: str | None = None
 
 
