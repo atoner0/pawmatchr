@@ -1,4 +1,4 @@
-from schemas import Adopter, Dog
+from schemas import Adopter, Dog, ScoringFactor
 
 def make_adopter(**overrides) -> Adopter:
     defaults = dict(
@@ -50,3 +50,6 @@ def make_dog(**overrides) -> Dog:
         description = "Friendly, easygoing dog looking for a loving home",
     )
     return Dog(**{**defaults, **overrides})
+
+def make_factor(variable = "age", score = 1.0, weight = 0.1, warning = None, label = "match") -> ScoringFactor:
+    return ScoringFactor(variable=variable, score=score, weight=weight, warning=warning, label=label)
