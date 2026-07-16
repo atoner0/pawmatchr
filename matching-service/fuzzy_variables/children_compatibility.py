@@ -1,6 +1,6 @@
 from schemas import Adopter, Dog
 
-def children_compatibility(adopter: Adopter, dog: Dog) -> tuple[float, str | None]:
+def children_compatibility(adopter: Adopter, dog: Dog) -> tuple[float, str | None, str]:
     """
     If adopter has children and dog is good with children:
         If dog is good with any age, score 1
@@ -12,21 +12,21 @@ def children_compatibility(adopter: Adopter, dog: Dog) -> tuple[float, str | Non
     If adopter has children and dog is not good with children, excluded by hard filter and not scored
     """
     if not adopter.children:
-        return 1.0, None #doesn't matter, weight will be 0
+        return 1.0, None, "not_weighed" #doesn't matter, weight will be 0
 
     if adopter.children and dog.good_with_children == "yes":
         if dog.children_age == "any":
-            return 1.0, None
+            return 1.0, None, "known_compatible"
         elif dog.children_age == adopter.youngest_child_age:
-            return 1.0, None
+            return 1.0, None, "known_compatible"
         elif dog.children_age == "unknown":
-            return 0.75, "Unknown what exact age range dog is comfortable with"
+            return 0.75, "Unknown what exact age range dog is comfortable with", "age_unknown"
         else:
-            return 0.0, None 
+            return 0.0, None, "not_compatible"
         
     if adopter.children and dog.good_with_children == "unknown":
-        return 0.5, "Unknown whether this dog is good with children"
+        return 0.5, "Unknown whether this dog is good with children", "unknown"
     
-    return 0.0, None #"no" defensive fallback, hard filter should exclude this
+    return 0.0, None, "not_compatible" #"no" defensive fallback, hard filter should exclude this
 
     

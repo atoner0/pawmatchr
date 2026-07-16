@@ -1,6 +1,6 @@
 from schemas import Adopter, Dog
 
-def home_type_compatibility(adopter: Adopter, dog: Dog) -> tuple[float, str | None]:
+def home_type_compatibility(adopter: Adopter, dog: Dog) -> tuple[float, str | None, str]:
     """
     Dog's activity level and size both determine how demanding a home type is required.
 
@@ -15,17 +15,17 @@ def home_type_compatibility(adopter: Adopter, dog: Dog) -> tuple[float, str | No
     """
     if dog.activity_level in ("high", "very_high") or dog.size in ("large", "giant"):
         if adopter.home_type == "detached":
-            return 1.0, None
+            return 1.0, None, "ideal"
         elif adopter.home_type == "semi-detached":
-            return 0.75, None
+            return 0.75, None, "acceptable"
         else:
-            return 0.0, None
+            return 0.0, None, "not_acceptable"
         
     elif dog.activity_level in ("medium", "moderate") or dog.size == "medium":
         if adopter.home_type in ("detached", "semi-detached"):
-            return 1.0, None
+            return 1.0, None, "ideal"
         else:
-            return 0.5, None
+            return 0.5, None, "poor"
     
     else: #low activity, small size
-        return 1.0, None
+        return 1.0, None, "ideal"

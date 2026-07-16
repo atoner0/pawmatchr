@@ -2,7 +2,7 @@ from schemas import Adopter, Dog
 from membership_functions.triangular import triangular
 from fuzzy_variables.constants import HOURS_UPPER_BOUND
 
-def alone_tolerance_compatibility(adopter: Adopter, dog: Dog) -> tuple[float, str | None]:
+def alone_tolerance_compatibility(adopter: Adopter, dog: Dog) -> tuple[float, str | None, str]:
     """
     Hourly bands converted to upper band, treating time left alone as the maximum for each case
 
@@ -20,4 +20,10 @@ def alone_tolerance_compatibility(adopter: Adopter, dog: Dog) -> tuple[float, st
     gap = max(gap, 0.0) #negative gap gets clamped to score 1
 
     score = triangular(gap, a = 0, b = 0, c = 1)
-    return score, None
+
+    if gap <= 0:
+        label = "within_tolerance"
+    else:
+        label = "exceeds_tolerance"
+
+    return score, None, label

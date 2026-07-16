@@ -2,7 +2,7 @@ from schemas import Adopter, Dog
 from membership_functions.trapezoidal import trapezoidal
 from fuzzy_variables.constants import ACTIVITY_LEVEL_MINS
 
-def activity_level_compatibility(adopter: Adopter, dog: Dog) -> tuple[float, str | None]:
+def activity_level_compatibility(adopter: Adopter, dog: Dog) -> tuple[float, str | None, str]:
     """
     Activity level bands converted to minutes (upper bound of each range)
 
@@ -19,4 +19,12 @@ def activity_level_compatibility(adopter: Adopter, dog: Dog) -> tuple[float, str
     gap = adopter_mins - dog_mins
     
     score = trapezoidal(gap, a = -60, b = -30, c = 30, d = 120)
-    return score, None
+
+    if score >= 0.75:
+        label = "aligned"
+    elif gap < 0:
+        label = "adopter_less_active"
+    else:
+        label = "adopter_more_active"
+    
+    return score, None, label

@@ -83,3 +83,10 @@ class MatchResult(BaseModel):
 
 class MatchResponse(BaseModel):
     results: list[MatchResult]
+
+class ScoringFactor:
+    variable: str
+    score: float
+    weight: float
+    warning: str | None
+    label: str

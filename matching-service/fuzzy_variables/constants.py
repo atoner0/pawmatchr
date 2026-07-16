@@ -24,6 +24,13 @@ OUTDOOR_SPACE_SCORE = {
     "none": 0.0,
 }
 
+OUTDOOR_SPACE_LABEL = {
+    "large": "ideal",
+    "medium": "acceptable",
+    "small": "poor",
+    "none": "not_acceptable",
+}
+
 ### Shedding level ###
 SHEDDING_RANK = {
     "none": 0,
