@@ -14,14 +14,14 @@ class TestScoreDog:
         self, mock_select_profile, mock_aggregate_fuzzy, mock_semantic
     ):
         mock_select_profile.return_value = "first_time_no_pets"
-        mock_aggregate_fuzzy.return_value = (0.8, [])
+        mock_aggregate_fuzzy.return_value = (0.8, [], [])
         mock_semantic.return_value = 0.6
 
 
         adopter = make_adopter()
         dog = make_dog()
 
-        result = score_dog(adopter, dog, ADOPTER_EMBEDDING, DOG_EMBEDDING)
+        result, factors = score_dog(adopter, dog, ADOPTER_EMBEDDING, DOG_EMBEDDING)
 
         expected = round(0.8 * FUZZY_SPLIT + 0.6 * SEMANTIC_SPLIT, 3)
         assert round(result.overall_score, 3) == expected
@@ -30,7 +30,8 @@ class TestScoreDog:
         assert result.warnings == []
         assert result.dog_id == dog.dog_id
         assert result.explanation is None
-        
+        assert factors == []
+
         mock_select_profile.assert_called_once_with(adopter)
         mock_aggregate_fuzzy.assert_called_once_with(adopter, dog, "first_time_no_pets")
         mock_semantic.assert_called_once_with(DOG_EMBEDDING, ADOPTER_EMBEDDING)
@@ -42,14 +43,14 @@ class TestScoreDog:
         self, mock_select_profile, mock_aggregate_fuzzy, mock_semantic
     ):
         mock_select_profile.return_value = "first_time_multi_pet"
-        mock_aggregate_fuzzy.return_value = (0.8, ["Unknown whether this dog is good with cats"])
+        mock_aggregate_fuzzy.return_value = (0.8, ["Unknown whether this dog is good with cats"], [])
         mock_semantic.return_value = 0.6
 
 
         adopter = make_adopter()
         dog = make_dog()
 
-        result = score_dog(adopter, dog, ADOPTER_EMBEDDING, DOG_EMBEDDING)
+        result, factors = score_dog(adopter, dog, ADOPTER_EMBEDDING, DOG_EMBEDDING)
 
         assert result.warnings == ["Unknown whether this dog is good with cats"]
 
@@ -60,14 +61,14 @@ class TestScoreDog:
         self, mock_select_profile, mock_aggregate_fuzzy, mock_semantic
     ):
         mock_select_profile.return_value = "first_time_no_pets"
-        mock_aggregate_fuzzy.return_value = (1.0, [])
+        mock_aggregate_fuzzy.return_value = (1.0, [], [])
         mock_semantic.return_value = 1.0
 
 
         adopter = make_adopter()
         dog = make_dog()
 
-        result = score_dog(adopter, dog, ADOPTER_EMBEDDING, DOG_EMBEDDING)
+        result, factors = score_dog(adopter, dog, ADOPTER_EMBEDDING, DOG_EMBEDDING)
 
         expected = round(FUZZY_SPLIT + SEMANTIC_SPLIT, 3)
         assert round(result.overall_score, 3) == expected
@@ -79,18 +80,36 @@ class TestScoreDog:
         self, mock_select_profile, mock_aggregate_fuzzy, mock_semantic
     ):
         mock_select_profile.return_value = "first_time_no_pets"
-        mock_aggregate_fuzzy.return_value = (0.0, [])
+        mock_aggregate_fuzzy.return_value = (0.0, [], [])
         mock_semantic.return_value = 1.0
 
 
         adopter = make_adopter()
         dog = make_dog()
 
-        result = score_dog(adopter, dog, ADOPTER_EMBEDDING, DOG_EMBEDDING)
+        result, factors = score_dog(adopter, dog, ADOPTER_EMBEDDING, DOG_EMBEDDING)
 
         expected = round(0.0 * FUZZY_SPLIT + 1.0 * SEMANTIC_SPLIT, 3)
         assert round(result.overall_score, 3) == expected
 
-    
-        
+    @patch("scorer.calculate_semantic_score")
+    @patch("scorer.aggregate_fuzzy_score")
+    @patch("scorer.select_profile")
+    def test_factors_pass_through(
+        self, mock_select_profile, mock_aggregate_fuzzy, mock_semantic
+    ):
+        from schemas import ScoringFactor
 
+        mock_select_profile.return_value = "first_time_no_pets"
+        mock_factors = [
+            ScoringFactor(variable="age", score=1.0, weight=0.1, warning=None, label="match")
+        ]
+        mock_aggregate_fuzzy.return_value = (0.8, [], mock_factors)
+        mock_semantic.return_value = 0.6
+
+        adopter = make_adopter()
+        dog = make_dog()
+
+        result, factors = score_dog(adopter, dog, ADOPTER_EMBEDDING, DOG_EMBEDDING)
+
+        assert factors == mock_factors

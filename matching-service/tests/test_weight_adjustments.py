@@ -1,4 +1,4 @@
-from helpers import make_adopter, make_dog
+from tests.helpers import make_adopter, make_dog
 
 from weighting.weight_adjustments import (
     adjust_dog_compatibility_weight,

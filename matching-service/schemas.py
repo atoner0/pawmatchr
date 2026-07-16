@@ -5,6 +5,7 @@ Request/response shapes for the internal API contract with the Node backend
 
 from pydantic import BaseModel
 from typing import Literal
+from dataclasses import dataclass
 
 class Adopter(BaseModel):
     home_type: Literal["apartment", "semi-detached", "detached"]
@@ -84,6 +85,7 @@ class MatchResult(BaseModel):
 class MatchResponse(BaseModel):
     results: list[MatchResult]
 
+@dataclass
 class ScoringFactor:
     variable: str
     score: float

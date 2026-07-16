@@ -1,4 +1,4 @@
-from helpers import make_adopter, make_dog
+from tests.helpers import make_adopter, make_dog
 
 from filters.hard_filters import (
     fails_dog_filter,

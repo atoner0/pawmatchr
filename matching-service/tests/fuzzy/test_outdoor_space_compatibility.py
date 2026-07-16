@@ -6,30 +6,34 @@ class TestOutdoorSpaceCompatibility:
         adopter = make_adopter(outdoor_space = "large")
         dog = make_dog()
 
-        score, warning = outdoor_space_compatibility(adopter, dog)
+        score, warning, label = outdoor_space_compatibility(adopter, dog)
         assert score == 1.0
         assert warning is None
+        assert label == "ideal"
     
     def test_medium_space(self):
         adopter = make_adopter(outdoor_space = "medium")
         dog = make_dog()
 
-        score, warning = outdoor_space_compatibility(adopter, dog)
+        score, warning, label = outdoor_space_compatibility(adopter, dog)
         assert score == 0.75
         assert warning is None
+        assert label == "acceptable"
 
     def test_small_space(self):
         adopter = make_adopter(outdoor_space = "small")
         dog = make_dog()
 
-        score, warning = outdoor_space_compatibility(adopter, dog)
+        score, warning, label = outdoor_space_compatibility(adopter, dog)
         assert score == 0.25
         assert warning is None
+        assert label == "poor"
 
     def test_no_space(self):
         adopter = make_adopter(outdoor_space = "none")
         dog = make_dog()
 
-        score, warning = outdoor_space_compatibility(adopter, dog)
+        score, warning, label = outdoor_space_compatibility(adopter, dog)
         assert score == 0.0
         assert warning is None
+        assert label == "not_acceptable"

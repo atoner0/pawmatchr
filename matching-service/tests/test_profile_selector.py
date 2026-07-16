@@ -1,4 +1,4 @@
-from helpers import make_adopter
+from tests.helpers import make_adopter
 
 from weighting.profile_selector import select_profile
 

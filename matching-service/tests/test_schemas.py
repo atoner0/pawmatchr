@@ -1,7 +1,7 @@
 import pytest
 from pydantic import ValidationError
 from schemas import Adopter, Dog
-from helpers import make_adopter, make_dog
+from tests.helpers import make_adopter, make_dog
 
 class TestAdopterSchema:
     def test_valid_adopter(self):

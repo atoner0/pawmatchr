@@ -1,10 +1,10 @@
-from fastapi.testclient import TestClient
-
 from app import app
-from helpers import make_adopter
+print("APP TYPE:", type(app), "FILE:", getattr(app, "__file__", "no __file__ attr"))
+
+from fastapi.testclient import TestClient
+from tests.helpers import make_adopter
 
 client = TestClient(app)
-
 
 def test_health_check():
     response = client.get("/health")
