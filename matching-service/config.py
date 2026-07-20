@@ -18,6 +18,7 @@ class Settings(BaseSettings):
 
     fuzzy_weight: float = 0.7
     semantic_weight: float = 0.3
+    openai_api_key: str | None = None
 
     @model_validator(mode="after")
     def weights_must_sum_to_one(self) -> "Settings":
