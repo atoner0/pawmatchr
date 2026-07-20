@@ -1,9 +1,9 @@
-from openai import OpenAI
+from openai import AsyncOpenAI
 from config import settings
 
-client = OpenAI(api_key=settings.openai_api_key)
+client = AsyncOpenAI(api_key=settings.openai_api_key)
 
-def summary_explanation(top_bullets: str, warning_bullets: str) -> tuple[str, str]:
+async def summary_explanation(top_bullets: str, warning_bullets: str) -> tuple[str, str]:
     """
     Attempts to rewrite the templated bullet text explanations into more natural prose via OpenAI API (gpt-4.1-nano)
     Falls back to original templated text on any failure, so function always returns usable text regardless of outcome
@@ -11,7 +11,7 @@ def summary_explanation(top_bullets: str, warning_bullets: str) -> tuple[str, st
     Warnings returned untouched in every case
     """
     try:
-        response = client.chat.completions.create(
+        response = await client.chat.completions.create(
             model = "gpt-4.1-nano",
             max_tokens = 200,
             messages=[{

@@ -43,7 +43,7 @@ class TestOutdoorSpaceCompatibility:
 
 class TestOutdoorSpaceCompatibilityBatch:
     def test_same_score_for_every_dog(self):
-        adopter = make_adopter(outdoor_space="large_garden")
+        adopter = make_adopter(outdoor_space="large")
         dogs = [make_dog(), make_dog(), make_dog()]
 
         scores, warnings, labels = outdoor_space_compatibility_batch(adopter, dogs)
@@ -53,7 +53,7 @@ class TestOutdoorSpaceCompatibilityBatch:
         assert warnings == [None, None, None]
 
     def test_empty_dog_list(self):
-        adopter = make_adopter(outdoor_space="small_garden")
+        adopter = make_adopter(outdoor_space="small")
 
         scores, warnings, labels = outdoor_space_compatibility_batch(adopter, [])
 
