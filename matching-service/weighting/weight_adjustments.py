@@ -1,4 +1,5 @@
 from schemas import Adopter, Dog
+import numpy as np
 
 #constants that will be adjusted in tuning stage
 EXTENSIVE_MULTI_PET_MODIFIER = 0.85
@@ -113,6 +114,32 @@ def adjust_outdoor_space_weight(base_weight: float, dog: Dog) -> float:
 
     return base_weight
 
+def adjust_outdoor_space_weight_batch(base_weight: float, dogs: list[Dog]) -> np.ndarray:
+    """
+    Batch version of adjust_outdoor_space_weight, scoring one base_weight against many dogs' activity_level/size
+
+    Adjusts outdoor space weighting based on dog's activity level and size
+
+    Activity level is dominant factor, as dog's need for outdoor space is driven more by this than their size
+    High/very high activity increases weight, low activity reduces it
+
+    Large/giant size adds a secondary weight increase, applied independently of the activity adjustment
+    """
+    activity = np.array([dog.activity_level for dog in dogs])
+    size = np.array([dog.size for dog in dogs])
+
+    activity_multiplier = np.select(
+        [np.isin(activity, ["high", "very_high"]), activity == "low"],
+        [OUTDOOR_HIGH_ACTIVITY_MODIFIER, OUTDOOR_LOW_ACTIVITY_MODIFIER],
+        default=1.0
+    )
+
+    size_multiplier = np.select(
+        [np.isin(size, ["large", "giant"]), OUTDOOR_LARGE_SIZE_MODIFIER, 1.0]
+    )
+
+    return base_weight * activity_multiplier * size_multiplier
+
 def adjust_home_type_weight(base_weight: float, dog: Dog) -> float:
     """
     Adjusts home type weighting based on dog's activity level and size
@@ -131,6 +158,32 @@ def adjust_home_type_weight(base_weight: float, dog: Dog) -> float:
         base_weight *= HOME_LOW_ACTIVITY_MODIFIER
 
     return base_weight
+
+def adjust_home_type_weight_batch(base_weight: float, dogs: list[Dog]) -> np.ndarray:
+    """
+    Batch version of adjust_home_type_weight
+
+    Adjusts home type weighting based on dog's activity level and size
+
+    Size is dominant factor, as housing type is primarily a physical space constraint (e.g. giant dog in an apartment)
+    Large/giant size increases the weighting
+
+    Activity level adds a secondary weight adjustment, applied independently of the size adjustment
+    """
+    size = np.array([dog.size for dog in dogs])
+    activity = np.array([dog.activity_level for dog in dogs])
+
+    size_multiplier = np.select(
+        [np.isin(size, ["large", "giant"]), HOME_LARGE_SIZE_MODIFIER, 1.0]
+    )
+    
+    activity_multiplier = np.select(
+        [np.isin(activity, ["high", "very_high"]), activity == "low"],
+        [HOME_HIGH_ACTIVITY_MODIFIER, HOME_LOW_ACTIVITY_MODIFIER],
+        default=1.0
+    )
+
+    return base_weight * activity_multiplier * size_multiplier
 
 def adjust_home_location_weight(base_weight: float, adopter: Adopter, dog: Dog) -> float:
     """
@@ -152,3 +205,27 @@ def adjust_home_location_weight(base_weight: float, adopter: Adopter, dog: Dog) 
         return base_weight * FIRST_TIME_OWNER_MODIFIER
 
     return base_weight
+
+def adjust_home_location_weight_batch(base_weight: float, adopter: Adopter, dogs: list[Dog]) -> np.ndarray:
+    """
+    Batch version of adjust_home_location_weight
+
+    If a dog has no location related behavioural flags/triggers, this variable doesn't apply, so weight is 0
+
+    If adopter is not a first time owner and their training commitment is moderate/intensive, reduce weight, as their experience outweighs the flags/triggers
+    If adopter is first time owner and dog has location flags/triggers, increase weight, as an inexperienced owner in a challenging environment is a higher risk
+    """
+    has_relevant = np.array([
+        any(f in LOCATION_FLAGS for f in dog.behavioural_flags)
+        or any(t in LOCATION_TRIGGERS for t in dog.known_triggers)
+        for dog in dogs
+    ])
+    
+    if not adopter.first_time_owner and adopter.training_commitment in ("intensive", "moderate"):
+        adjusted = base_weight * EXPERIENCED_OWNER_MODIFIER
+    elif adopter.first_time_owner:
+        adjusted = base_weight * FIRST_TIME_OWNER_MODIFIER
+    else:
+        adjusted = base_weight
+
+    return np.where(has_relevant, adjusted, 0.0)
