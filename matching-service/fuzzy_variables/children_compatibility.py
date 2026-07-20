@@ -1,7 +1,21 @@
+import numpy as np
 from schemas import Adopter, Dog
 
 def children_compatibility(adopter: Adopter, dog: Dog) -> tuple[float, str | None, str]:
     """
+    Scalar wrapper around children_compatibility_batch, scoring a single adopter/dog pair. 
+
+    Temporary scaffolding for the batch migration
+    """
+    scores, warnings, labels = children_compatibility_batch(adopter, [dog])
+    return float(scores[0]), warnings[0], labels[0]
+
+def children_compatibility_batch(
+        adopter: Adopter, dogs: list[Dog]
+) -> tuple[np.ndarray, list[str | None], list[str]]:
+    """
+    Batch version of children_compatibility, scoring one adopter against many dogs in a single call
+
     If adopter has children and dog is good with children:
         If dog is good with any age, score 1
         If dog is good with age that matches adopter's youngest child age, score 1
@@ -10,23 +24,44 @@ def children_compatibility(adopter: Adopter, dog: Dog) -> tuple[float, str | Non
     
     If adopter has children and dog is unknown with children, score 0.5 and warning flag (no age check)
     If adopter has children and dog is not good with children, excluded by hard filter and not scored
+
+    If the adopter has no children, every dog scores 1 with label "not_weighed" regardless of that dog's good_with_children value, since the weight for this variable will be 0 in that case
+
+    Dogs are scored positionally: dogs[i] corresponds to scores[i],
+    warnings[i], and labels[i] in the returned tuple. Callers must not
+    reorder dogs between calling this function and consuming its output.
     """
     if not adopter.children:
-        return 1.0, None, "not_weighed" #doesn't matter, weight will be 0
-
-    if adopter.children and dog.good_with_children == "yes":
-        if dog.children_age == "any":
-            return 1.0, None, "known_compatible"
-        elif dog.children_age == adopter.youngest_child_age:
-            return 1.0, None, "known_compatible"
-        elif dog.children_age == "unknown":
-            return 0.75, "Unknown what exact age range dog is comfortable with", "age_unknown"
-        else:
-            return 0.0, None, "not_compatible"
-        
-    if adopter.children and dog.good_with_children == "unknown":
-        return 0.5, "Unknown whether this dog is good with children", "unknown"
+        scores = np.ones(len(dogs))
+        labels = ["not_weighed"] * len(dogs)
+        warnings = [None] * len(dogs)
+        return scores, warnings, labels
     
-    return 0.0, None, "not_compatible" #"no" defensive fallback, hard filter should exclude this
+    good_with_children = np.array([dog.good_with_children for dog in dogs])
+    children_age = np.array([dog.children_age for dog in dogs])
+
+    is_good = good_with_children == "yes"
+
+    conditions = [
+        is_good & (children_age == "any"),
+        is_good & (children_age == adopter.youngest_child_age),
+        is_good & (children_age == "unknown"),
+        good_with_children == "unknown"
+    ]
+    
+
+    scores = np.select(conditions, [1.0, 1.0, 0.75, 0.5], default=0.0)
+    labels = np.select(
+        conditions, ["known_compatible", "known_compatible", "age_unknown", "unknown"], default = "not_compatible"
+    ).tolist()
+
+    warnings = [
+        "Unknown what exact age range dog is comfortable with" if label == "age_unknown"
+        else "Unknown whether this dog is good with children" if label == "unknown"
+        else None
+        for label in labels
+    ]
+
+    return scores, warnings, labels
 
     

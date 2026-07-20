@@ -1,14 +1,41 @@
+import numpy as np
 from schemas import Adopter, Dog
 
 def age_compatibility(adopter: Adopter, dog: Dog) -> tuple[float, str | None, str]:
     """
+    Scalar wrapper around age_compatibility_batch, scoring a single adopter/dog pair
+
+    Temporary scaffolding for the batch migration
+    """
+    scores, warnings, labels = age_compatibility_batch(adopter, [dog])
+    return float(scores[0]), warnings[0], labels[0]
+    
+def age_compatibility_batch(
+        adopter: Adopter, dogs: list[Dog]
+) -> tuple[np.ndarray, list[None], list[str]]:
+    """
+    Batch version of age_compatibility, scoring one adopter against many dogs in a single call
+
     If an adopter has no age preference, score 1
     If dog's age band is within adopter's selected preferences, score 1
     Otherwise, score 0
+
+    Dogs are scored positionally: dogs[i] corresponds to scores[i],
+    warnings[i], and labels[i] in the returned tuple. Callers must not
+    reorder dogs between calling this function and consuming its output.
+
+    This variable never produces a warning, so warnings is always a list
+    of None matching the length of dogs.
     """
     if "none" in adopter.age_pref:
-        return 1.0, None, "match"
-    elif dog.age in adopter.age_pref:
-        return 1.0, None, "match"
+        scores = np.ones(len(dogs))
+        labels = ["match"] * len(dogs)
     else:
-        return 0.0, None, "no_match"
+        dog_ages = np.array([dog.age for dog in dogs])
+        matches = np.isin(dog_ages, adopter.age_pref)
+        scores = matches.astype(float)
+        labels = np.where(matches, "match", "no_match").tolist()
+
+    warnings = [None] * len(dogs)
+
+    return scores, warnings, labels
