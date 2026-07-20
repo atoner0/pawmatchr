@@ -1,4 +1,5 @@
 from unittest.mock import patch
+import numpy as np
 from fuzzy_variables.aggregator import aggregate_fuzzy_score
 from tests.helpers import make_adopter, make_dog
 
@@ -18,17 +19,17 @@ class TestAggregateFuzzyScore:
         dog = make_dog()
 
         # deliberately give cat a low score with zero weight
-        with patch("fuzzy_variables.aggregator.cat_compatibility") as mock_cat_score, \
+        with patch("fuzzy_variables.aggregator.cat_compatibility_batch") as mock_cat_score, \
             patch("fuzzy_variables.aggregator.adjust_cat_compatibility_weight") as mock_adjust_cat:
-            mock_cat_score.return_value = (0.0, None, "not_compatible")
+            mock_cat_score.return_value = (np.array([0.0]), [None], ["not_compatible"])
             mock_adjust_cat.return_value = 0.0
 
             excluded_score, warnings, excluded_factors = aggregate_fuzzy_score(adopter, dog, "first_time_no_pets")
 
         # if cats low score had counted at nonzero weight, it should have dragged average down compared to excluding entirely
-        with patch("fuzzy_variables.aggregator.cat_compatibility") as mock_cat_score, \
+        with patch("fuzzy_variables.aggregator.cat_compatibility_batch") as mock_cat_score, \
             patch("fuzzy_variables.aggregator.adjust_cat_compatibility_weight") as mock_adjust_cat:
-            mock_cat_score.return_value = (0.0, None, "not_compatible")
+            mock_cat_score.return_value = (np.array([0.0]), [None], ["not_compatible"])
             mock_adjust_cat.return_value = 0.09
 
             included_score, warnings, included_factors = aggregate_fuzzy_score(adopter, dog, "first_time_no_pets")
@@ -40,18 +41,22 @@ class TestAggregateFuzzyScore:
         # nonzero-weight variable should produce one
         assert any(f.variable == "cat" for f in included_factors)
 
-    @patch("fuzzy_variables.aggregator.adjust_home_location_weight")
-    @patch("fuzzy_variables.aggregator.home_location_compatibility")
+    @patch("fuzzy_variables.aggregator.adjust_home_location_weight_batch")
+    @patch("fuzzy_variables.aggregator.home_location_compatibility_batch")
     @patch("fuzzy_variables.aggregator.adjust_cat_compatibility_weight")
-    @patch("fuzzy_variables.aggregator.cat_compatibility")
+    @patch("fuzzy_variables.aggregator.cat_compatibility_batch")
     def test_warnings_collected_from_multiple_variables(
         self, mock_cat_score, mock_adjust_cat, mock_home_location, mock_adjust_home_location,
     ):
         mock_adjust_cat.return_value = 0.09  # nonzero, so warning isn't dropped
-        mock_cat_score.return_value = (0.5, "Unknown whether this dog is good with cats", "unknown")
+        mock_cat_score.return_value = (
+            np.array([0.5]), ["Unknown whether this dog is good with cats"], ["unknown"]
+        )
 
-        mock_adjust_home_location.return_value = 0.08 # nonzero, so warning isn't dropped
-        mock_home_location.return_value = (0.25, "Dog has location-relevant behavioural flags", "high_risk")
+        mock_adjust_home_location.return_value = np.array([0.08]) # nonzero, so warning isn't dropped
+        mock_home_location.return_value = (
+            np.array([0.25]), ["Dog has location-relevant behavioural flags"], ["high_risk"]
+        )
 
         adopter = make_adopter()
         dog = make_dog()
@@ -63,12 +68,14 @@ class TestAggregateFuzzyScore:
         assert len(warnings) == 2
 
     @patch("fuzzy_variables.aggregator.adjust_cat_compatibility_weight")
-    @patch("fuzzy_variables.aggregator.cat_compatibility")
+    @patch("fuzzy_variables.aggregator.cat_compatibility_batch")
     def test_warning_dropped_when_weight_is_zero(
         self, mock_cat_score, mock_adjust_cat
     ):
         mock_adjust_cat.return_value = 0.0
-        mock_cat_score.return_value = (0.5, "Unknown whether this dog is good with cats", "unknown")
+        mock_cat_score.return_value = (
+            np.array([0.5]), ["Unknown whether this dog is good with cats"], ["unknown"]
+        )
 
         adopter = make_adopter()
         dog = make_dog()
@@ -78,12 +85,14 @@ class TestAggregateFuzzyScore:
         assert "Unknown whether this dog is good with cats" not in warnings
 
     @patch("fuzzy_variables.aggregator.adjust_cat_compatibility_weight")
-    @patch("fuzzy_variables.aggregator.cat_compatibility")
+    @patch("fuzzy_variables.aggregator.cat_compatibility_batch")
     def test_factor_fields_populated_correctly(
         self, mock_cat_score, mock_adjust_cat
     ):
         mock_adjust_cat.return_value = 0.09
-        mock_cat_score.return_value = (0.5, "Unknown whether this dog is good with cats", "unknown")
+        mock_cat_score.return_value = (
+            np.array([0.5]), ["Unknown whether this dog is good with cats"], ["unknown"]
+        )
 
         adopter = make_adopter()
         dog = make_dog()

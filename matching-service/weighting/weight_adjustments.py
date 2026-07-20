@@ -134,8 +134,8 @@ def adjust_outdoor_space_weight_batch(base_weight: float, dogs: list[Dog]) -> np
         default=1.0
     )
 
-    size_multiplier = np.select(
-        [np.isin(size, ["large", "giant"]), OUTDOOR_LARGE_SIZE_MODIFIER, 1.0]
+    size_multiplier = np.where(
+        np.isin(size, ["large", "giant"]), OUTDOOR_LARGE_SIZE_MODIFIER, 1.0
     )
 
     return base_weight * activity_multiplier * size_multiplier
@@ -173,8 +173,8 @@ def adjust_home_type_weight_batch(base_weight: float, dogs: list[Dog]) -> np.nda
     size = np.array([dog.size for dog in dogs])
     activity = np.array([dog.activity_level for dog in dogs])
 
-    size_multiplier = np.select(
-        [np.isin(size, ["large", "giant"]), HOME_LARGE_SIZE_MODIFIER, 1.0]
+    size_multiplier = np.where(
+        np.isin(size, ["large", "giant"]), HOME_LARGE_SIZE_MODIFIER, 1.0
     )
     
     activity_multiplier = np.select(
