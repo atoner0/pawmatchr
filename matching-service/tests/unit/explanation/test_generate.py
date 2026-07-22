@@ -1,4 +1,3 @@
-import pytest
 from unittest.mock import patch, AsyncMock
 from explanation.generate import generate_explanation
 from tests.helpers import make_factor

@@ -11,10 +11,16 @@ Scoring logic is intentionally not implemented here. This file just wires up the
 later issues have somewhere to plug in.
 """
 
-from fastapi import FastAPI, HTTPException
+import asyncio
+from fastapi import FastAPI
 
 from config import settings
 from schemas import MatchRequest, MatchResponse
+from filters.hard_filters import apply_hard_filters
+from semantic.embeddings import get_embedding
+from scorer import score_dogs_batch
+from explanation.generate import generate_explanation
+import numpy as np
 
 
 def create_app() -> FastAPI:
@@ -25,15 +31,29 @@ def create_app() -> FastAPI:
         return {"status": "ok"}
 
     @app.post("/match", response_model=MatchResponse)
-    def match(payload: MatchRequest) -> MatchResponse:
-        # TODO: implemented across #24-#27 (structured scoring, fuzzy rules,
-        # semantic scoring, blending). Scaffold only validates the request
-        # shape for now.
-        raise HTTPException(
-            status_code=501,
-            detail="/match scoring pipeline not yet implemented - see #24-#27",
+    async def match(payload: MatchRequest) -> MatchResponse:
+        adopter = payload.adopter
+        eligible_dogs = apply_hard_filters(adopter, payload.dogs)
+
+        if not eligible_dogs:
+            return MatchResponse(results=[])
+        
+        adopter_embedding = get_embedding(adopter.pref_notes)
+        dog_embeddings = np.array([get_embedding(dog.description) for dog in eligible_dogs])
+
+        results, factors = score_dogs_batch(adopter, eligible_dogs, adopter_embedding, dog_embeddings)
+
+        explanations = await asyncio.gather(
+            *[generate_explanation(f) for f in factors]
         )
 
+        for i, result in enumerate(results):
+            result.explanation = explanations[i]
+
+        results.sort(key = lambda r: r.overall_score, reverse = True)
+
+        return MatchResponse(results=results)
+    
     return app
 
 

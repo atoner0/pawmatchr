@@ -53,3 +53,10 @@ def make_dog(**overrides) -> Dog:
 
 def make_factor(variable = "age", score = 1.0, weight = 0.1, warning = None, label = "match") -> ScoringFactor:
     return ScoringFactor(variable=variable, score=score, weight=weight, warning=warning, label=label)
+
+# model_dump() converts the pydantic instance into a python dict, needed for integration tests
+def make_adopter_payload(**overrides) -> dict:
+    return make_adopter(**overrides).model_dump()
+
+def make_dog_payload(**overrides) -> dict:
+    return make_dog(**overrides).model_dump()
