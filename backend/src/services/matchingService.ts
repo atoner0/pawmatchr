@@ -3,7 +3,7 @@ import type { Adopter } from "../types/adopter.js";
 import type { Dog } from "../types/dog.js";
 
 const MATCHING_SERVICE_URL = process.env.MATCHING_SERVICE_URL
-const TIMEOUT_MS = 15000
+export const TIMEOUT_MS = 15000
 
 type MatchingServiceResult = 
     | { success: true; results: MatchResultFromPython[] }

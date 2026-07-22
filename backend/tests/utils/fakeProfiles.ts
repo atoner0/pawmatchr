@@ -6,6 +6,8 @@ import type { Favourite } from '../../src/types/favourite.js'
 import type { Booking, BookingWithDetails } from '../../src/types/booking.js'
 import type { Availability } from '../../src/types/availability.js'
 import type { BookingProgress } from '../../src/models/application.js'
+import type { Match, MatchWithDog } from '../../src/types/match.js'
+import type { MatchResultFromPython } from '../../src/types/matchSchema.js'
 
 export const fakeAdopterFull: Adopter = {
     adopter_id: 1,
@@ -484,3 +486,51 @@ export const fakeBookingStats = {
     home_check: 0,
     pet_introduction: 1,
 }
+
+export const fakeMatchResultFromPython: MatchResultFromPython = {
+    dog_id: 4,
+    overall_score: 0.87,
+    fuzzy_score: 0.9,
+    semantic_score: 0.8,
+    warnings: [],
+    explanation: 'This dog is a strong match based on your activity level and living situation.'
+}
+
+export const fakeMatchResultFromPythonWithWarning: MatchResultFromPython = {
+    dog_id: 1,
+    overall_score: 0.62,
+    fuzzy_score: 0.6,
+    semantic_score: 0.65,
+    warnings: ['Unknown whether this dog is good with cats'],
+    explanation: 'This dog may suit your home, though some details are still unknown.'
+}
+
+export const fakeMatch: Match = {
+    match_id: 1,
+    dog_id: 4,
+    adopter_id: 1,
+    overall_score: 0.87,
+    fuzzy_score: 0.9,
+    semantic_score: 0.8,
+    warnings: [],
+    explanation: 'This dog is a strong match based on your activity level and living situation.',
+    generated_at: '2026-07-01T12:00:00Z'
+}
+
+export const withDog = (
+    match: Match,
+    dog = fakeDogSameShelter,
+    overrides?: Partial<Pick<MatchWithDog['shelter'], 'name' | 'city'>>
+): MatchWithDog => ({
+    ...match,
+    dog,
+    shelter: {
+        shelter_id: dog.shelter_id,
+        name: 'Belfast Dogs Trust',
+        city: 'Belfast',
+        postcode: 'BT1',
+        ...overrides
+    }
+})
+
+export const fakeMatchWithDog: MatchWithDog = withDog(fakeMatch)
