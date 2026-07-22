@@ -34,12 +34,18 @@ export const createAdopter = async (
     return result.rows[0] 
 }
 
+const JSONB_FIELDS = new Set(['current_pet_type', 'age_pref', 'size_pref'])
+
 export const fillQuestionnaire = async (
         adopter_id: number,
         updates: QuestionnaireInput
 ): Promise<Adopter> => {   
     const fields = Object.keys(updates)
-    const values = Object.values(updates)
+    const values = fields.map(field =>
+        JSONB_FIELDS.has(field)
+            ? JSON.stringify((updates as any)[field])
+            : (updates as any)[field]
+    )
 
     const setClause = fields.map((field, i) => `${field} = $${i + 1}`).join(', ')
 
@@ -83,7 +89,11 @@ export const updateQuestionnaire = async (
         updates: Partial<QuestionnaireInput>
 ): Promise<Adopter> => {   
     const fields = Object.keys(updates)
-    const values = Object.values(updates)
+    const values = fields.map(field =>
+        JSONB_FIELDS.has(field)
+            ? JSON.stringify((updates as any)[field])
+            : (updates as any)[field]
+    )
 
     if (fields.length === 0) {
         throw new Error("No fields provided for update")

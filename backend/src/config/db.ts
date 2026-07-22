@@ -1,4 +1,5 @@
 import pg from 'pg'
+pg.types.setTypeParser(1700, parseFloat)
 import 'dotenv/config'
 
 const { Pool } = pg

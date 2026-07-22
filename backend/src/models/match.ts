@@ -9,7 +9,7 @@ Promise<MatchWithDog[]> => {
             matches.*, 
             to_jsonb(dogs.*) AS dog, 
             json_build_object(
-                'shelter_id, shelters.shelter_id,
+                'shelter_id', shelters.shelter_id,
                 'name', shelters.name,
                 'city', shelters.city,
                 'postcode', shelters.postcode
@@ -78,11 +78,3 @@ export const createMatches = async (
     }
 }
 
-export const deleteMatchesByAdopterId = async(adopter_id: number): Promise <number> => {
-    const result = await pool.query(
-        `DELETE FROM matches
-        WHERE adopter_id = $1`,
-        [adopter_id]
-    )
-    return result.rowCount ?? 0
-}

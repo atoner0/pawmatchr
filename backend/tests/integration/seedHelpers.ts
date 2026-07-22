@@ -87,3 +87,51 @@ export async function clearBookingTestData() {
         `TRUNCATE bookings, availability, applications, adopters, dogs, shelters RESTART IDENTITY CASCADE`
     )
 }
+
+export async function seedMatchTestData() {
+    const shelterResult = await testPool.query(
+        `INSERT INTO shelters (name, city, postcode, email, phone)
+         VALUES ('Test Shelter', 'Belfast', 'BT1 1AA', 'shelter@test.com', '02890000000')
+         RETURNING shelter_id`
+    )
+    const shelterId = shelterResult.rows[0].shelter_id
+
+    const dog1Result = await testPool.query(
+        `INSERT INTO dogs (shelter_id, name, breed, age, gender, size, alone_tolerance, activity_level, training_level, coat_length, coat_type, shedding_level, description, photo_url)
+        VALUES ($1, 'Buddy', 'Labrador', '3_5', 'male', 'large', '2_4', 'moderate', 'basic', 'short', 'smooth', 'medium', 'Friendly dog', 'https://example.com/buddy.jpg')
+        RETURNING dog_id`,
+        [shelterId]
+    )
+    const dog1Id = dog1Result.rows[0].dog_id
+
+    const dog2Result = await testPool.query(
+        `INSERT INTO dogs (shelter_id, name, breed, age, gender, size, alone_tolerance, activity_level, training_level, coat_length, coat_type, shedding_level, description, photo_url)
+        VALUES ($1, 'Luna', 'Cavapoo', '0_2', 'female', 'small', '4_6', 'low', 'none', 'medium', 'curly', 'low', 'Calm dog', 'https://example.com/luna.jpg')
+        RETURNING dog_id`,
+        [shelterId]
+    )
+    const dog2Id = dog2Result.rows[0].dog_id
+
+    const adopterResult = await testPool.query(
+        `INSERT INTO adopters (first_name, last_name, email, password_hash, phone, postcode)
+         VALUES ('Jane', 'Doe', 'jane@test.com', 'hash', '07700000001', 'BT1 1AA')
+         RETURNING adopter_id`
+    )
+    const adopterId = adopterResult.rows[0].adopter_id
+
+    const existingMatchResult = await testPool.query(
+        `INSERT INTO matches (dog_id, adopter_id, overall_score, fuzzy_score, semantic_score, warnings, explanation)
+         VALUES ($1, $2, 0.75, 0.8, 0.65, '[]'::jsonb, 'An existing match, seeded for cache/invalidation/upsert tests')
+         RETURNING match_id`,
+        [dog1Id, adopterId]
+    )
+    const existingMatchId = existingMatchResult.rows[0].match_id
+
+    return { shelterId, dog1Id, dog2Id, adopterId, existingMatchId }
+}
+
+export async function clearMatchTestData() {
+    await testPool.query(
+        `TRUNCATE matches, adopters, dogs, shelters RESTART IDENTITY CASCADE`
+    )
+}
