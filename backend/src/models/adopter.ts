@@ -2,7 +2,6 @@ import pool from '../config/db.js'
 import type { Adopter } from '../types/adopter.js'
 import type { QuestionnaireInput } from '../types/questionnaireSchema.js'
 
-
 export const getAdopterByEmail = async (email: string): Promise<Adopter | null> => {
     const result = await pool.query(
         `SELECT * FROM adopters WHERE email = $1`,

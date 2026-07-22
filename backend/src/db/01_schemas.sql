@@ -111,8 +111,10 @@ CREATE TABLE matches (
     overall_score       NUMERIC(5, 4) NOT NULL,
     fuzzy_score         NUMERIC(5, 4) NOT NULL,
     semantic_score      NUMERIC(5, 4) NOT NULL,
+    warnings            JSONB DEFAULT '[]'::jsonb,
     explanation         TEXT NOT NULL,
-    generated_at        TIMESTAMPTZ DEFAULT now()
+    generated_at        TIMESTAMPTZ DEFAULT now(),
+    UNIQUE (adopter_id, dog_id)
 );
 
 CREATE TABLE favourites (
