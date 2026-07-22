@@ -79,13 +79,13 @@ def aggregate_fuzzy_score_batch(
     variable_results["shedding_level"] = (scores, warnings, labels, weights["shedding_level"])
 
     scores, warnings, labels = other_dog_compatibility_batch(adopter, dogs)
-    variable_results["other_dog"] = (scores, warnings, labels, dog_compat_weight)
+    variable_results["good_with_dogs"] = (scores, warnings, labels, dog_compat_weight)
 
     scores, warnings, labels = cat_compatibility_batch(adopter, dogs)
-    variable_results["cat"] = (scores, warnings, labels, cat_compat_weight)
+    variable_results["good_with_cats"] = (scores, warnings, labels, cat_compat_weight)
 
     scores, warnings, labels = children_compatibility_batch(adopter, dogs)
-    variable_results["children"] = (scores, warnings, labels, child_compat_weight)
+    variable_results["good_with_children"] = (scores, warnings, labels, child_compat_weight)
 
     scores, warnings, labels = training_level_compatibility_batch(adopter, dogs)
     variable_results["training_level"] = (scores, warnings, labels, training_weight)

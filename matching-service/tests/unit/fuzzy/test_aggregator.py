@@ -37,9 +37,9 @@ class TestAggregateFuzzyScore:
         assert excluded_score > included_score
 
         # zero-weight variable should not produce a ScoringFactor at all
-        assert not any(f.variable == "cat" for f in excluded_factors)
+        assert not any(f.variable == "good_with_cats" for f in excluded_factors)
         # nonzero-weight variable should produce one
-        assert any(f.variable == "cat" for f in included_factors)
+        assert any(f.variable == "good_with_cats" for f in included_factors)
 
     @patch("fuzzy_variables.aggregator.adjust_home_location_weight_batch")
     @patch("fuzzy_variables.aggregator.home_location_compatibility_batch")
@@ -99,7 +99,7 @@ class TestAggregateFuzzyScore:
 
         _, _, factors = aggregate_fuzzy_score(adopter, dog, "first_time_no_pets")
 
-        cat_factor = next(f for f in factors if f.variable == "cat")
+        cat_factor = next(f for f in factors if f.variable == "good_with_cats")
         assert cat_factor.score == 0.5
         assert cat_factor.weight == 0.09
         assert cat_factor.warning == "Unknown whether this dog is good with cats"
