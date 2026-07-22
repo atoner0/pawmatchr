@@ -42,15 +42,40 @@ export const fillQuestionnaire = async (
     const values = Object.values(updates)
 
     const setClause = fields.map((field, i) => `${field} = $${i + 1}`).join(', ')
-    
-    const result = await pool.query(
-        `UPDATE adopters 
-        SET ${setClause} 
-        WHERE adopter_id = $${fields.length + 1}
-        RETURNING *`,
-        [...values, adopter_id]
-    )
-    return result.rows[0] 
+
+    const client = await pool.connect()
+    try {
+
+        await client.query('BEGIN')
+
+        const result = await client.query(
+            `UPDATE adopters 
+            SET ${setClause} 
+            WHERE adopter_id = $${fields.length + 1}
+            RETURNING *`,
+            [...values, adopter_id]
+        )
+
+        const adopter = result.rows[0]
+        if (!adopter) {
+            throw new Error('Adopter update did not return a row')
+        }
+
+        await client.query(
+            `DELETE FROM matches WHERE adopter_id = $1`,
+            [adopter_id]
+        )
+
+        await client.query('COMMIT')
+        return adopter
+        
+    } catch (error) {
+        await client.query('ROLLBACK')
+        throw error
+    } finally {
+        client.release()
+    }
+
 } 
 
 export const updateQuestionnaire = async (
@@ -66,12 +91,36 @@ export const updateQuestionnaire = async (
 
     const setClause = fields.map((field, i) => `${field} = $${i + 1}`).join(', ')
     
-    const result = await pool.query(
-        `UPDATE adopters 
-        SET ${setClause} 
-        WHERE adopter_id = $${fields.length + 1}
-        RETURNING *`,
-        [...values, adopter_id]
-    )
-    return result.rows[0] 
+    const client = await pool.connect()
+    try {
+        await client.query('BEGIN')
+
+        const result = await client.query(
+            `UPDATE adopters 
+            SET ${setClause} 
+            WHERE adopter_id = $${fields.length + 1}
+            RETURNING *`,
+            [...values, adopter_id]   
+        )
+
+        const adopter = result.rows[0]
+        if (!adopter) {
+            throw new Error('Adopter update did not return a row')
+        }
+
+        await client.query(
+            `DELETE FROM matches WHERE adopter_id = $1`,
+            [adopter_id]
+        )
+
+        await client.query('COMMIT')
+        return adopter
+        
+    } catch (error) {
+        await client.query('ROLLBACK')
+        throw error
+    } finally {
+        client.release()
+    }
+    
 } 
