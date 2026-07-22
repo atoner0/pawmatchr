@@ -9,14 +9,14 @@ beforeEach(() => {
     jest.restoreAllMocks()
 })
 
-describe('POST /api/auth/adopter/signup', () => {
+describe('POST /api/adopter/signup', () => {
     it('should return 201 and a token when details are valid', async () => {
         jest.spyOn(AdopterModel, 'getAdopterByEmail').mockResolvedValue(null)
 
         jest.spyOn(AdopterModel, 'createAdopter').mockResolvedValue(fakeAdopterPartial)
 
         const res = await request(app)
-            .post('/api/auth/adopter/signup')
+            .post('/api/adopter/signup')
             .send({ first_name: 'Jane', last_name: 'Doe', email: 'jane@test.com', password: 'password123', phone: '07700000000',postcode: 'BT35 9SP' })
 
         expect(res.status).toBe(201)
@@ -28,7 +28,7 @@ describe('POST /api/auth/adopter/signup', () => {
         jest.spyOn(AdopterModel, 'getAdopterByEmail').mockResolvedValue(fakeAdopterPartial)
 
         const res = await request(app)
-            .post('/api/auth/adopter/signup')
+            .post('/api/adopter/signup')
             .send({ first_name: 'Jane', last_name: 'Doe', email: 'jane@test.com', password: 'password123', phone: '07700000000', postcode: 'BT35 9SP' })
 
         expect(res.status).toBe(400)
@@ -37,7 +37,7 @@ describe('POST /api/auth/adopter/signup', () => {
 
     it('should return 400 if required fields are missing', async() => {
         const res = await request(app)
-            .post('/api/auth/adopter/signup')
+            .post('/api/adopter/signup')
             .send({ first_name: 'Jane', last_name: 'Doe', password: 'password123', phone: '07700000000', postcode: 'BT35 9SP' })
 
         expect(res.status).toBe(400)
@@ -49,7 +49,7 @@ describe('POST /api/auth/adopter/signup', () => {
         jest.spyOn(AdopterModel, 'getAdopterByEmail').mockRejectedValue(new Error('Database error'))
 
         const res = await request(app)
-            .post('/api/auth/adopter/signup')
+            .post('/api/adopter/signup')
             .send({ first_name: 'Jane', last_name: 'Doe', email: 'jane@test.com', password: 'password123', phone: '07700000000', postcode: 'BT35 9SP' })
 
         expect(res.status).toBe(500)
@@ -57,7 +57,7 @@ describe('POST /api/auth/adopter/signup', () => {
     })
 })
 
-describe('POST /api/auth/adopter/signin', () => {
+describe('POST /api/adopter/signin', () => {
     it('should return 200 and a token when details are valid', async () => {
         const password_hash = await bcrypt.hash('password123', 10)
         const fakeSignIn = {...fakeAdopterPartial, password_hash}
@@ -65,7 +65,7 @@ describe('POST /api/auth/adopter/signin', () => {
         jest.spyOn(AdopterModel, 'getAdopterByEmail').mockResolvedValue(fakeSignIn)
 
         const res = await request(app)
-            .post('/api/auth/adopter/signin')
+            .post('/api/adopter/signin')
             .send({ email: 'jane@test.com', password: 'password123' })
 
         expect(res.status).toBe(200)
@@ -77,7 +77,7 @@ describe('POST /api/auth/adopter/signin', () => {
         jest.spyOn(AdopterModel, 'getAdopterByEmail').mockResolvedValue(null)
 
         const res = await request(app)
-            .post('/api/auth/adopter/signin')
+            .post('/api/adopter/signin')
             .send({ email: 'test@test.com', password: 'password123' })
 
         expect(res.status).toBe(400)
@@ -91,7 +91,7 @@ describe('POST /api/auth/adopter/signin', () => {
         jest.spyOn(AdopterModel, 'getAdopterByEmail').mockResolvedValue(fakeSignIn)
 
         const res = await request(app)
-            .post('/api/auth/adopter/signin')
+            .post('/api/adopter/signin')
             .send({ email: 'jane@test.com', password: 'password' })
 
         expect(res.status).toBe(400)
@@ -103,7 +103,7 @@ describe('POST /api/auth/adopter/signin', () => {
         jest.spyOn(AdopterModel, 'getAdopterByEmail').mockRejectedValue(new Error('Database error'))
 
         const res = await request(app)
-            .post('/api/auth/adopter/signin')
+            .post('/api/adopter/signin')
             .send({ email: 'jane@test.com', password: 'password123' })
 
         expect(res.status).toBe(500)

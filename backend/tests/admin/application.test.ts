@@ -53,23 +53,25 @@ describe('GET /admin/applications', () => {
 
 describe('GET /admin/applications/:id', () => {
     it('gets the application belonging to shelter and returns 200', async () => {
-        jest.spyOn(AdminModel, 'getAdminByEmail').mockResolvedValue(fakeAdmin)
-        jest.spyOn(AdminModel, 'getAdminById').mockResolvedValue(fakeAdmin)
-        jest.spyOn(ApplicationModel, 'getAppByIdAndShelter').mockResolvedValue(withDetails(fakeApplicationSubmitted))
+    jest.spyOn(AdminModel, 'getAdminByEmail').mockResolvedValue(fakeAdmin)
+    jest.spyOn(AdminModel, 'getAdminById').mockResolvedValue(fakeAdmin)
+    jest.spyOn(ApplicationModel, 'getAppByIdAndShelter').mockResolvedValue(withDetails(fakeApplicationSubmitted))
+    jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterNoPets)
+    jest.spyOn(ApplicationModel, 'getBookingsByApp').mockResolvedValue([])
 
-        const agent = request.agent(app)
+    const agent = request.agent(app)
 
-        await agent
-            .post('/admin/login')
-            .send({ email: fakeAdmin.email, password: 'TestPassword123!'})
+    await agent
+        .post('/admin/login')
+        .send({ email: fakeAdmin.email, password: 'TestPassword123!'})
 
-        const res = await agent
-            .get(`/admin/applications/${fakeApplicationSubmitted.application_id}`)
+    const res = await agent
+        .get(`/admin/applications/${fakeApplicationSubmitted.application_id}`)
 
-        expect(res.status).toBe(200)
-        expect(ApplicationModel.getAppByIdAndShelter).toHaveBeenCalledTimes(1)
-        expect(ApplicationModel.getAppByIdAndShelter).toHaveBeenCalledWith(fakeApplicationSubmitted.application_id, fakeAdmin.shelter_id)
-    })
+    expect(res.status).toBe(200)
+    expect(ApplicationModel.getAppByIdAndShelter).toHaveBeenCalledTimes(1)
+    expect(ApplicationModel.getAppByIdAndShelter).toHaveBeenCalledWith(fakeApplicationSubmitted.application_id, fakeAdmin.shelter_id)
+})
 
     it('should return 400 if application id is invalid', async () => {
         jest.spyOn(AdminModel, 'getAdminByEmail').mockResolvedValue(fakeAdmin)
