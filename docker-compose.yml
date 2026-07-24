@@ -25,5 +25,21 @@ services:
     volumes:
       - ./matching-service:/app
 
+  backend:
+    build: 
+      context: ./backend
+    container_name: pawmatchr_backend
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    depends_on:
+      - db
+      - matching-service
+
 volumes:
  pgdata:
