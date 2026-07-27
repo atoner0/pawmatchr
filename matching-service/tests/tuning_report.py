@@ -5,6 +5,7 @@ from tests.helpers import make_adopter, make_dog
 from filters.hard_filters import apply_hard_filters
 from scorer import score_dogs_batch
 from semantic.embeddings import get_embedding
+from semantic.comparison import cosine_similarity_batch, calculate_semantic_score_batch
 
 BANDS = {
     "very_high": (0.85, 1.0),
@@ -45,6 +46,9 @@ def run_report():
         adopter_embedding = get_embedding(adopter.pref_notes)
         dog_embeddings = np.array([get_embedding(dog.description)])
 
+        raw_semantic_scores = cosine_similarity_batch(dog_embeddings, adopter_embedding)
+        scaled_semantic_scores = calculate_semantic_score_batch(dog_embeddings, adopter_embedding)
+
         results, factors = score_dogs_batch(adopter, [dog], adopter_embedding, dog_embeddings)
         result = results[0]
 
@@ -52,10 +56,12 @@ def run_report():
         flag = "" if band == case.expected_final_score_band else " <-- check"
 
         print(
-            f"{case.test_id} [{case.category}]: "
-            f"fuzzy={result.fuzzy_score:.3f} semantic={result.semantic_score:.3f} "
-            f"overall={result.overall_score:.3f} "
-            f"({band}, expected {case.expected_final_score_band}){flag}"
+            f"{case.test_id} [{case.category}]: \n"
+            f"fuzzy={result.fuzzy_score:.3f} \n "
+            f"raw-semantic={raw_semantic_scores[0]:.3f} | "
+            f"scaled-semantic={result.semantic_score:.3f} \n "
+            f"overall={result.overall_score:.3f} \n "
+            f"({band}, expected {case.expected_final_score_band}){flag}\n"
         )
 
 if __name__ == "__main__":

@@ -1,15 +1,15 @@
 test_id,adopter_id,dog_id,category,expected_hard_filter_result,expected_weight_profile,expected_final_score_band
-TC01,A01,D01,strong match,pass,experienced_no_pets,very_high
-TC02,A02,D02,strong match,pass,first_time_no_pets,very_high
-TC03,A01,D03,"clear mismatch, activity gap",pass,experienced_no_pets,moderate
-TC04,A09,D04,"semantic trap, cat in notes",pass,experienced_no_pets,high
-TC05,A07,D04,hard filter cat,fail,first_time_multi_pet,excluded
-TC06,A03,D09,multi pet weighting check,pass,first_time_multi_pet,high
-TC07,A05,D05,"edge case, unknown field",pass,first_time_no_pets,moderate
-TC08,A08,D07,boundary children age match,pass,experienced_no_pets,high
-TC09,A05,D08,hard filter children age,fail,first_time_no_pets,excluded
-TC10,A06,D06,"urban risk, offset experience",pass,experienced_multi_pet,high
-TC11,A02,D06,"urban risk, worst case, first time owner",pass,first_time_no_pets,low
-TC12,A02,D10,"first time owner, training gap",pass,first_time_no_pets,low
-TC13,A03,D11,"hard filter dog",fail,first_time_multi_pet,excluded
-TC14,A05,D12,"hard filter children" ,fail,first_time_no_pets,excluded
+TC01,A01,1,strong match,pass,experienced_no_pets,very_high
+TC02,A02,2,strong match,pass,first_time_no_pets,very_high
+TC03,A01,3,"clear mismatch, activity gap",pass,experienced_no_pets,moderate
+TC04,A09,4,"semantic trap, cat in notes",pass,experienced_no_pets,high
+TC05,A07,4,hard filter cat,fail,first_time_multi_pet,excluded
+TC06,A03,9,multi pet weighting check,pass,first_time_multi_pet,high
+TC07,A05,5,"edge case, unknown field",pass,first_time_no_pets,moderate
+TC08,A08,7,boundary children age match,pass,experienced_no_pets,high
+TC09,A05,8,hard filter children age,fail,first_time_no_pets,excluded
+TC10,A06,6,"urban risk, offset experience",pass,experienced_multi_pet,high
+TC11,A02,6,"urban risk, worst case, first time owner",pass,first_time_no_pets,low
+TC12,A02,10,"first time owner, training gap",pass,first_time_no_pets,low
+TC13,A03,11,"hard filter dog",fail,first_time_multi_pet,excluded
+TC14,A05,12,"hard filter children" ,fail,first_time_no_pets,excluded

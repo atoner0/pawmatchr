@@ -2,8 +2,8 @@ import numpy as np
 from numpy.linalg import norm
 
 #placeholder values before tuning stage
-SEMANTIC_MIN = 0.1
-SEMANTIC_MAX = 0.6
+SEMANTIC_MIN = 0.2
+SEMANTIC_MAX = 0.8
 
 def cosine_similarity(a: np.ndarray, b: np.ndarray) -> float:
     return float(np.dot(a, b) / (norm(a) * norm(b)))

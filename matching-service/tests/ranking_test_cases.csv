@@ -1,0 +1,5 @@
+ranking_test_id,adopter_id,dog_ids,expected_rank_order,expected_excluded
+RT01,A01,"1, 3, 9","1, 9, 3",,
+RT02,A02,"2, 6, 10","2, 6, 10",,
+RT03,A08,"5, 7, 8, 12","7, 8, 5","12"
+RT04,A03,"1, 9, 11","9, 1",11
