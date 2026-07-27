@@ -1,36 +1,35 @@
 from tests.helpers import make_adopter, make_dog
 from fuzzy_variables.size_compatibility import (
-    size_compatibility,
     size_compatibility_batch
 )
 
-class TestSizeCompatibility:
+class TestSizeCompatibilityBatchScalarCases:
     def test_dog_size_within_adopter_pref(self):
         adopter = make_adopter(size_pref = ["small", "medium"])
         dog = make_dog(size = "small")
 
-        score, warning, label = size_compatibility(adopter, dog)
-        assert score == 1.0
-        assert warning is None
-        assert label == "match"
+        scores, warnings, labels = size_compatibility_batch(adopter, [dog])
+        assert scores[0] == 1.0
+        assert warnings[0] is None
+        assert labels[0] == "match"
 
     def test_dog_size_not_in_adopter_pref(self):
         adopter = make_adopter(size_pref = ["small", "medium"])
         dog = make_dog(size = "giant")
 
-        score, warning, label = size_compatibility(adopter, dog)
-        assert score == 0.0
-        assert warning is None
-        assert label == "no_match"
+        scores, warnings, labels = size_compatibility_batch(adopter, [dog])
+        assert scores[0] == 0.0
+        assert warnings[0] is None
+        assert labels[0] == "no_match"
 
     def test_adopter_pref_is_none(self):
         adopter = make_adopter(size_pref = ["none"])
         dog = make_dog(size = "small")
 
-        score, warning, label = size_compatibility(adopter, dog)
-        assert score == 1.0
-        assert warning is None
-        assert label == "match"
+        scores, warnings, labels = size_compatibility_batch(adopter, [dog])
+        assert scores[0] == 1.0
+        assert warnings[0] is None
+        assert labels[0] == "match"
 
 class TestSizeCompatibilityBatch:
     def test_preserves_dog_order(self):

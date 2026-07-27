@@ -24,20 +24,9 @@ from fuzzy_variables.training_level_compatibility import training_level_compatib
 
 import numpy as np
 
-def aggregate_fuzzy_score(
-    adopter: Adopter, dog: Dog, profile_name: str
-) -> tuple[float, list[str], list[ScoringFactor]]:
-    """
-    Scalar wrapper around aggregate_fuzzy_score_batch, scoring a single adopter/dog pair.
-
-    Temporary scaffolding for the batch migration
-    """
-    scores, warnings, factors = aggregate_fuzzy_score_batch(adopter, [dog], profile_name)
-    return float(scores[0]), warnings[0], factors[0]
-
 def aggregate_fuzzy_score_batch(
         adopter: Adopter, dogs: list[Dog], profile_name: str
-) -> tuple[np.ndarray, list[list[str], list[ScoringFactor]]]:
+) -> tuple[np.ndarray, list[list[str]], list[list[ScoringFactor]]]:
     """
     Runs all 12 fuzzy variable functions against an adopter/dog pair, applies conditional weight adjustments, and collapses the results into a single weighted-average fuzzy score per dog
 

@@ -2,15 +2,6 @@ import numpy as np
 from schemas import Adopter, Dog
 from fuzzy_variables.constants import OUTDOOR_SPACE_SCORE, OUTDOOR_SPACE_LABEL
 
-def outdoor_space_compatibility(adopter: Adopter, dog: Dog) -> tuple[float, str | None, str]:
-    """
-    Scalar wrapper around outdoor_space_compatibility_batch, scoring a single adopter/dog pair.
-
-    Temporary scaffolding for the batch migration
-    """
-    scores, warnings, labels = outdoor_space_compatibility_batch(adopter, [dog])
-    return float(scores[0]), warnings[0], labels[0]
-
 def outdoor_space_compatibility_batch(
         adopter: Adopter, dogs: list[Dog]
 ) -> tuple[np.ndarray, list[None], list[str]]:

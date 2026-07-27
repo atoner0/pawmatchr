@@ -1,72 +1,71 @@
 from tests.helpers import make_adopter, make_dog
 from fuzzy_variables.children_compatibility import (
-    children_compatibility,
     children_compatibility_batch
 )
 
-class TestChildrenCompatibility:
+class TestChildrenCompatibilityBatchScalarCases:
     def test_if_adopter_has_no_children(self):
         adopter = make_adopter()
         dog = make_dog(good_with_children = "yes")
 
-        score, warning, label = children_compatibility(adopter, dog)
-        assert score == 1.0
-        assert warning is None
-        assert label == "not_weighed"
+        scores, warnings, labels = children_compatibility_batch(adopter, [dog])
+        assert scores[0] == 1.0
+        assert warnings[0] is None
+        assert labels[0] == "not_weighed"
 
     def test_if_adopter_has_children_and_dog_good_with_children(self):
         adopter = make_adopter(children = True, youngest_child_age = "5_12")
         dog = make_dog(good_with_children = "yes", children_age = "any")
 
-        score, warning, label = children_compatibility(adopter, dog)
-        assert score == 1.0
-        assert warning is None
-        assert label == "known_compatible"
+        scores, warnings, labels = children_compatibility_batch(adopter, [dog])
+        assert scores[0] == 1.0
+        assert warnings[0] is None
+        assert labels[0] == "known_compatible"
 
     def test_if_adopter_has_children_and_dog_good_with_children_age_match(self):
         adopter = make_adopter(children = True, youngest_child_age = "5_12")
         dog = make_dog(good_with_children = "yes", children_age = "5_12")
 
-        score, warning, label = children_compatibility(adopter, dog)
-        assert score == 1.0
-        assert warning is None
-        assert label == "known_compatible"
+        scores, warnings, labels = children_compatibility_batch(adopter, [dog])
+        assert scores[0] == 1.0
+        assert warnings[0] is None
+        assert labels[0] == "known_compatible"
 
     def test_if_adopter_has_children_and_dog_children_age_doesnt_match(self):
         adopter = make_adopter(children = True, youngest_child_age = "5_12")
         dog = make_dog(good_with_children = "yes", children_age = "13_plus")
 
-        score, warning, label = children_compatibility(adopter, dog)
-        assert score == 0.0
-        assert warning is None
-        assert label == "not_compatible"
+        scores, warnings, labels = children_compatibility_batch(adopter, [dog])
+        assert scores[0] == 0.0
+        assert warnings[0] is None
+        assert labels[0] == "not_compatible"
 
     def test_if_adopter_has_children_and_dog_children_age_unknown(self):
         adopter = make_adopter(children = True, youngest_child_age = "5_12")
         dog = make_dog(good_with_children = "yes", children_age = "unknown")
 
-        score, warning, label = children_compatibility(adopter, dog)
-        assert score == 0.75
-        assert warning == "Unknown what exact age range dog is comfortable with"
-        assert label == "age_unknown"
+        scores, warnings, labels = children_compatibility_batch(adopter, [dog])
+        assert scores[0] == 0.75
+        assert warnings[0] == "Unknown what exact age range dog is comfortable with"
+        assert labels[0] == "age_unknown"
 
     def test_if_adopter_has_children_and_dog_unknown_with_children(self):
         adopter = make_adopter(children = True, youngest_child_age = "5_12")
         dog = make_dog(good_with_children = "unknown")
 
-        score, warning, label = children_compatibility(adopter, dog)
-        assert score == 0.5
-        assert warning == "Unknown whether this dog is good with children"
-        assert label == "unknown"
+        scores, warnings, labels = children_compatibility_batch(adopter, [dog])
+        assert scores[0] == 0.5
+        assert warnings[0] == "Unknown whether this dog is good with children"
+        assert labels[0] == "unknown"
 
     def test_if_adopter_has_children_and_dog_not_good_with_children(self):
         adopter = make_adopter(children = True, youngest_child_age = "5_12")
         dog = make_dog(good_with_children = "no")
 
-        score, warning, label = children_compatibility(adopter, dog)
-        assert score == 0.0
-        assert warning is None
-        assert label == "not_compatible"
+        scores, warnings, labels = children_compatibility_batch(adopter, [dog])
+        assert scores[0] == 0.0
+        assert warnings[0] is None
+        assert labels[0] == "not_compatible"
 
 class TestChildrenCompatibilityBatch:
     def test_preserves_dog_order(self):

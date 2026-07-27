@@ -1,36 +1,35 @@
 from tests.helpers import make_adopter, make_dog
 from fuzzy_variables.shedding_level_compatibility import (
-    shedding_level_compatibility,
     shedding_level_compatibility_batch
 )
 
-class TestSheddingLevelCompatibility:
+class TestSheddingLevelCompatibilityBatchScalarCases:
     def test_adopter_pref_matches_dog_level(self):
         adopter = make_adopter(shedding_pref = "low")
         dog = make_dog(shedding_level = "low")
 
-        score, warning, label = shedding_level_compatibility(adopter, dog)
-        assert score == 1.0
-        assert warning is None
-        assert label == "match"
+        scores, warnings, labels = shedding_level_compatibility_batch(adopter, [dog])
+        assert scores[0] == 1.0
+        assert warnings[0] is None
+        assert labels[0] == "match"
 
     def test_adopter_pref_higher_than_dog_level(self):
         adopter = make_adopter(shedding_pref = "high")
         dog = make_dog(shedding_level = "low")
 
-        score, warning, label = shedding_level_compatibility(adopter, dog)
-        assert score == 1.0
-        assert warning is None
-        assert label == "match"
+        scores, warnings, labels = shedding_level_compatibility_batch(adopter, [dog])
+        assert scores[0] == 1.0
+        assert warnings[0] is None
+        assert labels[0] == "match"
 
     def test_adopter_pref_lower_than_dog_level(self):
         adopter = make_adopter(shedding_pref = "none")
         dog = make_dog(shedding_level = "low")
 
-        score, warning, label = shedding_level_compatibility(adopter, dog)
-        assert score == 0.0
-        assert warning is None
-        assert label == "no_match"
+        scores, warnings, labels = shedding_level_compatibility_batch(adopter, [dog])
+        assert scores[0] == 0.0
+        assert warnings[0] is None
+        assert labels[0] == "no_match"
 
 class TestSheddingLevelCompatibilityBatch:
     def test_preserves_dog_order(self):

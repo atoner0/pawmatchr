@@ -1,22 +1,11 @@
 import numpy as np
 from numpy.linalg import norm
 
-#placeholder values before tuning stage
 SEMANTIC_MIN = 0.2
 SEMANTIC_MAX = 0.8
 
 def cosine_similarity(a: np.ndarray, b: np.ndarray) -> float:
     return float(np.dot(a, b) / (norm(a) * norm(b)))
-
-def calculate_semantic_score(dog_embedding: np.ndarray, adopter_embedding: np.ndarray) -> float:
-    """
-    Scalar wrapper around calculate_semantic_score_batch, scoring a single dog/adopter embedding pair.
-
-    Temporary scaffolding for the batch migration
-    """
-    scores = calculate_semantic_score_batch(dog_embedding.reshape(1, -1), adopter_embedding) #reshape turns 1D vector into 2D array with one row
-
-    return float(scores[0])
 
 def cosine_similarity_batch(dog_embeddings: np.ndarray, adopter_embedding: np.ndarray) -> np.ndarray:
     """

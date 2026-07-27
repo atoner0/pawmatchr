@@ -3,18 +3,6 @@ from schemas import Adopter, Dog
 from membership_functions.triangular import triangular_batch
 from fuzzy_variables.constants import HOURS_UPPER_BOUND
 
-def alone_tolerance_compatibility(
-        adopter: Adopter, dog: Dog
-    ) -> tuple[float, str | None, str]:
-    """
-    Scalar wrapper around alone_tolerance_compatibility_batch, scoring a single adopter/dog pair
-
-    Temporary scaffolding for the batch migration
-    """
-    
-    scores, warnings, labels = alone_tolerance_compatibility_batch(adopter, [dog])
-    return float(scores[0]), warnings[0], labels[0]
-
 def alone_tolerance_compatibility_batch(
         adopter: Adopter, dogs: list[Dog]
 ) -> tuple[np.ndarray, list[None], list[str]]:

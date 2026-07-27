@@ -1,45 +1,44 @@
 from tests.helpers import make_adopter, make_dog
 from fuzzy_variables.cat_compatibility import (
-    cat_compatibility,
     cat_compatibility_batch
 )
 
-class TestCatCompatibility:
+class TestCatCompatibilityBatchScalarCases:
     def test_adopter_has_no_cat(self):
         adopter = make_adopter()
         dog = make_dog(good_with_cats = "yes")
 
-        score, warning, label = cat_compatibility(adopter, dog)
-        assert score == 1.0
-        assert warning is None
-        assert label == "not_weighed"
+        scores, warnings, labels = cat_compatibility_batch(adopter, [dog])
+        assert scores[0] == 1.0
+        assert warnings[0] is None
+        assert labels[0] == "not_weighed"
 
     def test_adopter_has_cat_dog_good_with_cats(self):
         adopter = make_adopter(current_pet_type = ["cat"])
         dog = make_dog(good_with_cats = "yes")
 
-        score, warning, label = cat_compatibility(adopter, dog)
-        assert score == 1.0
-        assert warning is None
-        assert label == "known_compatible"
+        scores, warnings, labels = cat_compatibility_batch(adopter, [dog])
+        assert scores[0] == 1.0
+        assert warnings[0] is None
+        assert labels[0] == "known_compatible"
 
     def test_adopter_has_cat_dog_unknown(self):
         adopter = make_adopter(current_pet_type = ["cat"])
         dog = make_dog(good_with_cats = "unknown")
 
-        score, warning, label = cat_compatibility(adopter, dog)
-        assert score == 0.5
-        assert warning == "Unknown whether this dog is good with cats"
-        assert label == "unknown"
+        scores, warnings, labels = cat_compatibility_batch(adopter, [dog])
+        assert scores[0] == 0.5
+        assert warnings[0] == "Unknown whether this dog is good with cats"
+        assert labels[0] == "unknown"
 
     def test_adopter_has_cat_dog_not_good_with_cats(self):
         adopter = make_adopter(current_pet_type = ["cat"])
         dog = make_dog(good_with_cats = "no")
 
-        score, warning, label = cat_compatibility(adopter, dog)
-        assert score == 0.0
-        assert warning is None
-        assert label == "not_compatible"
+        scores, warnings, labels = cat_compatibility_batch(adopter, [dog])
+        assert scores[0] == 0.0
+        assert warnings[0] is None
+        assert labels[0] == "not_compatible"
 
 class TestCatCompatibilityBatch:
     def test_preserves_dog_order(self):

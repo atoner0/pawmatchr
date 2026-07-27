@@ -1,15 +1,6 @@
 import numpy as np
 from schemas import Adopter, Dog
 
-def children_compatibility(adopter: Adopter, dog: Dog) -> tuple[float, str | None, str]:
-    """
-    Scalar wrapper around children_compatibility_batch, scoring a single adopter/dog pair. 
-
-    Temporary scaffolding for the batch migration
-    """
-    scores, warnings, labels = children_compatibility_batch(adopter, [dog])
-    return float(scores[0]), warnings[0], labels[0]
-
 def children_compatibility_batch(
         adopter: Adopter, dogs: list[Dog]
 ) -> tuple[np.ndarray, list[str | None], list[str]]:

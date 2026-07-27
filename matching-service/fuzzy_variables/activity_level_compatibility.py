@@ -3,15 +3,6 @@ from schemas import Adopter, Dog
 from membership_functions.trapezoidal import trapezoidal_batch
 from fuzzy_variables.constants import ACTIVITY_LEVEL_MINS
 
-def activity_level_compatibility(adopter: Adopter, dog: Dog) -> tuple[float, str | None, str]:
-    """
-    Scalar wrapper around activity_level_compatibility_batch, scoring a single adopter/dog pair
-
-    Temporary scaffolding for batch migration
-    """
-    scores, warnings, labels = activity_level_compatibility_batch(adopter, [dog])
-    return float(scores[0]), warnings[0], labels[0]
-
 def activity_level_compatibility_batch(
         adopter: Adopter, dogs: list[Dog]
 ) -> tuple[np.ndarray, list[None], list[str]]:

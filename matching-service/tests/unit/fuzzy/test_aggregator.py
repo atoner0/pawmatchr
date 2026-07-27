@@ -1,6 +1,6 @@
 from unittest.mock import patch
 import numpy as np
-from fuzzy_variables.aggregator import aggregate_fuzzy_score
+from fuzzy_variables.aggregator import aggregate_fuzzy_score_batch
 from tests.helpers import make_adopter, make_dog
 
 class TestAggregateFuzzyScore:
@@ -8,11 +8,11 @@ class TestAggregateFuzzyScore:
         adopter = make_adopter()
         dog = make_dog()
 
-        fuzzy_score, warnings, factors = aggregate_fuzzy_score(adopter, dog, "first_time_no_pets")
+        scores, warnings, factors = aggregate_fuzzy_score_batch(adopter, [dog], "first_time_no_pets")
 
-        assert 0.0 <= fuzzy_score <= 1.0
-        assert isinstance(warnings, list)
-        assert isinstance(factors, list)
+        assert 0.0 <= scores[0] <= 1.0
+        assert isinstance(warnings[0], list)
+        assert isinstance(factors[0], list)
 
     def test_zero_weight_variable_excluded_from_average(self):
         adopter = make_adopter(current_pets = True, current_pet_type = ["cat"])
@@ -24,7 +24,7 @@ class TestAggregateFuzzyScore:
             mock_cat_score.return_value = (np.array([0.0]), [None], ["not_compatible"])
             mock_adjust_cat.return_value = 0.0
 
-            excluded_score, warnings, excluded_factors = aggregate_fuzzy_score(adopter, dog, "first_time_no_pets")
+            excluded_scores, warnings, excluded_factors = aggregate_fuzzy_score_batch(adopter, [dog], "first_time_no_pets")
 
         # if cats low score had counted at nonzero weight, it should have dragged average down compared to excluding entirely
         with patch("fuzzy_variables.aggregator.cat_compatibility_batch") as mock_cat_score, \
@@ -32,14 +32,14 @@ class TestAggregateFuzzyScore:
             mock_cat_score.return_value = (np.array([0.0]), [None], ["not_compatible"])
             mock_adjust_cat.return_value = 0.09
 
-            included_score, warnings, included_factors = aggregate_fuzzy_score(adopter, dog, "first_time_no_pets")
+            included_scores, warnings, included_factors = aggregate_fuzzy_score_batch(adopter, [dog], "first_time_no_pets")
 
-        assert excluded_score > included_score
+        assert excluded_scores[0] > included_scores[0]
 
         # zero-weight variable should not produce a ScoringFactor at all
-        assert not any(f.variable == "good_with_cats" for f in excluded_factors)
+        assert not any(f.variable == "good_with_cats" for f in excluded_factors[0])
         # nonzero-weight variable should produce one
-        assert any(f.variable == "good_with_cats" for f in included_factors)
+        assert any(f.variable == "good_with_cats" for f in included_factors[0])
 
     @patch("fuzzy_variables.aggregator.adjust_home_location_weight_batch")
     @patch("fuzzy_variables.aggregator.home_location_compatibility_batch")
@@ -61,11 +61,11 @@ class TestAggregateFuzzyScore:
         adopter = make_adopter()
         dog = make_dog()
 
-        _, warnings, factors = aggregate_fuzzy_score(adopter, dog, "first_time_no_pets")
+        _, warnings, factors = aggregate_fuzzy_score_batch(adopter, [dog], "first_time_no_pets")
 
-        assert "Unknown whether this dog is good with cats" in warnings
-        assert "Dog has location-relevant behavioural flags" in warnings
-        assert len(warnings) == 2
+        assert "Unknown whether this dog is good with cats" in warnings[0]
+        assert "Dog has location-relevant behavioural flags" in warnings[0]
+        assert len(warnings[0]) == 2
 
     @patch("fuzzy_variables.aggregator.adjust_cat_compatibility_weight")
     @patch("fuzzy_variables.aggregator.cat_compatibility_batch")
@@ -80,9 +80,9 @@ class TestAggregateFuzzyScore:
         adopter = make_adopter()
         dog = make_dog()
 
-        _, warnings, factors = aggregate_fuzzy_score(adopter, dog, "first_time_no_pets")
+        _, warnings, factors = aggregate_fuzzy_score_batch(adopter, [dog], "first_time_no_pets")
 
-        assert "Unknown whether this dog is good with cats" not in warnings
+        assert "Unknown whether this dog is good with cats" not in warnings[0]
 
     @patch("fuzzy_variables.aggregator.adjust_cat_compatibility_weight")
     @patch("fuzzy_variables.aggregator.cat_compatibility_batch")
@@ -97,9 +97,9 @@ class TestAggregateFuzzyScore:
         adopter = make_adopter()
         dog = make_dog()
 
-        _, _, factors = aggregate_fuzzy_score(adopter, dog, "first_time_no_pets")
+        _, _, factors = aggregate_fuzzy_score_batch(adopter, [dog], "first_time_no_pets")
 
-        cat_factor = next(f for f in factors if f.variable == "good_with_cats")
+        cat_factor = next(f for f in factors[0] if f.variable == "good_with_cats")
         assert cat_factor.score == 0.5
         assert cat_factor.weight == 0.09
         assert cat_factor.warning == "Unknown whether this dog is good with cats"

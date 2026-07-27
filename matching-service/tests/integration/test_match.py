@@ -32,6 +32,7 @@ class TestMatchEndpoint:
 
         assert "Unknown whether this dog is good with cats" in results[1]["warnings"]
 
+    @patch("app.generate_explanation", new_callable=AsyncMock)
     def test_empty_dog_list_returns_empty_results(self, mock_explain):
         mock_explain.return_value = "Placeholder explanation"
 
@@ -44,6 +45,7 @@ class TestMatchEndpoint:
         assert response.status_code == 200
         assert response.json()["results"] == []
 
+    @patch("app.generate_explanation", new_callable=AsyncMock)
     def test_all_dogs_hard_filtered_returns_empty_results(self, mock_explain):
         mock_explain.return_value = "Placeholder explanation"
 
