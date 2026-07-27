@@ -1,6 +1,6 @@
 import numpy as np
 
-from tests.csv_conversion import load_ranking_test_cases, load_adopters, load_dogs
+from tests.tuning.csv_conversion import load_ranking_test_cases, load_adopters, load_dogs
 from tests.helpers import make_adopter, make_dog
 from filters.hard_filters import apply_hard_filters
 from scorer import score_dogs_batch
@@ -9,9 +9,9 @@ from semantic.comparison import cosine_similarity_batch, calculate_semantic_scor
 
 
 def run_report():
-    adopters = load_adopters("tests/adopters.csv")
-    dogs = load_dogs("tests/dogs.csv")
-    cases = load_ranking_test_cases("tests/ranking_test_cases.csv", adopters, dogs)
+    adopters = load_adopters("tests/tuning/adopters.csv")
+    dogs = load_dogs("tests/tuning/dogs.csv")
+    cases = load_ranking_test_cases("tests/tuning/ranking_test_cases.csv", adopters, dogs)
 
     for case in cases:
         adopter = make_adopter(**case.adopter_overrides)

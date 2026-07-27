@@ -4,12 +4,12 @@ TC02,A02,2,strong match,pass,first_time_no_pets,very_high
 TC03,A01,3,"clear mismatch, activity gap",pass,experienced_no_pets,moderate
 TC04,A09,4,"semantic trap, cat in notes",pass,experienced_no_pets,high
 TC05,A07,4,hard filter cat,fail,first_time_multi_pet,excluded
-TC06,A03,9,multi pet weighting check,pass,first_time_multi_pet,high
+TC06,A03,9,multi pet weighting check,pass,first_time_multi_pet,very_high
 TC07,A05,5,"edge case, unknown field",pass,first_time_no_pets,moderate
 TC08,A08,7,boundary children age match,pass,experienced_no_pets,high
 TC09,A05,8,hard filter children age,fail,first_time_no_pets,excluded
 TC10,A06,6,"urban risk, offset experience",pass,experienced_multi_pet,high
 TC11,A02,6,"urban risk, worst case, first time owner",pass,first_time_no_pets,low
-TC12,A02,10,"first time owner, training gap",pass,first_time_no_pets,low
+TC12,A02,10,"first time owner, training gap",pass,first_time_no_pets,very_low
 TC13,A03,11,"hard filter dog",fail,first_time_multi_pet,excluded
 TC14,A05,12,"hard filter children" ,fail,first_time_no_pets,excluded
