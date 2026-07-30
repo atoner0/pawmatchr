@@ -2,7 +2,7 @@ import type { Request, Response } from 'express';
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import {getAdopterByEmail, createAdopter} from '../models/adopter.js'
-import { signupSchema, signinSchema } from '../types/authSchemas.js';
+import { signupSchema, loginSchema } from '../types/authSchemas.js';
 
 const JWT_SECRET = process.env.JWT_SECRET ?? ''
 
@@ -37,8 +37,8 @@ export const signup = async ( req: Request, res: Response): Promise<void> => {
     }
 }
 
-export const signin = async ( req: Request, res: Response): Promise<void> => {
-    const result = signinSchema.safeParse(req.body)
+export const login = async ( req: Request, res: Response): Promise<void> => {
+    const result = loginSchema.safeParse(req.body)
     if (!result.success){
         res.status(400).json({ message: 'Invalid request', errors: result.error.issues})
         return
@@ -68,6 +68,6 @@ export const signin = async ( req: Request, res: Response): Promise<void> => {
         const { password_hash: _, ...safeAdopter } = adopter
         res.status(200).json({ token, user: safeAdopter })
     } catch (error) {
-        res.status(500).json({ message: 'Error during signin', error })
+        res.status(500).json({ message: 'Error during login', error })
     }
 }

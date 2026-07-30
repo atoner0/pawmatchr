@@ -9,7 +9,7 @@ export const signupSchema = z.object({
     postcode: z.string().min(1)
 })
 
-export const signinSchema = z.object({
+export const loginSchema = z.object({
     email: z.string().email(),
     password: z.string().min(1)
 })

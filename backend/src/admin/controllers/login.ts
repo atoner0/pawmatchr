@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 import { getAdminByEmail } from '../../models/shelterAdmin.js'
-import { signinSchema } from '../../types/authSchemas.js';
+import { loginSchema } from '../../types/authSchemas.js';
 import bcrypt from 'bcrypt'
 
 export const renderAdminLogin = async ( req: Request, res: Response): Promise<void> => {
@@ -13,7 +13,7 @@ export const renderAdminLogin = async ( req: Request, res: Response): Promise<vo
 
 export const adminSignin = async ( req: Request, res: Response): Promise<void> => {
     try {
-        const result = signinSchema.safeParse(req.body)
+        const result = loginSchema.safeParse(req.body)
             if (!result.success){
                 res.render('login', { error: 'Invalid request' })
                 return

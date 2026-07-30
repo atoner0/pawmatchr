@@ -24,6 +24,13 @@ app.use(express.urlencoded({ extended: true }))
 
 app.use(sessionMiddleware)
 
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.path}`);
+  next();
+});
+
+
+
 //api
 app.use('/api/adopter', authRoutes)
 app.use('/api/adopter', adopterRoutes)

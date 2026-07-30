@@ -57,7 +57,7 @@ describe('POST /api/adopter/signup', () => {
     })
 })
 
-describe('POST /api/adopter/signin', () => {
+describe('POST /api/adopter/login', () => {
     it('should return 200 and a token when details are valid', async () => {
         const password_hash = await bcrypt.hash('password123', 10)
         const fakeSignIn = {...fakeAdopterPartial, password_hash}
@@ -65,7 +65,7 @@ describe('POST /api/adopter/signin', () => {
         jest.spyOn(AdopterModel, 'getAdopterByEmail').mockResolvedValue(fakeSignIn)
 
         const res = await request(app)
-            .post('/api/adopter/signin')
+            .post('/api/adopter/login')
             .send({ email: 'jane@test.com', password: 'password123' })
 
         expect(res.status).toBe(200)
@@ -77,7 +77,7 @@ describe('POST /api/adopter/signin', () => {
         jest.spyOn(AdopterModel, 'getAdopterByEmail').mockResolvedValue(null)
 
         const res = await request(app)
-            .post('/api/adopter/signin')
+            .post('/api/adopter/login')
             .send({ email: 'test@test.com', password: 'password123' })
 
         expect(res.status).toBe(400)
@@ -91,7 +91,7 @@ describe('POST /api/adopter/signin', () => {
         jest.spyOn(AdopterModel, 'getAdopterByEmail').mockResolvedValue(fakeSignIn)
 
         const res = await request(app)
-            .post('/api/adopter/signin')
+            .post('/api/adopter/login')
             .send({ email: 'jane@test.com', password: 'password' })
 
         expect(res.status).toBe(400)
@@ -103,10 +103,10 @@ describe('POST /api/adopter/signin', () => {
         jest.spyOn(AdopterModel, 'getAdopterByEmail').mockRejectedValue(new Error('Database error'))
 
         const res = await request(app)
-            .post('/api/adopter/signin')
+            .post('/api/adopter/login')
             .send({ email: 'jane@test.com', password: 'password123' })
 
         expect(res.status).toBe(500)
-        expect(res.body.message).toBe('Error during signin')
+        expect(res.body.message).toBe('Error during login')
     })
 })
