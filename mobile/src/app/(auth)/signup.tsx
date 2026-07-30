@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useRouter } from "expo-router";
 import { apiFetch } from "@/lib/api";
 import { setToken } from "@/lib/auth";
-import { AuthResponse } from "@/types/api";
+import { AuthResponse } from "@/types/authSchemas";
 
 export default function Signup() {
   const [email, setEmail] = useState("");
