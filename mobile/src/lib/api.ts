@@ -1,6 +1,6 @@
 import { getToken } from "./auth";
 
-const BASE_URL = 'http://10.0.2.2:3000';
+const BASE_URL = 'http://10.0.2.2:3000/api';
 
 export async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> {
     const token = await getToken()
