@@ -5,6 +5,7 @@ import { livingSituationSchema, householdSchema, routineSchema, experienceSchema
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Dropdown } from "@/components/Dropdown"
 import { homeLocationOptions, homeTypeOptions, outdoorSpaceOptions } from "@/constants/questionnaireOptions"
+import { YesNoToggle } from "@/components/YesNoToggle"
 
 
 
@@ -74,7 +75,7 @@ export default function QuestionnaireScreen() {
                     <Controller
                         control={control}
                         name="home_type"
-                        render={({ field}) => (
+                        render={({ field }) => (
                             <Dropdown
                                 label="What type of house do you live in?"
                                 options={homeTypeOptions}
@@ -88,7 +89,7 @@ export default function QuestionnaireScreen() {
                     <Controller
                         control={control}
                         name="home_location"
-                        render={({ field}) => (
+                        render={({ field }) => (
                             <Dropdown
                                 label="What type of area do you live in?"
                                 options={homeLocationOptions}
@@ -102,7 +103,7 @@ export default function QuestionnaireScreen() {
                     <Controller
                         control={control}
                         name="outdoor_space"
-                        render={({ field}) => (
+                        render={({ field }) => (
                             <Dropdown
                                 label="How would you describe your outdoor space (may be shared or private)?"
                                 options={outdoorSpaceOptions}
@@ -113,7 +114,20 @@ export default function QuestionnaireScreen() {
                         )}
                     />
                 </View>)}
-            {step === 1 && <View>{}</View>}
+            {step === 1 && (
+                <View>
+                    <Controller
+                        control={control}
+                        name="current_pets"
+                        render={({ field }) => (
+                            <YesNoToggle
+                                label="Do you currently own any pets?"
+                                value={field.value}
+                                onChange={field.onChange}
+                            />
+                        )}
+                    />
+                </View>)}
             {step === 2 && <View>{}</View>}
             {step === 3 && <View>{}</View>}
             {step === 4 && <View>{}</View>}
