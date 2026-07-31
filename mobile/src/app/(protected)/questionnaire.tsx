@@ -1,11 +1,12 @@
 import { useState, useRef } from "react"
 import { useForm, Controller, Resolver } from "react-hook-form"
-import { Text, Pressable, View, StyleSheet } from "react-native"
+import { Text, Pressable, View, StyleSheet, TextInput } from "react-native"
 import { livingSituationSchema, householdSchema, routineSchema, experienceSchema, prefSchema, QuestionnaireInput } from "@/types/questionnaireSchema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Dropdown } from "@/components/Dropdown"
-import { homeLocationOptions, homeTypeOptions, outdoorSpaceOptions } from "@/constants/questionnaireOptions"
+import { activityLevelOptions, agePrefOptions, genderPrefOptions, homeLocationOptions, homeTypeOptions, hoursAloneOptions, multiPetLevelOptions, outdoorSpaceOptions, petCountOptions, petTypeOptions, sheddingPrefOptions, sizePrefOptions, trainingCommitmentOptions, youngestChildOptions } from "@/constants/questionnaireOptions"
 import { YesNoToggle } from "@/components/YesNoToggle"
+import { MultiCheckbox } from "@/components/MultiCheckbox"
 
 
 
@@ -127,10 +128,239 @@ export default function QuestionnaireScreen() {
                             />
                         )}
                     />
-                </View>)}
-            {step === 2 && <View>{}</View>}
-            {step === 3 && <View>{}</View>}
-            {step === 4 && <View>{}</View>}
+
+                    {watch("current_pets") && (
+                        <Controller
+                            control={control}
+                            name="current_pet_type"
+                            render={({ field }) => (
+                                <MultiCheckbox
+                                    label="What kind of pet do you own? (You can select multiple)"
+                                    options={petTypeOptions}
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                    error={errors.current_pet_type?.message}
+                                />
+                            )}
+                        />
+                    )}
+
+                    {watch("current_pets") && (    
+                        <Controller
+                            control={control}
+                            name="current_pet_count"
+                            render={({ field }) => (
+                                <Dropdown
+                                    label="How many pets do you currently own?"
+                                    options={petCountOptions}
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                    error={errors.current_pet_count?.message}
+                                />
+                            )}
+                        />
+                    )}
+
+                    <Controller
+                        control={control}
+                        name="children"
+                        render={({ field }) => (
+                            <YesNoToggle
+                                label="Do you currently have any children?"
+                                value={field.value}
+                                onChange={field.onChange}
+                            />
+                        )}
+                    />
+
+                    {watch("children") && (    
+                        <Controller
+                            control={control}
+                            name="youngest_child_age"
+                            render={({ field }) => (
+                                <Dropdown
+                                    label="How old is your youngest child?"
+                                    options={youngestChildOptions}
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                    error={errors.youngest_child_age?.message}
+                                />
+                            )}
+                        />
+                    )}
+
+                </View>
+            )}
+
+            {step === 2 && (
+                <View>
+                    <Controller
+                        control={control}
+                        name="hours_alone"
+                        render={({ field }) => (
+                            <Dropdown
+                                label="On average, how many hours a day would you be leaving a pet alone?"
+                                options={hoursAloneOptions}
+                                value={field.value}
+                                onChange={field.onChange}
+                                error={errors.hours_alone?.message}
+                            />
+                        )}
+                    />
+
+                    <Controller
+                        control={control}
+                        name="activity_level"
+                        render={({ field }) => (
+                            <Dropdown
+                                label="On average per day, how would you describe your activity level?"
+                                options={activityLevelOptions}
+                                value={field.value}
+                                onChange={field.onChange}
+                                error={errors.activity_level?.message}
+                            />
+                        )}
+                    />
+
+                    <Controller
+                        control={control}
+                        name="training_commitment"
+                        render={({ field }) => (
+                            <Dropdown
+                                label="What level of training are you willing to commit to?"
+                                options={trainingCommitmentOptions}
+                                value={field.value}
+                                onChange={field.onChange}
+                                error={errors.training_commitment?.message}
+                            />
+                        )}
+                    />
+                </View>
+            )}
+
+            {step === 3 && (
+                <View>
+                    <Controller
+                        control={control}
+                        name="first_time_owner"
+                        render={({ field }) => (
+                            <YesNoToggle
+                                label="Have you owned a dog before?"
+                                value={field.value}
+                                onChange={field.onChange}
+                            />
+                        )}
+                    />
+
+                    {watch("first_time_owner") === false && (    
+                        <Controller
+                            control={control}
+                            name="multi_pet_exp"
+                            render={({ field }) => (
+                                <YesNoToggle
+                                    label="Have you ever owned multiple dogs at the same time?"
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                />
+                            )}
+                        />
+                    )}
+
+                    {watch("multi_pet_exp") && (    
+                        <Controller
+                            control={control}
+                            name="multi_pet_exp_level"
+                            render={({ field }) => (
+                                <Dropdown
+                                    label="How would you describe your experience owning multiple dogs?"
+                                    options={multiPetLevelOptions}
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                    error={errors.multi_pet_exp_level?.message}
+                                />
+                            )}
+                        />
+                    )}
+                </View>
+            )}
+
+            {step === 4 && (
+                <View>
+                    <Controller
+                        control={control}
+                        name="age_pref"
+                        render={({ field }) => (
+                            <MultiCheckbox
+                                label="What age range would you prefer? (You can select multiple)"
+                                options={agePrefOptions}
+                                value={field.value}
+                                onChange={field.onChange}
+                                error={errors.age_pref?.message}
+                                noneValue="none"
+                            />
+                        )}
+                    />
+
+                    <Controller
+                        control={control}
+                        name="gender_pref"
+                        render={({ field }) => (
+                            <Dropdown
+                                label="What gender would you prefer?"
+                                options={genderPrefOptions}
+                                value={field.value}
+                                onChange={field.onChange}
+                                error={errors.gender_pref?.message}
+                            />
+                        )}
+                    />
+
+                    <Controller
+                        control={control}
+                        name="size_pref"
+                        render={({ field }) => (
+                            <MultiCheckbox
+                                label="What size of dog would you prefer? (You can select multiple)"
+                                options={sizePrefOptions}
+                                value={field.value}
+                                onChange={field.onChange}
+                                error={errors.size_pref?.message}
+                                noneValue="none"
+                            />
+                        )}
+                    />
+
+                    <Controller
+                        control={control}
+                        name="shedding_pref"
+                        render={({ field }) => (
+                            <Dropdown
+                                label="What is the highest shedding level you would be comfortable with?"
+                                options={sheddingPrefOptions}
+                                value={field.value}
+                                onChange={field.onChange}
+                                error={errors.shedding_pref?.message}
+                            />
+                        )}
+                    />
+
+                    <Controller
+                        control={control}
+                        name="pref_notes"
+                        render={({ field }) => (
+                            <View>
+                                <Text>Tell us about your home life and what you're looking for in a dog</Text>
+                                <TextInput
+                                    value={field.value}
+                                    onChangeText={field.onChange}
+                                    multiline
+                                    placeholder="e.g., your daily routine, your home/neighbourhood, your experience with dogs, and the personality/temperament you're hoping for"
+                                />
+                            </View>
+                        )}
+                    />
+                </View>
+            )}
 
             <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 24 }}>
                 { step > 0 && (

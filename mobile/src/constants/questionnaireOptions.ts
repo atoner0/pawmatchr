@@ -1,4 +1,4 @@
-import { ActivityLevel, AgePref, GenderPref, HomeLocation, HomeType, HoursAlone, MultiPetExpLevel, OutdoorSpace, SheddingPref, SizePref, TrainingCommitment, YoungestChildAge } from "@/types/questionnaireSchema"
+import { ActivityLevel, AgePref, GenderPref, HomeLocation, HomeType, HoursAlone, MultiPetExpLevel, OutdoorSpace, PetType, SheddingPref, SizePref, TrainingCommitment, YoungestChildAge } from "@/types/questionnaireSchema"
 
 export type Option<T> = {
     label: string
@@ -22,6 +22,20 @@ export const outdoorSpaceOptions: Option<OutdoorSpace>[] = [
     { label: "Medium outdoor space", value: "medium" },
     { label: "Small outdoor space", value: "small" },
     { label: "No outdoor space", value: "none" },
+]
+
+export const petTypeOptions: Option<PetType>[] = [
+    { label: "Dog", value: "dog" },
+    { label: "Cat", value: "cat" },
+    { label: "Other", value: "other" },
+]
+
+export const petCountOptions: Option<number>[] = [
+    { label: "1", value: 1 },
+    { label: "2", value: 2 },
+    { label: "3", value: 3 },
+    { label: "4+", value: 4 },
+    
 ]
 
 export const youngestChildOptions: Option<YoungestChildAge>[] = [
