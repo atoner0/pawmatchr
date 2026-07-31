@@ -1,6 +1,6 @@
 import { ActivityLevel, AgePref, GenderPref, HomeLocation, HomeType, HoursAlone, MultiPetExpLevel, OutdoorSpace, SheddingPref, SizePref, TrainingCommitment, YoungestChildAge } from "@/types/questionnaireSchema"
 
-type Option<T> = {
+export type Option<T> = {
     label: string
     value: T
 }

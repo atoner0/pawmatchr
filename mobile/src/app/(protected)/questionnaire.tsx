@@ -3,6 +3,8 @@ import { useForm, Controller, Resolver } from "react-hook-form"
 import { Text, Pressable, View, StyleSheet } from "react-native"
 import { livingSituationSchema, householdSchema, routineSchema, experienceSchema, prefSchema, QuestionnaireInput } from "@/types/questionnaireSchema"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { Dropdown } from "@/components/Dropdown"
+import { homeLocationOptions, homeTypeOptions, outdoorSpaceOptions } from "@/constants/questionnaireOptions"
 
 
 
@@ -67,7 +69,50 @@ export default function QuestionnaireScreen() {
         <View style={{ flex: 1, padding: 16 }}>
             <Text>Section {step + 1} of {totalSteps}</Text>
 
-            {step === 0 && <View>{}</View>}
+            {step === 0 && (
+                <View>
+                    <Controller
+                        control={control}
+                        name="home_type"
+                        render={({ field}) => (
+                            <Dropdown
+                                label="What type of house do you live in?"
+                                options={homeTypeOptions}
+                                value={field.value}
+                                onChange={field.onChange}
+                                error={errors.home_type?.message}
+                            />
+                        )}
+                    />
+
+                    <Controller
+                        control={control}
+                        name="home_location"
+                        render={({ field}) => (
+                            <Dropdown
+                                label="What type of area do you live in?"
+                                options={homeLocationOptions}
+                                value={field.value}
+                                onChange={field.onChange}
+                                error={errors.home_location?.message}
+                            />
+                        )}
+                    />
+
+                    <Controller
+                        control={control}
+                        name="outdoor_space"
+                        render={({ field}) => (
+                            <Dropdown
+                                label="How would you describe your outdoor space (may be shared or private)?"
+                                options={outdoorSpaceOptions}
+                                value={field.value}
+                                onChange={field.onChange}
+                                error={errors.outdoor_space?.message}
+                            />
+                        )}
+                    />
+                </View>)}
             {step === 1 && <View>{}</View>}
             {step === 2 && <View>{}</View>}
             {step === 3 && <View>{}</View>}
