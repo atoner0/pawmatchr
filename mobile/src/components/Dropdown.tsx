@@ -12,18 +12,31 @@ type Props<T> = {
 
 export function Dropdown<T>({ label, options, value, onChange, error}: Props<T>) {
     return (
-        <View>
-            <Text>{label}</Text>
+        <View style={styles.field}>
+            <Text style={styles.label}>{label}</Text>
             <Picker
-                selectedValue={value}
-                onValueChange={(itemValue) => onChange(itemValue)}
+                selectedValue={value ?? ""}
+                onValueChange={(itemValue) => {
+                    if (itemValue === "") return
+                    onChange(itemValue as T)
+                }}
             >
+                <Picker.Item label="Select..." value= "" enabled={false}/>
                 {options.map((option) => (
                     <Picker.Item key={option.value as string} label={option.label} value={option.value} />
                 ))}
             </Picker>
             {error && <Text style={{ color: "red"}}>{error}</Text>}
         </View>
-    )
-    
+    ) 
 }
+
+const styles = StyleSheet.create({
+    field: {
+       marginBottom: 16 
+    },
+    label: {
+        marginBottom: 4,
+        fontWeight: "600"
+    },
+});

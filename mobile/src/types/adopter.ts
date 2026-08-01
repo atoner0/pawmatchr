@@ -6,7 +6,8 @@ export type AccountFields = {
     last_name: string;
     email: string;
     phone: string;
-    postcode: string
+    postcode: string;
+    completed_at: string | null;
 }
 
 export type QuestionnaireResponse = {

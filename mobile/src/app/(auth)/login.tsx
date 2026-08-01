@@ -20,7 +20,7 @@ export default function Login() {
       });
 
       await setToken(response.token);
-    
+      console.log("about to navigate to /(protected)/index");
       router.replace('/(protected)')
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "An error occurred. Please try again.";

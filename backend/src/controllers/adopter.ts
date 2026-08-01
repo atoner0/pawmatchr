@@ -52,7 +52,7 @@ export const getQuestionnaire = async ( req: AdopterAuthRequest, res: Response):
             return
         }
 
-        res.status(200).json({profile})
+        res.status(200).json({adopter: profile})
     } catch (error) {
         res.status(500).json({ message: 'Error getting profile', error})
     }

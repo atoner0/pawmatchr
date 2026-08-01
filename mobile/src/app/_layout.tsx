@@ -20,16 +20,19 @@ export default function RootLayout() {
   useEffect(() => {
     if (isAuthed === null) return;
 
-    const inAuthGroup = segments[0] === '(auth)'; 
+    getToken().then((token) => {
+        const currentlyAuthed = !!token
+        const inAuthGroup = segments[0] === '(auth)';
 
-    if (isAuthed === false && inAuthGroup === false){
-        router.replace('/(auth)/login');
-    } 
+        if (currentlyAuthed === false && inAuthGroup === false){
+            router.replace('/(auth)/login');
+        } 
 
-    if (isAuthed === true && inAuthGroup === true){
-        router.replace('/(protected)');
-    }
-  }, [isAuthed, segments]);
+        if (currentlyAuthed === true && inAuthGroup === true){
+            router.replace('/(protected)');
+        }
+    })
+  }, [segments]);
 
   return <Stack screenOptions={{ headerShown: false }} />;
 }

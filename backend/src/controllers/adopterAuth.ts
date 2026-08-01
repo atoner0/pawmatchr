@@ -25,13 +25,13 @@ export const signup = async ( req: Request, res: Response): Promise<void> => {
         const adopter = await createAdopter(first_name, last_name, email, password_hash, phone, postcode)
 
         const token = jwt.sign(
-            { id: adopter.adopter_id, type: 'adopter '},
+            { id: adopter.adopter_id, type: 'adopter'},
             JWT_SECRET,
             { expiresIn: '7d' }
         )
 
         
-        res.status(201).json({ token, user: adopter })
+        res.status(201).json({ token, adopter: adopter })
     } catch (error) {
         res.status(500).json({ message: 'Error during signup', error})
     }
@@ -60,13 +60,13 @@ export const login = async ( req: Request, res: Response): Promise<void> => {
         }
 
         const token = jwt.sign(
-            { id: adopter.adopter_id, type: 'adopter '},
+            { id: adopter.adopter_id, type: 'adopter'},
             JWT_SECRET,
             { expiresIn: '7d' }
         )
 
         const { password_hash: _, ...safeAdopter } = adopter
-        res.status(200).json({ token, user: safeAdopter })
+        res.status(200).json({ token, adopter: safeAdopter })
     } catch (error) {
         res.status(500).json({ message: 'Error during login', error })
     }

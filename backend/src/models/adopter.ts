@@ -43,12 +43,15 @@ export const fillQuestionnaire = async (
         adopter_id: number,
         updates: QuestionnaireInput
 ): Promise<SafeAdopter> => {   
-    const fields = Object.keys(updates)
-    const values = fields.map(field =>
+    const fields = [...Object.keys(updates), 'completed_at']
+    const values = [
+        ...Object.keys(updates).map(field =>
         JSONB_FIELDS.has(field)
             ? JSON.stringify((updates as any)[field])
             : (updates as any)[field]
-    )
+        ),
+        new Date(),
+    ]
 
     const setClause = fields.map((field, i) => `${field} = $${i + 1}`).join(', ')
 

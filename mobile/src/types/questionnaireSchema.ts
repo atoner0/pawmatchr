@@ -41,7 +41,7 @@ export const questionnaireObjectSchema = z.object({
     hours_alone: HoursAloneEnum,
     activity_level: ActivityLevelEnum,
     first_time_owner: z.boolean(),
-    multi_pet_exp: z.boolean(),
+    multi_pet_exp: z.boolean().optional(),
     multi_pet_exp_level: MultiPetExpLevelEnum,
     age_pref: z.array(AgePrefEnum).default([]),
     gender_pref: GenderPrefEnum,

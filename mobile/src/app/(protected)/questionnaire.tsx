@@ -84,11 +84,11 @@ export default function QuestionnaireScreen() {
     }
 
     return (
-        <View style={{ flex: 1, padding: 16 }}>
+        <View style={{ flex: 1, padding: 16, marginTop: 16 }}>
             <Text>Section {step + 1} of {totalSteps}</Text>
 
             {step === 0 && (
-                <View>
+                <View style={{ marginBottom: 16 }}>
                     <Controller
                         control={control}
                         name="home_type"
@@ -132,7 +132,7 @@ export default function QuestionnaireScreen() {
                     />
                 </View>)}
             {step === 1 && (
-                <View>
+                <View style={{ marginBottom: 16 }}>
                     <Controller
                         control={control}
                         name="current_pets"
@@ -209,7 +209,7 @@ export default function QuestionnaireScreen() {
             )}
 
             {step === 2 && (
-                <View>
+                <View style={{ marginBottom: 16 }}>
                     <Controller
                         control={control}
                         name="hours_alone"
@@ -255,15 +255,15 @@ export default function QuestionnaireScreen() {
             )}
 
             {step === 3 && (
-                <View>
+                <View style={{ marginBottom: 16 }}>
                     <Controller
                         control={control}
                         name="first_time_owner"
                         render={({ field }) => (
                             <YesNoToggle
                                 label="Have you owned a dog before?"
-                                value={field.value}
-                                onChange={field.onChange}
+                                value={!field.value}
+                                onChange={(hasOwned) => field.onChange(!hasOwned)}
                             />
                         )}
                     />
@@ -301,7 +301,7 @@ export default function QuestionnaireScreen() {
             )}
 
             {step === 4 && (
-                <View>
+                <View style={{ marginBottom: 16 }}>
                     <Controller
                         control={control}
                         name="age_pref"

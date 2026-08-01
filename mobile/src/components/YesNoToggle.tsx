@@ -10,18 +10,18 @@ export function YesNoToggle({ label, value, onChange}: Props) {
     return (
         <View>
             <Text>{label}</Text>
-            <View style={{ flexDirection: "row", gap: 12}}>
+            <View style={styles.row}>
                 <Pressable
                     onPress={() => onChange(true)}
-                    style={value === true ? styles.selected : styles.unselected}
+                    style={[styles.button, value === true && styles.selected]}
                 >
-                    <Text>Yes</Text>
+                    <Text style={value === true ? styles.selectedText : styles.unselectedText }>Yes</Text>
                 </Pressable>
                 <Pressable
                     onPress={() => onChange(false)}
-                    style={value === false ? styles.selected : styles.unselected}
+                    style={[styles.button, value === false && styles.selected]}
                 >
-                    <Text>Yes</Text>
+                    <Text style={value === false ? styles.selectedText : styles.unselectedText}>No</Text>
                 </Pressable>
             </View>
         </View>
@@ -29,10 +29,30 @@ export function YesNoToggle({ label, value, onChange}: Props) {
 }
 
 const styles = StyleSheet.create({
+    row: {
+        flexDirection: "row",
+        gap: 12,
+        marginTop: 4
+    },
+    button: {
+        flex: 1,
+        paddingVertical: 10,
+        borderRadius: 6,
+        borderWidth: 1,
+        borderColor: "#999",
+        alignItems: "center"
+    },
     selected: {
-        backgroundColor: '#5b5757'
+        backgroundColor: "#2563eb",
+        borderColor: "#2563eb"
     },
     unselected: {
-        backgroundColor: '#cac6c6'
+        backgroundColor: "#fff"
+    },
+    selectedText: {
+        color: "#fff", fontWeight: "600"
+    },
+    unselectedText: {
+        color: "#333"
     }
 });
