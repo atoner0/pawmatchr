@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
 import { getDogById, getAllAvailableDogs } from '../models/dog.js';
 import { createDogSchema } from '../types/dogSchemas.js';
-import type { AuthRequest } from '../middleware/auth.js';
+import type { AdopterAuthRequest } from '../middleware/auth.js';
 
 export const getDogbyId = async ( req: Request, res: Response): Promise<void> => {
     const id = parseInt(req.params['id'] as string)

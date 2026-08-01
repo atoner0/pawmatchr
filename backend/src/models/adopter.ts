@@ -1,5 +1,5 @@
 import pool from '../config/db.js'
-import type { Adopter } from '../types/adopter.js'
+import type { Adopter, SafeAdopter } from '../types/adopter.js'
 import type { QuestionnaireInput } from '../types/questionnaireSchema.js'
 
 export const getAdopterByEmail = async (email: string): Promise<Adopter | null> => {
@@ -10,12 +10,14 @@ export const getAdopterByEmail = async (email: string): Promise<Adopter | null> 
     return result.rows[0] || null
 }
 
-export const getAdopterById = async (id: number): Promise<Adopter | null> => {
+export const getAdopterById = async (id: number): Promise<SafeAdopter | null> => {
     const result = await pool.query(
         `SELECT * FROM adopters WHERE adopter_id = $1`,
         [id]
     )
-    return result.rows[0] || null
+    if (!result.rows[0]) return null
+    const { password_hash: _, ...safeAdopter } = result.rows[0]
+    return safeAdopter
 }
 
 export const createAdopter = async (
@@ -25,13 +27,14 @@ export const createAdopter = async (
     password_hash: string,
     phone: string,
     postcode: string
-): Promise<Adopter> => {
+): Promise<SafeAdopter> => {
     const result = await pool.query(
         `INSERT INTO adopters (first_name, last_name, email, password_hash, phone, postcode) 
         VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
         [first_name, last_name, email, password_hash, phone, postcode]
     )
-    return result.rows[0] 
+    const { password_hash: _, ...safeAdopter } = result.rows[0]
+    return safeAdopter
 }
 
 const JSONB_FIELDS = new Set(['current_pet_type', 'age_pref', 'size_pref'])
@@ -39,7 +42,7 @@ const JSONB_FIELDS = new Set(['current_pet_type', 'age_pref', 'size_pref'])
 export const fillQuestionnaire = async (
         adopter_id: number,
         updates: QuestionnaireInput
-): Promise<Adopter> => {   
+): Promise<SafeAdopter> => {   
     const fields = Object.keys(updates)
     const values = fields.map(field =>
         JSONB_FIELDS.has(field)
@@ -73,7 +76,9 @@ export const fillQuestionnaire = async (
         )
 
         await client.query('COMMIT')
-        return adopter
+
+        const { password_hash: _, ...safeAdopter } = adopter
+        return safeAdopter
         
     } catch (error) {
         await client.query('ROLLBACK')
@@ -87,7 +92,7 @@ export const fillQuestionnaire = async (
 export const updateQuestionnaire = async (
         adopter_id: number,
         updates: Partial<QuestionnaireInput>
-): Promise<Adopter> => {   
+): Promise<SafeAdopter> => {   
     const fields = Object.keys(updates)
     const values = fields.map(field =>
         JSONB_FIELDS.has(field)
@@ -124,7 +129,9 @@ export const updateQuestionnaire = async (
         )
 
         await client.query('COMMIT')
-        return adopter
+        
+        const { password_hash: _, ...safeAdopter } = adopter
+        return safeAdopter
         
     } catch (error) {
         await client.query('ROLLBACK')

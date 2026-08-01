@@ -1,5 +1,5 @@
 import { matchResponseSchema, type MatchResultFromPython } from "../types/matchSchema.js";
-import type { Adopter } from "../types/adopter.js";
+import type { SafeAdopter } from "../types/adopter.js";
 import type { Dog } from "../types/dog.js";
 
 const MATCHING_SERVICE_URL = process.env.MATCHING_SERVICE_URL
@@ -12,7 +12,7 @@ type MatchingServiceResult =
     | { success: false, error: 'contract_mismatch'; issues: unknown}
 
 export const callMatchingService = async (
-    adopter: Adopter,
+    adopter: SafeAdopter,
     dogs: Dog[]
 ): Promise<MatchingServiceResult> => {
     const controller = new AbortController()

@@ -1,10 +1,10 @@
 import type { Response } from 'express';
-import type { AuthRequest } from '../middleware/auth.js';
+import type { AdopterAuthRequest } from '../middleware/auth.js';
 import { getMatchesByAdopterId, createMatches } from '../models/match.js';
 import { callMatchingService } from '../services/matchingService.js';
 import { getAllAvailableDogs } from '../models/dog.js';
 
-export const getMatches = async (req: AuthRequest, res: Response): Promise<void> => {
+export const getMatches = async (req: AdopterAuthRequest, res: Response): Promise<void> => {
     try {
         const adopter = req.user
 

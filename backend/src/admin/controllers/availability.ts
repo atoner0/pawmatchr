@@ -1,9 +1,9 @@
 import type { Response } from 'express'
-import type { AuthRequest } from '../../middleware/auth.js'
+import type { AdminAuthRequest } from '../../middleware/auth.js'
 import { getAvailabilityByShelter, createAvailability, updateAvailability, deleteAvailability, getAvailabilityByIdAndShelter } from '../../models/availability.js'
 import { createAvailabilitySchema } from '../../types/availabilitySchema.js'
 
-export const renderAvailability = async (req: AuthRequest, res: Response) => {
+export const renderAvailability = async (req: AdminAuthRequest, res: Response) => {
     try {
         const shelterId = req.user.shelter_id
         const slots = await getAvailabilityByShelter(shelterId)
@@ -15,7 +15,7 @@ export const renderAvailability = async (req: AuthRequest, res: Response) => {
     }
 }
 
-export const renderCreateAvailability = async (req: AuthRequest, res: Response) => {
+export const renderCreateAvailability = async (req: AdminAuthRequest, res: Response) => {
     try {
         res.render('availability/new', { 
             title: 'New Availability Slot', 
@@ -29,7 +29,7 @@ export const renderCreateAvailability = async (req: AuthRequest, res: Response) 
     }
 }
 
-export const postCreateAvailability = async (req: AuthRequest, res: Response) => {
+export const postCreateAvailability = async (req: AdminAuthRequest, res: Response) => {
     try {
         const shelterId = req.user.shelter_id
 
@@ -52,7 +52,7 @@ export const postCreateAvailability = async (req: AuthRequest, res: Response) =>
     }
 }
 
-export const renderEditAvailability = async (req: AuthRequest, res: Response) => {
+export const renderEditAvailability = async (req: AdminAuthRequest, res: Response) => {
     const availabilityId = parseInt(req.params['id'] as string)
     if (isNaN(availabilityId)) {
         res.status(400).render('error', { title: 'Error', message: 'Invalid availability ID' })
@@ -82,7 +82,7 @@ export const renderEditAvailability = async (req: AuthRequest, res: Response) =>
     }
 }
 
-export const postEditAvailability = async (req: AuthRequest, res: Response) => {
+export const postEditAvailability = async (req: AdminAuthRequest, res: Response) => {
     const availabilityId = parseInt(req.params['id'] as string)
     if (isNaN(availabilityId)) {
         res.status(400).render('error', { title: 'Error', message: 'Invalid availability ID' })
@@ -124,7 +124,7 @@ export const postEditAvailability = async (req: AuthRequest, res: Response) => {
     }
 }
 
-export const postDeleteAvailability = async (req: AuthRequest, res: Response) => {
+export const postDeleteAvailability = async (req: AdminAuthRequest, res: Response) => {
     const availabilityId = parseInt(req.params['id'] as string)
     if (isNaN(availabilityId)) {
         res.status(400).render('error', { title: 'Error', message: 'Invalid availability ID' })

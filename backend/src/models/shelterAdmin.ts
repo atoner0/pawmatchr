@@ -8,6 +8,8 @@ export interface ShelterAdmin {
     name: string
 }
 
+export type SafeShelterAdmin = Omit<ShelterAdmin, 'password_hash'>
+
 export const getAdminByEmail = async (email: string): Promise<ShelterAdmin | null> => {
     const result = await pool.query(
         `SELECT * FROM shelter_admins WHERE email = $1`,
@@ -16,7 +18,7 @@ export const getAdminByEmail = async (email: string): Promise<ShelterAdmin | nul
     return result.rows[0] || null
 }
 
-export const getAdminById = async (id: number): Promise<ShelterAdmin | null> => {
+export const getAdminById = async (id: number): Promise<SafeShelterAdmin | null> => {
     const result = await pool.query(
         `SELECT * FROM shelter_admins WHERE staff_id = $1`,
         [id]

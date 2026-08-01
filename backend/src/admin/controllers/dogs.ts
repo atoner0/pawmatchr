@@ -1,10 +1,10 @@
 import type { Response } from 'express'
-import type { AuthRequest } from '../../middleware/auth.js'
+import type { AdminAuthRequest } from '../../middleware/auth.js'
 import { createDog, updateDog, deleteDog, getDogsByShelterId, getDogByIdAndShelterId, hasApplications } from '../../models/dog.js'
 import { createDogSchema, updateDogSchema } from '../../types/dogSchemas.js'
 import type { Dog } from '../../types/dog.js'
 
-export const renderAllDogsByShelter = async (req: AuthRequest, res: Response): Promise<void> => {
+export const renderAllDogsByShelter = async (req: AdminAuthRequest, res: Response): Promise<void> => {
     try {
         const shelterId = req.user.shelter_id
 
@@ -17,7 +17,7 @@ export const renderAllDogsByShelter = async (req: AuthRequest, res: Response): P
     }
 }
 
-export const renderShelterDogById = async (req: AuthRequest, res: Response): Promise<void> => {
+export const renderShelterDogById = async (req: AdminAuthRequest, res: Response): Promise<void> => {
     const dogId = parseInt(req.params['id'] as string)
     if (isNaN(dogId)) {
         res.status(400).render('error', { title: 'Error', message: 'Invalid dog ID' })
@@ -41,7 +41,7 @@ export const renderShelterDogById = async (req: AuthRequest, res: Response): Pro
     }
 }
 
-export const renderCreateDog = async (req: AuthRequest, res: Response): Promise<void> => {
+export const renderCreateDog = async (req: AdminAuthRequest, res: Response): Promise<void> => {
     try {
          res.render('dogs/new', { title: 'New Dog', user: req.user })
     } catch (error) {
@@ -50,7 +50,7 @@ export const renderCreateDog = async (req: AuthRequest, res: Response): Promise<
     }
 } 
 
-export const postCreateDog = async (req: AuthRequest, res: Response): Promise<void> => {
+export const postCreateDog = async (req: AdminAuthRequest, res: Response): Promise<void> => {
     try {
         const shelterId = req.user.shelter_id
 
@@ -89,7 +89,7 @@ export const postCreateDog = async (req: AuthRequest, res: Response): Promise<vo
     }
 }
 
-export const renderEditDog = async (req: AuthRequest, res: Response): Promise<void> => {
+export const renderEditDog = async (req: AdminAuthRequest, res: Response): Promise<void> => {
     const dogId = parseInt(req.params['id'] as string)
     if (isNaN(dogId)) {
         res.status(400).render('error', { title: 'Error', message: 'Invalid dog ID' })
@@ -112,7 +112,7 @@ export const renderEditDog = async (req: AuthRequest, res: Response): Promise<vo
     }
 } 
 
-export const postUpdateDog = async (req: AuthRequest, res: Response): Promise<void> => {
+export const postUpdateDog = async (req: AdminAuthRequest, res: Response): Promise<void> => {
     const dogId = parseInt(req.params['id'] as string)
     if (isNaN(dogId)) {
         res.status(400).render('error', { title: 'Error', message: 'Invalid dog ID' })
@@ -169,7 +169,7 @@ export const postUpdateDog = async (req: AuthRequest, res: Response): Promise<vo
     }
 }
 
-export const postDeleteDog = async (req: AuthRequest, res: Response): Promise<void> => {
+export const postDeleteDog = async (req: AdminAuthRequest, res: Response): Promise<void> => {
     const dogId = parseInt(req.params['id'] as string)
     if (isNaN(dogId)) {
         res.status(400).render('error', { title: 'Error', message: 'Invalid dog ID' })

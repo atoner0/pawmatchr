@@ -1,9 +1,9 @@
 import type { Response } from 'express';
 import { getAdopterById, fillQuestionnaire, updateQuestionnaire } from '../models/adopter.js';
-import type { AuthRequest } from '../middleware/auth.js';
+import type { AdopterAuthRequest } from '../middleware/auth.js';
 import { createQuestionnaireSchema } from '../types/questionnaireSchema.js';
 
-export const fillQuestionnaireController = async ( req: AuthRequest, res: Response): Promise<void> => {
+export const fillQuestionnaireController = async ( req: AdopterAuthRequest, res: Response): Promise<void> => {
     try {
         const answers = createQuestionnaireSchema.safeParse(req.body)
             if (!answers.success){
@@ -19,7 +19,7 @@ export const fillQuestionnaireController = async ( req: AuthRequest, res: Respon
     }
 }
 
-export const updateQuestionnaireController = async ( req: AuthRequest, res: Response): Promise<void> => {
+export const updateQuestionnaireController = async ( req: AdopterAuthRequest, res: Response): Promise<void> => {
     try {
         const answers = createQuestionnaireSchema.partial().safeParse(req.body)
             if (!answers.success){
@@ -42,7 +42,7 @@ export const updateQuestionnaireController = async ( req: AuthRequest, res: Resp
     }
 }
 
-export const getQuestionnaire = async ( req: AuthRequest, res: Response): Promise<void> => {
+export const getQuestionnaire = async ( req: AdopterAuthRequest, res: Response): Promise<void> => {
     try {
         const adopter = req.user
         const profile = await getAdopterById(adopter.adopter_id)

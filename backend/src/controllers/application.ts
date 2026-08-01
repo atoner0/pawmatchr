@@ -1,9 +1,9 @@
 import type { Response } from 'express';
-import type { AuthRequest } from '../middleware/auth.js';
+import type { AdopterAuthRequest } from '../middleware/auth.js';
 import { createApplication, getAllAdopterApps, getOneAdopterApp, updateApplicationStatus, updateReadinessCheck } from '../models/application.js';
 import { createApplicationSchema, updateChecklistSchema, type ApplicationStatus } from '../types/applicationSchema.js';
 
-export const createApplicationController = async ( req: AuthRequest, res: Response): Promise<void> => {
+export const createApplicationController = async ( req: AdopterAuthRequest, res: Response): Promise<void> => {
     try {
         const result = createApplicationSchema.safeParse(req.body)
         if (!result.success){
@@ -21,7 +21,7 @@ export const createApplicationController = async ( req: AuthRequest, res: Respon
     }
 }
 
-export const getAllAdopterApplications = async ( req: AuthRequest, res: Response): Promise<void> => {
+export const getAllAdopterApplications = async ( req: AdopterAuthRequest, res: Response): Promise<void> => {
     try {
         const adopter = req.user
 
@@ -33,7 +33,7 @@ export const getAllAdopterApplications = async ( req: AuthRequest, res: Response
     }
 }
 
-export const getApplicationById = async ( req: AuthRequest, res: Response): Promise<void> => {
+export const getApplicationById = async ( req: AdopterAuthRequest, res: Response): Promise<void> => {
     const id = parseInt(req.params['id'] as string)
     if (isNaN(id)) {
         res.status(400).json({ message: 'Invalid application ID'})
@@ -52,7 +52,7 @@ export const getApplicationById = async ( req: AuthRequest, res: Response): Prom
     }
 }
 
-export const updateChecklist = async ( req: AuthRequest, res: Response): Promise<void> => {
+export const updateChecklist = async ( req: AdopterAuthRequest, res: Response): Promise<void> => {
     const id = parseInt(req.params['id'] as string)
         if (isNaN(id)) {
             res.status(400).json({ message: 'Invalid application ID'})
@@ -83,7 +83,7 @@ export const updateChecklist = async ( req: AuthRequest, res: Response): Promise
     }
 }
 
-export const withdrawApplication = async (req: AuthRequest, res: Response): Promise<void> => {
+export const withdrawApplication = async (req: AdopterAuthRequest, res: Response): Promise<void> => {
     const id = parseInt(req.params['id'] as string)
     if (isNaN(id)) {
         res.status(400).json({ message: 'Invalid application ID' })

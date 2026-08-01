@@ -1,10 +1,10 @@
 import type { Response } from 'express';
-import type { AuthRequest } from '../../middleware/auth.js';
+import type { AdminAuthRequest } from '../../middleware/auth.js';
 import { getBookingByIdAndShelter, getBookingsByShelter, getBookingStats, getUpcomingBookingsByShelter, updateBookingStatus } from '../../models/booking.js';
 import { getAdopterById } from '../../models/adopter.js';
 import { getAppByIdAndShelter } from '../../models/application.js';
 
-export const renderBookings = async (req: AuthRequest, res: Response) => {
+export const renderBookings = async (req: AdminAuthRequest, res: Response) => {
     try {
         const shelterId = req.user.shelter_id
         const bookings = await getBookingsByShelter(shelterId)
@@ -18,7 +18,7 @@ export const renderBookings = async (req: AuthRequest, res: Response) => {
     }
 }
 
-export const renderSingleBooking = async (req: AuthRequest, res: Response) => {
+export const renderSingleBooking = async (req: AdminAuthRequest, res: Response) => {
     const bookingId = parseInt(req.params['id'] as string)
     if (isNaN(bookingId)) {
         res.status(400).render('error', { title: 'Error', message: 'Invalid booking ID' })
@@ -55,7 +55,7 @@ export const renderSingleBooking = async (req: AuthRequest, res: Response) => {
     }
 }
 
-export const postCompleteBooking = async (req: AuthRequest, res: Response) => {
+export const postCompleteBooking = async (req: AdminAuthRequest, res: Response) => {
     const bookingId = parseInt(req.params['id'] as string)
     if (isNaN(bookingId)) {
         res.status(400).render('error', { title: 'Error', message: 'Invalid booking ID' })
@@ -86,7 +86,7 @@ export const postCompleteBooking = async (req: AuthRequest, res: Response) => {
     }
 }
 
-export const postCancelBooking = async (req: AuthRequest, res: Response) => {
+export const postCancelBooking = async (req: AdminAuthRequest, res: Response) => {
     const bookingId = parseInt(req.params['id'] as string)
     if (isNaN(bookingId)) {
         res.status(400).render('error', { title: 'Error', message: 'Invalid booking ID' })

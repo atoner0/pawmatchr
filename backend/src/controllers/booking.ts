@@ -1,10 +1,10 @@
 import type { Response } from 'express';
-import type { AuthRequest } from '../middleware/auth.js';
+import type { AdopterAuthRequest } from '../middleware/auth.js';
 import { createBooking, getBookingByApplication } from '../models/booking.js';
 import { getOneAdopterApp } from '../models/application.js';
 import { createBookingSchema } from '../types/bookingSchema.js';
 
-export const createBookingController = async ( req: AuthRequest, res: Response): Promise<void> => {
+export const createBookingController = async ( req: AdopterAuthRequest, res: Response): Promise<void> => {
     try {
         const result = createBookingSchema.safeParse(req.body)
             if (!result.success){
@@ -50,7 +50,7 @@ export const createBookingController = async ( req: AuthRequest, res: Response):
     }
 }
 
-export const getBooking = async( req: AuthRequest, res: Response): Promise<void> => {
+export const getBooking = async( req: AdopterAuthRequest, res: Response): Promise<void> => {
     const applicationId = parseInt(req.params['applicationId'] as string)
     if (isNaN(applicationId)) {
         res.status(400).json({ message: 'Invalid application ID'})

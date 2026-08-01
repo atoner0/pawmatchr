@@ -1,10 +1,10 @@
 import type { Request, Response } from 'express';
-import type { AuthRequest } from '../middleware/auth.js';
+import type { AdopterAuthRequest } from '../middleware/auth.js';
 import { getFavouritesByAdopter, addFavourite, deleteFavourite } from '../models/favourite.js';
 import { createFavouriteSchema } from '../types/favouriteSchema.js';
 import { getDogById } from '../models/dog.js';
 
-export const createFavourite = async ( req: AuthRequest, res: Response): Promise<void> => {
+export const createFavourite = async ( req: AdopterAuthRequest, res: Response): Promise<void> => {
     try {
         const result = createFavouriteSchema.safeParse(req.body)
             if (!result.success){
@@ -33,7 +33,7 @@ export const createFavourite = async ( req: AuthRequest, res: Response): Promise
     }
 }
 
-export const getFavourites = async (req: AuthRequest, res: Response): Promise<void> => {
+export const getFavourites = async (req: AdopterAuthRequest, res: Response): Promise<void> => {
     try {
         const adopter = req.user
 
@@ -45,7 +45,7 @@ export const getFavourites = async (req: AuthRequest, res: Response): Promise<vo
     }
 }
 
-export const deleteFavouriteController = async (req: AuthRequest, res: Response): Promise<void> => {
+export const deleteFavouriteController = async (req: AdopterAuthRequest, res: Response): Promise<void> => {
     const dogId = parseInt(req.params['dogId'] as string)
     if (isNaN(dogId)) {
         res.status(400).json({ message: 'Invalid dog ID'})

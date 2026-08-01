@@ -7,11 +7,16 @@ import { Dropdown } from "@/components/Dropdown"
 import { activityLevelOptions, agePrefOptions, genderPrefOptions, homeLocationOptions, homeTypeOptions, hoursAloneOptions, multiPetLevelOptions, outdoorSpaceOptions, petCountOptions, petTypeOptions, sheddingPrefOptions, sizePrefOptions, trainingCommitmentOptions, youngestChildOptions } from "@/constants/questionnaireOptions"
 import { YesNoToggle } from "@/components/YesNoToggle"
 import { MultiCheckbox } from "@/components/MultiCheckbox"
+import { apiFetch } from "@/lib/api"
+import { useRouter } from "expo-router"
 
 
 
 export default function QuestionnaireScreen() {
     const [step, setStep] = useState(0)
+    const [error, setError] = useState("");
+
+    const router = useRouter()
 
     const stepSchemas = [
         livingSituationSchema,
@@ -63,8 +68,18 @@ export default function QuestionnaireScreen() {
         setStep((s) => Math.max(s - 1, 0))
     }
 
-    const onSubmit = (data: QuestionnaireInput) => {
+    const onSubmit = async (data: QuestionnaireInput) => {
+        try {
+            const response = await apiFetch<>('/adopter/questionnaire', {
+                method: 'PUT',
+                body: JSON.stringify(data)
+            })
 
+            router.replace('/(protected)/matches')
+        } catch (err) {
+            const errorMessage = err instanceof Error ? err.message : "An error occurred. Please try again.";
+            setError(errorMessage);
+        }
     }
 
     return (

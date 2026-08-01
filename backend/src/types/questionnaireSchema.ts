@@ -4,6 +4,7 @@ import { ActivityLevelEnum } from './dogSchemas.js'
 export const HomeTypeEnum = z.enum(['apartment', 'semi-detached', 'detached'])
 export const HomeLocationEnum = z.enum(['urban', 'suburban', 'rural'])
 export const OutdoorSpaceEnum = z.enum(['large', 'medium', 'small', 'none'])
+export const PetTypeEnum = z.enum(['dog', 'cat', 'other'])
 export const YoungestChildAgeEnum = z.enum(['under_5', '5_12', '13_plus']).nullable().optional()
 export const HoursAloneEnum = z.enum(['0_2', '2_4', '4_6', '6_8', '8_plus'])
 export const MultiPetExpLevelEnum = z.enum(['once_twice', 'several', 'extensive']).nullable().optional()
@@ -16,6 +17,7 @@ export const TrainingCommitmentEnum = z.enum(['none', 'basic', 'moderate', 'inte
 export type HomeType = z.infer<typeof HomeTypeEnum>
 export type HomeLocation = z.infer<typeof HomeLocationEnum>
 export type OutdoorSpace = z.infer<typeof OutdoorSpaceEnum>
+export type PetType = z.infer<typeof PetTypeEnum>
 export type YoungestChildAge = z.infer<typeof YoungestChildAgeEnum>
 export type HoursAlone = z.infer<typeof HoursAloneEnum>
 export type MultiPetExpLevel = z.infer<typeof MultiPetExpLevelEnum>
@@ -30,7 +32,7 @@ export const createQuestionnaireSchema = z.object({
     home_location: HomeLocationEnum,
     outdoor_space: OutdoorSpaceEnum,
     current_pets: z.boolean(),
-    current_pet_type: z.array(z.string()).default([]),
+    current_pet_type: z.array(PetTypeEnum),
     current_pet_count: z.number().int().min(1).max(4).nullable().optional(),
     children: z.boolean(),
     youngest_child_age: YoungestChildAgeEnum,

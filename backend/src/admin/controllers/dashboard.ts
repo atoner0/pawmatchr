@@ -1,10 +1,10 @@
 import type { Response } from 'express'
-import type { AuthRequest } from '../../middleware/auth.js'
+import type { AdminAuthRequest } from '../../middleware/auth.js'
 import { getDashboardStats } from '../../models/dog.js'
 import { getRecentAppsByShelter } from '../../models/application.js'
 import { getUpcomingBookingsByShelter } from '../../models/booking.js'
 
-export const renderDashboard = async (req: AuthRequest, res: Response) => {
+export const renderDashboard = async (req: AdminAuthRequest, res: Response) => {
     try {
         const shelterId = req.user.shelter_id
 

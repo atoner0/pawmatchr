@@ -1,9 +1,9 @@
 import type { Response } from 'express'
-import type { AuthRequest } from '../../middleware/auth.js'
+import type { AdminAuthRequest } from '../../middleware/auth.js'
 import { getAppsByShelter, getAppByIdAndShelter, getBookingsByApp, updateApplicationStatus } from '../../models/application.js'
 import { getAdopterById } from '../../models/adopter.js'
 
-export const renderApplicationsDash = async (req: AuthRequest, res: Response): Promise<void> => {
+export const renderApplicationsDash = async (req: AdminAuthRequest, res: Response): Promise<void> => {
     try {
         const shelterId = req.user.shelter_id
 
@@ -16,7 +16,7 @@ export const renderApplicationsDash = async (req: AuthRequest, res: Response): P
     }
 }
 
-export const renderApplicationProfile = async (req: AuthRequest, res: Response): Promise<void> => {
+export const renderApplicationProfile = async (req: AdminAuthRequest, res: Response): Promise<void> => {
     const applicationId = parseInt(req.params['id'] as string)
     if (isNaN(applicationId)) {
         res.status(400).render('error', { title: 'Error', message: 'Invalid application ID' })
@@ -61,7 +61,7 @@ export const renderApplicationProfile = async (req: AuthRequest, res: Response):
     }
 }
 
-export const applicationToUnderReview = async (req: AuthRequest, res: Response): Promise<void> => {
+export const applicationToUnderReview = async (req: AdminAuthRequest, res: Response): Promise<void> => {
     const applicationId = parseInt(req.params['id'] as string)
     if (isNaN(applicationId)) {
         res.status(400).render('error', { title: 'Error', message: 'Invalid application ID' })
@@ -92,7 +92,7 @@ export const applicationToUnderReview = async (req: AuthRequest, res: Response):
     }
 }
 
-export const approveApplication = async (req: AuthRequest, res: Response): Promise<void> => {
+export const approveApplication = async (req: AdminAuthRequest, res: Response): Promise<void> => {
     const applicationId = parseInt(req.params['id'] as string)
     if (isNaN(applicationId)) {
         res.status(400).render('error', { title: 'Error', message: 'Invalid application ID' })
@@ -145,7 +145,7 @@ export const approveApplication = async (req: AuthRequest, res: Response): Promi
     }
 }
 
-export const rejectApplication = async (req: AuthRequest, res: Response): Promise<void> => {
+export const rejectApplication = async (req: AdminAuthRequest, res: Response): Promise<void> => {
     const applicationId = parseInt(req.params['id'] as string)
     if (isNaN(applicationId)) {
         res.status(400).render('error', { title: 'Error', message: 'Invalid application ID' })

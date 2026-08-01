@@ -30,8 +30,8 @@ export const signup = async ( req: Request, res: Response): Promise<void> => {
             { expiresIn: '7d' }
         )
 
-        const { password_hash: _, ...safeAdopter } = adopter
-        res.status(201).json({ token, user: safeAdopter })
+        
+        res.status(201).json({ token, user: adopter })
     } catch (error) {
         res.status(500).json({ message: 'Error during signup', error})
     }
