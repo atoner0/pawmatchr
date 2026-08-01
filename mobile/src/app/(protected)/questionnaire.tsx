@@ -9,6 +9,7 @@ import { YesNoToggle } from "@/components/YesNoToggle"
 import { MultiCheckbox } from "@/components/MultiCheckbox"
 import { apiFetch } from "@/lib/api"
 import { useRouter } from "expo-router"
+import { QuestionnaireResponse } from "@/types/adopter"
 
 
 
@@ -70,7 +71,7 @@ export default function QuestionnaireScreen() {
 
     const onSubmit = async (data: QuestionnaireInput) => {
         try {
-            const response = await apiFetch<>('/adopter/questionnaire', {
+            const response = await apiFetch<QuestionnaireResponse>('/adopter/questionnaire', {
                 method: 'PUT',
                 body: JSON.stringify(data)
             })
@@ -394,6 +395,8 @@ export default function QuestionnaireScreen() {
                     </Pressable>
                 )}
             </View>
+
+            {error ? <Text style={{ color: "red" }}>{error}</Text> : null}
         </View>
     )
 }

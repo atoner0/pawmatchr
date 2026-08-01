@@ -13,7 +13,7 @@ export const fillQuestionnaireController = async ( req: AdopterAuthRequest, res:
         const adopter = req.user
 
         const fullAdopter = await fillQuestionnaire(adopter.adopter_id, answers.data)
-        res.status(200).json({fullAdopter})
+        res.status(200).json({ adopter: fullAdopter})
     } catch (error) {
         res.status(500).json({ message: 'Error filling questionnaire', error})
     }
