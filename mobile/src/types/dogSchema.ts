@@ -1,0 +1,12 @@
+export type DogAge = '0_2' | '3_5' | '6_8' | '8_plus';
+export type DogGender = 'male' | 'female';
+export type DogSize = 'small' | 'medium' | 'large' | 'giant';
+export type GoodWith = 'yes' | 'no' | 'unknown';
+export type AloneTolerance = '0_2' | '2_4' | '4_6' | '6_8' | '8_plus';
+export type ActivityLevel = 'low' | 'medium' | 'moderate' | 'high' | 'very_high';
+export type TrainingLevel = 'none' | 'basic' | 'moderate' | 'experienced_only';
+export type CoatLength = 'short' | 'medium' | 'long';
+export type CoatType = 'double' | 'single' | 'curly' | 'silky' | 'rough' | 'wire' | 'smooth' | 'hairless';
+export type SheddingLevel = 'low' | 'medium' | 'high';
+export type DogStatus = 'available' | 'pending' | 'adopted';
+export type ChildrenAge = 'any' | '5_12' | '13_plus' | 'unknown';
