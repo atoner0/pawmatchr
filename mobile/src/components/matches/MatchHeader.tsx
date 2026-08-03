@@ -71,7 +71,8 @@ const styles = StyleSheet.create({
         fontWeight: "700",
     },
     breedGender: {
-        fontSize: 14, color: "#555"
+        fontSize: 14, 
+        color: "#555"
     },
     explanationBox: {
         backgroundColor: "#fff8f0",

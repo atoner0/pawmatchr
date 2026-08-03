@@ -2,7 +2,7 @@ import { Text, Pressable, View, StyleSheet } from "react-native"
 
 type Props = {
     label: string;
-    value: boolean;
+    value: boolean | undefined;
     onChange: (value: boolean) => void;
 }
 
