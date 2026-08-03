@@ -11,8 +11,6 @@ import { apiFetch } from "@/lib/api"
 import { useRouter } from "expo-router"
 import { QuestionnaireResponse } from "@/types/adopter"
 
-
-
 export default function QuestionnaireScreen() {
     const [step, setStep] = useState(0)
     const [error, setError] = useState("");
@@ -76,7 +74,7 @@ export default function QuestionnaireScreen() {
                 body: JSON.stringify(data)
             })
 
-            router.replace('/(protected)/matches/swipe')
+            router.replace('/(protected)/(drawer)/matches/swipe')
         } catch (err) {
             const errorMessage = err instanceof Error ? err.message : "An error occurred. Please try again.";
             setError(errorMessage);

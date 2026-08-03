@@ -76,10 +76,6 @@ export default function SwipeScreen() {
                 <Pressable style={styles.actionButton} onPress={handleFavourite}>
                     <Text style={styles.actionIcon}>♥</Text>
                 </Pressable>
-
-                <Pressable onPress={async () => { await clearToken(); router.replace('/(auth)/login'); }}>
-                    <Text>DEV: Log out</Text>
-                </Pressable>
             </View>
         </View>
     )
@@ -97,6 +93,7 @@ const styles = StyleSheet.create({
     actionBar: {
         flexDirection: "row",
         justifyContent: "center",
+        alignItems: "center",
         gap: 40,
         paddingVertical: 16,
     },
