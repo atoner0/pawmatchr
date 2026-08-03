@@ -29,6 +29,7 @@ export type ChildrenAge = z.infer<typeof ChildrenAgeEnum>
 export const createDogSchema = z.object({
     name: z.string().min(1),
     breed: z.string().min(1),
+    photo_url: z.string().url(),
     age: DogAgeEnum,
     gender: DogGenderEnum,
     size: DogSizeEnum,

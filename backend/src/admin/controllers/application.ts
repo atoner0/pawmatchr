@@ -5,7 +5,7 @@ import { getAdopterById } from '../../models/adopter.js'
 
 export const renderApplicationsDash = async (req: AdminAuthRequest, res: Response): Promise<void> => {
     try {
-        const shelterId = req.user.shelter_id
+        const shelterId = req.user!.shelter_id
 
         const applications = await getAppsByShelter(shelterId)
 
@@ -24,7 +24,7 @@ export const renderApplicationProfile = async (req: AdminAuthRequest, res: Respo
     }
 
     try {
-        const shelterId = req.user.shelter_id
+        const shelterId = req.user!.shelter_id
 
         const application = await getAppByIdAndShelter(applicationId, shelterId)
         if (!application) {
@@ -69,7 +69,7 @@ export const applicationToUnderReview = async (req: AdminAuthRequest, res: Respo
     }
 
     try {
-        const shelterId = req.user.shelter_id
+        const shelterId = req.user!.shelter_id
 
         const application = await getAppByIdAndShelter(applicationId, shelterId)
         if (!application) {
@@ -100,7 +100,7 @@ export const approveApplication = async (req: AdminAuthRequest, res: Response): 
     }
 
     try {
-        const shelterId = req.user.shelter_id
+        const shelterId = req.user!.shelter_id
 
         const application = await getAppByIdAndShelter(applicationId, shelterId)
         if (!application) {
@@ -153,7 +153,7 @@ export const rejectApplication = async (req: AdminAuthRequest, res: Response): P
     }
 
     try {
-        const shelterId = req.user.shelter_id
+        const shelterId = req.user!.shelter_id
 
         const application = await getAppByIdAndShelter(applicationId, shelterId)
         if (!application) {

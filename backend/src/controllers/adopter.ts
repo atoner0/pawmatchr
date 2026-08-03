@@ -1,5 +1,5 @@
 import type { Response } from 'express';
-import { getAdopterById, fillQuestionnaire, updateQuestionnaire } from '../models/adopter.js';
+import { getAdopterById, fillQuestionnaire, updateQuestionnaire, markMatchesReviewed } from '../models/adopter.js';
 import type { AdopterAuthRequest } from '../middleware/auth.js';
 import { createQuestionnaireSchema } from '../types/questionnaireSchema.js';
 
@@ -10,7 +10,7 @@ export const fillQuestionnaireController = async ( req: AdopterAuthRequest, res:
                 res.status(400).json({ message: 'Invalid request', errors: answers.error.issues})
                 return
             }
-        const adopter = req.user
+        const adopter = req.user!
 
         const fullAdopter = await fillQuestionnaire(adopter.adopter_id, answers.data)
         res.status(200).json({ adopter: fullAdopter})
@@ -28,7 +28,7 @@ export const updateQuestionnaireController = async ( req: AdopterAuthRequest, re
             }
 
         const updates = req.body
-        const adopter = req.user
+        const adopter = req.user!
 
         if (!updates || Object.keys(updates).length === 0) {
             res.status(400).json({message: 'No fields provided for update'})
@@ -36,7 +36,7 @@ export const updateQuestionnaireController = async ( req: AdopterAuthRequest, re
         }
 
         const updatedAdopter = await updateQuestionnaire(adopter.adopter_id, updates)
-        res.status(200).json({updatedAdopter})
+        res.status(200).json({adopter: updatedAdopter})
     } catch (error) {
         res.status(500).json({ message: 'Error updating questionnaire', error})
     }
@@ -44,7 +44,7 @@ export const updateQuestionnaireController = async ( req: AdopterAuthRequest, re
 
 export const getQuestionnaire = async ( req: AdopterAuthRequest, res: Response): Promise<void> => {
     try {
-        const adopter = req.user
+        const adopter = req.user!
         const profile = await getAdopterById(adopter.adopter_id)
 
         if(!profile){
@@ -55,5 +55,15 @@ export const getQuestionnaire = async ( req: AdopterAuthRequest, res: Response):
         res.status(200).json({adopter: profile})
     } catch (error) {
         res.status(500).json({ message: 'Error getting profile', error})
+    }
+}
+
+export const markMatchesReviewedController = async (req: AdopterAuthRequest, res: Response): Promise<void> => {
+    try {
+        const adopter = req.user!
+        const updatedAdopter = await markMatchesReviewed(adopter.adopter_id)
+        res.status(200).json({ adopter: updatedAdopter })
+    } catch (error) {
+        res.status(500).json({ message: 'Error updating matches reviewed status', error})
     }
 }

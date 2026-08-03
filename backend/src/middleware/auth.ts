@@ -7,13 +7,13 @@ import type { SafeAdopter } from '../types/adopter.js'
 const JWT_SECRET = process.env.JWT_SECRET ?? ''
 
 export interface AdopterAuthRequest extends Request {
-    user: SafeAdopter
-    userType: 'adopter'
+    user?: SafeAdopter
+    userType?: 'adopter'
 }
 
 export interface AdminAuthRequest extends Request {
-    user: SafeShelterAdmin
-    userType: 'shelter_admin'
+    user?: SafeShelterAdmin
+    userType?: 'shelter_admin'
 }
 
 const extractToken = (req: Request): string | null => {

@@ -70,7 +70,7 @@ const seed = async () => {
         'yes', 'unknown', 'yes', 'any',
         '4_6', 'moderate', 'basic',
         'long', 'double', 'high',
-        '["pulls_on_lead"]', '[]',
+        '["Pulls on lead"]', '[]',
         'available',
         'Biscuit is a gentle and affectionate golden retriever who loves nothing more than a long walk followed by a cuddle on the sofa. He gets on well with children of all ages and is learning to walk nicely on the lead. He would thrive in an active family home with a garden.',
         'https://images.unsplash.com/photo-1626736637845-53045bb9695b?q=80&w=711&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D?w=400'
@@ -92,7 +92,7 @@ const seed = async () => {
         'yes', 'no', 'yes', '5_12',
         '2_4', 'very_high', 'moderate',
         'medium', 'double', 'medium',
-        '["pulls_on_lead", "jumps_at_people"]', '["cats"]',
+        '["Pulls on lead", "Jumps at people"]', '["Cats"]',
         'available',
         'Luna is a bright and energetic young border collie who needs a lot of mental and physical stimulation. She is not suitable for homes with cats but loves the company of other dogs. She would be best suited to an experienced owner who can channel her intelligence and energy through training and activities.',
         'https://images.unsplash.com/photo-1654256578072-b932c33cb92e?q=80&w=1176&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D?w=400'
@@ -114,7 +114,7 @@ const seed = async () => {
         'no', 'no', 'yes', '13_plus',
         '4_6', 'moderate', 'moderate',
         'short', 'smooth', 'low',
-        '["reactive_to_dogs", "resource_guarding"]', '["other_dogs"]',
+        '["Reactive to dogs", "Resource guarding"]', '["Other dogs"]',
         'available',
         'Archie is a loving and loyal staffy who bonds deeply with his people. He needs to be the only pet in the home as he does not get on with other dogs or cats. He is fine with older teenagers and would suit a calm, experienced owner who can give him the one-on-one attention he deserves.',
         'https://images.unsplash.com/photo-1700064777749-0ac818716100?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D?w=400'
@@ -161,7 +161,7 @@ const seed = async () => {
         'unknown', 'no', 'yes', '13_plus',
         '6_8', 'high', 'experienced_only',
         'medium', 'double', 'high',
-        '["excessive_barking", "separation_anxiety"]', '["loud_noises", "strangers"]',
+        '["Excessive barking", "Separation anxiety"]', '["Loud noises", "Strangers"]',
         'available',
         'Rex is a dignified and intelligent older shepherd who has had a difficult past. He is nervous around strangers and loud environments, and needs a patient, experienced owner who understands the breed. He has shown no aggression and with the right home and routine he has a lot of love to give. His compatibility with other dogs is currently being assessed.',
         'https://images.unsplash.com/photo-1621951714307-0f9b8070a9b0?q=80&w=1631&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D?w=400'
@@ -212,7 +212,7 @@ const seed = async () => {
         false, NULL,
         '2_4', 'moderate',
         false, true, 'extensive',
-        'none', 'none', 'none', 'none', 'moderate',
+        '["none"]', 'none', '["none"]', 'none', 'moderate',
         'I go hiking most weekends and have a large garden, I currently have a friendly older dog at home',
         now()
       ) RETURNING adopter_id
@@ -235,7 +235,7 @@ const seed = async () => {
         true, '5_12',
         '4_6', 'medium',
         true, false, NULL,
-        'none', 'none', 'none', 'none', 'intensive',
+        '["none"]', 'none', '["none"]', 'none', 'intensive',
         'First time owner, keen to do things right and willing to commit to training',
         now()
       ) RETURNING adopter_id
@@ -258,7 +258,7 @@ const seed = async () => {
         false, NULL,
         '0_2', 'low',
         false, false, NULL,
-        'none', 'none', 'small', 'low', 'basic',
+        '["none"]', 'none', '["small"]', 'low', 'basic',
         'Looking for a calm companion to relax with in the evenings',
         now()
       ) RETURNING adopter_id
@@ -301,7 +301,7 @@ const seed = async () => {
     const applicationId2 = app2.rows[0].application_id
     const applicationId3 = app3.rows[0].application_id
 
-  // ============================================================
+    // ============================================================
     // Availability — Shelter 1
     // ============================================================
     const avail1 = await client.query(`
@@ -330,7 +330,6 @@ const seed = async () => {
 
     const availabilityId1 = avail1.rows[0].availability_id
     const availabilityId2 = avail2.rows[0].availability_id
-    const availabilityId3 = avail3.rows[0].availability_id
     const availabilityId4 = avail4.rows[0].availability_id
 
     // ============================================================
@@ -358,11 +357,19 @@ const seed = async () => {
     const shelterCount = await pool.query('SELECT COUNT(*) FROM shelters')
     const adminCount = await pool.query('SELECT COUNT(*) FROM shelter_admins')
     const dogCount = await pool.query('SELECT COUNT(*) FROM dogs')
+    const adopterCount = await pool.query('SELECT COUNT(*) FROM adopters')
+    const applicationCount = await pool.query('SELECT COUNT(*) FROM applications')
+    const availabilityCount = await pool.query('SELECT COUNT(*) FROM availability')
+    const bookingCount = await pool.query('SELECT COUNT(*) FROM bookings')
 
     console.log('✓ Seed complete')
-    console.log(`  Shelters: ${shelterCount.rows[0].count}`)
-    console.log(`  Admins:   ${adminCount.rows[0].count}  (password: Admin1234!)`)
-    console.log(`  Dogs:     ${dogCount.rows[0].count}`)
+    console.log(`  Shelters:     ${shelterCount.rows[0].count}`)
+    console.log(`  Admins:       ${adminCount.rows[0].count}  (password: Admin1234!)`)
+    console.log(`  Dogs:         ${dogCount.rows[0].count}`)
+    console.log(`  Adopters:     ${adopterCount.rows[0].count}  (password: Adopter1234!)`)
+    console.log(`  Applications: ${applicationCount.rows[0].count}`)
+    console.log(`  Availability: ${availabilityCount.rows[0].count}`)
+    console.log(`  Bookings:     ${bookingCount.rows[0].count}`)
 
   } catch (error) {
     await client.query('ROLLBACK')

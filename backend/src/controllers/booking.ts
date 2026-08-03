@@ -18,7 +18,7 @@ export const createBookingController = async ( req: AdopterAuthRequest, res: Res
             return
         }
 
-        const adopter = req.user
+        const adopter = req.user!
 
         if (application.adopter_id !== adopter.adopter_id) {
             res.status(403).json({ message: 'Not your application' })
@@ -58,7 +58,7 @@ export const getBooking = async( req: AdopterAuthRequest, res: Response): Promis
     }
 
     try {
-        const adopter = req.user
+        const adopter = req.user!
 
         const application = await getOneAdopterApp(applicationId)
         if(!application) {

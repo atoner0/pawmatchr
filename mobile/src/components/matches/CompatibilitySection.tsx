@@ -41,10 +41,12 @@ export default function CompatibilitySection({ match }: Props) {
                     {getDogLabel(childrenAgeLabel, dog.children_age)}
                 </Text>
             </View>
-        )};
+        )}
         </View>
     )
 }
+
+
 
 const styles = StyleSheet.create({
     container: { 

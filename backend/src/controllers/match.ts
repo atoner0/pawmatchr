@@ -6,7 +6,7 @@ import { getAllAvailableDogs } from '../models/dog.js';
 
 export const getMatches = async (req: AdopterAuthRequest, res: Response): Promise<void> => {
     try {
-        const adopter = req.user
+        const adopter = req.user!
 
         const cached = await getMatchesByAdopterId(adopter.adopter_id)
 
@@ -28,7 +28,9 @@ export const getMatches = async (req: AdopterAuthRequest, res: Response): Promis
             return
         }
 
-        const matches = await createMatches(adopter.adopter_id, result.results)
+        await createMatches(adopter.adopter_id, result.results)
+
+        const matches = getMatchesByAdopterId(adopter.adopter_id)
 
         res.status(200).json(matches)
     } catch (error) {

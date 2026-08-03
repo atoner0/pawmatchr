@@ -6,6 +6,7 @@ export interface Dog {
     shelter_id: number
     name: string
     breed: string
+    photo_url: string
     age: DogAge
     gender: DogGender
     size: DogSize

@@ -36,7 +36,8 @@ CREATE TABLE adopters (
     training_commitment TEXT
                         CHECK (training_commitment IN ('none', 'basic', 'moderate', 'intensive')),
     pref_notes          TEXT,
-    completed_at        TIMESTAMPTZ 
+    completed_at        TIMESTAMPTZ,
+    matches_reviewed    BOOLEAN DEFAULT false 
 );
 
 CREATE TABLE shelters (
@@ -62,7 +63,7 @@ CREATE TABLE dogs (
     photo_url           VARCHAR(255) NOT NULL,
     name                TEXT NOT NULL,
     breed               TEXT NOT NULL,
-    age                 TEXT NOT NULL DEFAULT 'unknown'
+    age                 TEXT NOT NULL
                         CHECK (age IN ('0_2', '3_5', '6_8', '8_plus')),
     gender              TEXT NOT NULL
                         CHECK (gender IN ('male', 'female')),

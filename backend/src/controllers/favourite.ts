@@ -13,7 +13,7 @@ export const createFavourite = async ( req: AdopterAuthRequest, res: Response): 
             }
 
         const dog_id = result.data.dog_id
-        const adopter = req.user
+        const adopter = req.user!
 
         const dog = await getDogById(dog_id)
         if (!dog) {
@@ -35,7 +35,7 @@ export const createFavourite = async ( req: AdopterAuthRequest, res: Response): 
 
 export const getFavourites = async (req: AdopterAuthRequest, res: Response): Promise<void> => {
     try {
-        const adopter = req.user
+        const adopter = req.user!
 
         const favourites = await getFavouritesByAdopter(adopter.adopter_id)
 
@@ -53,7 +53,7 @@ export const deleteFavouriteController = async (req: AdopterAuthRequest, res: Re
     }
     
     try {
-        const adopter = req.user
+        const adopter = req.user!
 
         const deletedCount = await deleteFavourite(adopter.adopter_id, dogId)
         if (deletedCount === 0){

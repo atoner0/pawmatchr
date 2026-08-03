@@ -27,7 +27,7 @@ Promise<MatchWithDog[]> => {
 export const createMatches = async (
     adopter_id: number,
     results: MatchResultFromPython[]
-): Promise<Match[]> => {
+): Promise<void> => {
     const client = await pool.connect()
 
     try {
@@ -60,16 +60,13 @@ export const createMatches = async (
                 ]
             )
 
-            const match = matchResult.rows[0]
-            if (!match) {
+            if (!matchResult.rows[0]) {
                 throw new Error ('Match upsert did not return a row')
             }
-
-            matches.push(match)
         }
 
         await client.query('COMMIT')
-        return matches
+        
     } catch (error) {
         await client.query('ROLLBACK')
         throw error

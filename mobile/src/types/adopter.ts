@@ -8,6 +8,7 @@ export type AccountFields = {
     phone: string;
     postcode: string;
     completed_at: string | null;
+    matches_reviewed: boolean | null
 }
 
 export type QuestionnaireResponse = {

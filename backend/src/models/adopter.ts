@@ -144,3 +144,14 @@ export const updateQuestionnaire = async (
     }
     
 } 
+
+export const markMatchesReviewed = async (adopter_id: number) => {
+    const result = await pool.query(
+        `UPDATE adopters
+        SET matches_reviewed = true
+        WHERE adopter_id = $1
+        RETURNING adopter_id, matches_reviewed`,
+        [adopter_id]
+    )
+    return result.rows[0]
+}

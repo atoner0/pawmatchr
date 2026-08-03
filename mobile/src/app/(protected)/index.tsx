@@ -13,7 +13,7 @@ export default function ProtectedIndex() {
             .then((response) => {
                 console.log("3: got response", response)
                 if (response.adopter.completed_at) {
-                    router.replace('/(protected)/matches')
+                    router.replace('/(protected)/matches/swipe')
                 } else {
                     router.replace('/(protected)/questionnaire')
                 }

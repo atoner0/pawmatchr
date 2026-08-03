@@ -6,7 +6,7 @@ import type { Dog } from '../../types/dog.js'
 
 export const renderAllDogsByShelter = async (req: AdminAuthRequest, res: Response): Promise<void> => {
     try {
-        const shelterId = req.user.shelter_id
+        const shelterId = req.user!.shelter_id
 
         const dogs = await getDogsByShelterId(shelterId)
 
@@ -25,7 +25,7 @@ export const renderShelterDogById = async (req: AdminAuthRequest, res: Response)
     }
 
     try {
-        const shelterId = req.user.shelter_id
+        const shelterId = req.user!.shelter_id
 
         const dog = await getDogByIdAndShelterId(dogId, shelterId)
 
@@ -52,7 +52,7 @@ export const renderCreateDog = async (req: AdminAuthRequest, res: Response): Pro
 
 export const postCreateDog = async (req: AdminAuthRequest, res: Response): Promise<void> => {
     try {
-        const shelterId = req.user.shelter_id
+        const shelterId = req.user!.shelter_id
 
         const normalised = {
             ...req.body,
@@ -97,7 +97,7 @@ export const renderEditDog = async (req: AdminAuthRequest, res: Response): Promi
     }
 
     try {
-        const shelterId = req.user.shelter_id
+        const shelterId = req.user!.shelter_id
 
         const dog = await getDogByIdAndShelterId(dogId, shelterId)
         if(!dog){
@@ -120,7 +120,7 @@ export const postUpdateDog = async (req: AdminAuthRequest, res: Response): Promi
     }
 
     try {
-        const shelterId = req.user.shelter_id
+        const shelterId = req.user!.shelter_id
 
         const dog = await getDogByIdAndShelterId(dogId, shelterId)
         if(!dog){
@@ -177,7 +177,7 @@ export const postDeleteDog = async (req: AdminAuthRequest, res: Response): Promi
     }
 
     try {
-        const shelterId = req.user.shelter_id
+        const shelterId = req.user!.shelter_id
 
         const dog = await getDogByIdAndShelterId(dogId, shelterId)
         if(!dog){

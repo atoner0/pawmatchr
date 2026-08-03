@@ -35,14 +35,14 @@ export default function Login() {
         placeholder="Email"
         value = {email}
         onChangeText={setEmail}
-      / >
+      />
 
       <TextInput
         placeholder="Password"
         value = {password}
         onChangeText={setPassword}
         secureTextEntry
-      / >
+      />
 
       {error ? <Text>{error}</Text> : null}
 

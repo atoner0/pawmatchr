@@ -12,7 +12,7 @@ export const createApplicationController = async ( req: AdopterAuthRequest, res:
         }
         
         const dog = result.data
-        const adopter = req.user
+        const adopter = req.user!
 
         const application = await createApplication(dog.dog_id, adopter.adopter_id)
         res.status(201).json({application})
@@ -23,7 +23,7 @@ export const createApplicationController = async ( req: AdopterAuthRequest, res:
 
 export const getAllAdopterApplications = async ( req: AdopterAuthRequest, res: Response): Promise<void> => {
     try {
-        const adopter = req.user
+        const adopter = req.user!
 
         const applications = await getAllAdopterApps(adopter.adopter_id)
 
@@ -97,7 +97,7 @@ export const withdrawApplication = async (req: AdopterAuthRequest, res: Response
             return
         }
 
-        if (application.adopter_id !== req.user.adopter_id) {
+        if (application.adopter_id !== req.user!.adopter_id) {
             res.status(403).json({ message: 'Not your application' })
             return
         }

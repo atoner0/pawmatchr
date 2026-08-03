@@ -5,7 +5,7 @@ import { createAvailabilitySchema } from '../../types/availabilitySchema.js'
 
 export const renderAvailability = async (req: AdminAuthRequest, res: Response) => {
     try {
-        const shelterId = req.user.shelter_id
+        const shelterId = req.user!.shelter_id
         const slots = await getAvailabilityByShelter(shelterId)
 
         res.render('availability/slots', { title: 'Availability Slots', slots: slots })
@@ -31,7 +31,7 @@ export const renderCreateAvailability = async (req: AdminAuthRequest, res: Respo
 
 export const postCreateAvailability = async (req: AdminAuthRequest, res: Response) => {
     try {
-        const shelterId = req.user.shelter_id
+        const shelterId = req.user!.shelter_id
 
         const result = createAvailabilitySchema.safeParse(req.body)
         if (!result.success){
@@ -60,7 +60,7 @@ export const renderEditAvailability = async (req: AdminAuthRequest, res: Respons
     }
     
     try {
-        const shelterId = req.user.shelter_id
+        const shelterId = req.user!.shelter_id
 
         const slot = await getAvailabilityByIdAndShelter(availabilityId, shelterId)
         if (!slot){
@@ -90,7 +90,7 @@ export const postEditAvailability = async (req: AdminAuthRequest, res: Response)
     }
 
     try {
-        const shelterId = req.user.shelter_id
+        const shelterId = req.user!.shelter_id
 
         const slot = await getAvailabilityByIdAndShelter(availabilityId, shelterId)
         if (!slot){
@@ -132,7 +132,7 @@ export const postDeleteAvailability = async (req: AdminAuthRequest, res: Respons
     }
 
     try {
-        const shelterId = req.user.shelter_id
+        const shelterId = req.user!.shelter_id
 
         const slot = await getAvailabilityByIdAndShelter(availabilityId, shelterId)
         if (!slot){

@@ -6,7 +6,7 @@ import { getUpcomingBookingsByShelter } from '../../models/booking.js'
 
 export const renderDashboard = async (req: AdminAuthRequest, res: Response) => {
     try {
-        const shelterId = req.user.shelter_id
+        const shelterId = req.user!.shelter_id
 
         const stats = await getDashboardStats(shelterId)
         const recentApplications = await getRecentAppsByShelter(shelterId)

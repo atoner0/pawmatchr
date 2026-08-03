@@ -30,6 +30,7 @@ export interface Adopter {
     training_commitment?: TrainingCommitment | null,
     pref_notes?: string | null,
     completed_at?: string | null
+    matches_reviewed?: boolean | null
 }
 
 export type SafeAdopter = Omit<Adopter, 'password_hash'>

@@ -6,7 +6,7 @@ import { getAppByIdAndShelter } from '../../models/application.js';
 
 export const renderBookings = async (req: AdminAuthRequest, res: Response) => {
     try {
-        const shelterId = req.user.shelter_id
+        const shelterId = req.user!.shelter_id
         const bookings = await getBookingsByShelter(shelterId)
         const stats = await getBookingStats(shelterId)
         const upcoming = await getUpcomingBookingsByShelter(shelterId)
@@ -26,7 +26,7 @@ export const renderSingleBooking = async (req: AdminAuthRequest, res: Response) 
     }
 
     try {
-        const shelterId = req.user.shelter_id
+        const shelterId = req.user!.shelter_id
 
         const booking = await getBookingByIdAndShelter(bookingId, shelterId)
         if (!booking){
@@ -63,7 +63,7 @@ export const postCompleteBooking = async (req: AdminAuthRequest, res: Response) 
     }
     
     try {
-        const shelterId = req.user.shelter_id
+        const shelterId = req.user!.shelter_id
 
         const booking = await getBookingByIdAndShelter(bookingId, shelterId)
         if (!booking){
@@ -94,7 +94,7 @@ export const postCancelBooking = async (req: AdminAuthRequest, res: Response) =>
     }
     
     try {
-        const shelterId = req.user.shelter_id
+        const shelterId = req.user!.shelter_id
 
         const booking = await getBookingByIdAndShelter(bookingId, shelterId)
         if (!booking){
