@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { View, Pressable, StyleSheet, ActivityIndicator, Text, FlatList } from "react-native";
 import { useRouter } from "expo-router";
-import DogMatchCard from "@/components/matches/DogMatchCard";
 import { MatchWithDog } from "@/types/match";
-import { clearToken } from "@/lib/auth";
 import { getFavourites } from "@/lib/favourites"; 
 import FavouriteRow from "@/components/matches/FavouriteRow";
+import { Ionicons } from "@expo/vector-icons"
 
 export default function RankedScreen() {
     const router = useRouter();
@@ -38,6 +37,12 @@ export default function RankedScreen() {
 
     return (
         <View style={styles.container}>
+            <View style={{paddingTop: 16 }}>
+                <Pressable onPress={() => router.back()} style={{ padding: 16}}>
+                    <Ionicons name="chevron-back" size={20}/>
+                </Pressable>
+            </View>
+            
             <FlatList
                 data={matches}
                 keyExtractor={(item) => item.match_id.toString()}

@@ -7,7 +7,7 @@ type Props = {
     onPress: () => void;
 }
 
-export default function FavouriteRow({ match, onPress }: Props) {
+export default function TopMatchCard({ match, onPress }: Props) {
     const { dog, overall_score } = match;
     const scorePercent = Math.round(overall_score * 100);
     return (
@@ -16,10 +16,8 @@ export default function FavouriteRow({ match, onPress }: Props) {
                 <Image source={{ uri: dog.photo_url }} style={styles.photo}/>
 
                 <View style={styles.textBlock}>
+                    <Text style={styles.title}>Your top match</Text>
                     <Text style={styles.name}>{dog.name} - {scorePercent}%</Text>
-                    <Text style={styles.breedGender}>
-                        {dog.breed} | {dog.gender}
-                    </Text>
                 </View>
                 <Ionicons name="chevron-forward" size={20}/>
             </View>
@@ -47,7 +45,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: "700",
     },
-    breedGender: {
+    title: {
         fontSize: 14, 
         color: "#555",
         marginTop: 2,

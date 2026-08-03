@@ -1,27 +1,26 @@
 import { useEffect } from "react";
 import { useRouter } from "expo-router";
-import { apiFetch } from "@/lib/api";
-import { QuestionnaireResponse } from "@/types/adopter";
+import { useAdopter } from "@/context/AdopterContext";
 
 export default function ProtectedIndex() {
     const router = useRouter()
-    console.log("1: component rendering")
+    const { refetch } = useAdopter();
 
     useEffect(() => {
-        console.log("2: effect running")
-        apiFetch<QuestionnaireResponse>('/adopter/questionnaire')
-            .then((response) => {
-                console.log("3: got response", response)
-                if (response.adopter.completed_at) {
-                    router.replace('/(protected)/matches/swipe')
-                } else {
-                    router.replace('/(protected)/questionnaire')
-                }
-            })
-            .catch((err) => {
-                console.log("4: caught error", err)
-                router.replace('/(protected)/questionnaire')
-            })
+        refetch().then((adopter) => {
+            if (!adopter) {
+                router.replace("/(protected)/questionnaire");
+                return;
+            }
+
+            if (adopter.matches_reviewed) {
+                router.replace("/(protected)/home");
+            } else if (adopter.completed_at) {
+                router.replace("/(protected)/matches/swipe");
+            } else {
+                router.replace("/(protected)/questionnaire")
+            }
+        })
     }, [])
 
     return null
