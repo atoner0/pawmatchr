@@ -30,7 +30,7 @@ export const getMatches = async (req: AdopterAuthRequest, res: Response): Promis
 
         await createMatches(adopter.adopter_id, result.results)
 
-        const matches = getMatchesByAdopterId(adopter.adopter_id)
+        const matches = await getMatchesByAdopterId(adopter.adopter_id)
 
         res.status(200).json(matches)
     } catch (error) {

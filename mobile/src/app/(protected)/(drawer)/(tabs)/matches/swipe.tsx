@@ -6,7 +6,6 @@ import { MatchWithDog } from "@/types/match";
 import { getMatches } from "@/lib/matches";
 import { addFavourite } from "@/lib/favourites";
 import { markMatchesReviewed } from "@/lib/adopter";
-import { clearToken } from "@/lib/auth";
 
 export default function SwipeScreen() {
     const router = useRouter();
@@ -25,7 +24,7 @@ export default function SwipeScreen() {
     useEffect(() => {
         if (!loading && matches.length > 0 && currentIndex >= matches.length) {
             markMatchesReviewed().then(() => {
-                router.replace("/matches/ranked")
+                router.replace("/(protected)/(drawer)/(tabs)/matches/ranked")
             });
         }
     }, [currentIndex, loading, matches.length])

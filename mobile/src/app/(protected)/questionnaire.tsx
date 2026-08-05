@@ -74,7 +74,7 @@ export default function QuestionnaireScreen() {
                 body: JSON.stringify(data)
             })
 
-            router.replace('/(protected)/(drawer)/matches/swipe')
+            router.replace('/(protected)/(drawer)/(tabs)/matches/swipe')
         } catch (err) {
             const errorMessage = err instanceof Error ? err.message : "An error occurred. Please try again.";
             setError(errorMessage);

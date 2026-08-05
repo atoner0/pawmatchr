@@ -68,17 +68,17 @@ export default function HomeScreen() {
             <QuickLinkButton
                 icon="heart-outline"
                 label="My Favourites"
-                onPress={() => router.push("/(protected)/matches/ranked")}
+                onPress={() => router.push("/(protected)/(drawer)/(tabs)/matches/ranked")}
             />
             <QuickLinkButton
                 icon="document-text-outline"
                 label="My Applications"
-                onPress={() => console.log("TODO")}
+                onPress={() => router.push("/(protected)/(drawer)/(tabs)/applications")}
             />
             <QuickLinkButton
                 icon="book-outline"
                 label="Support Materials"
-                onPress={() => console.log("TODO")}
+                onPress={() => router.push("/(protected)/(drawer)/(tabs)/support")}
             />
 
 

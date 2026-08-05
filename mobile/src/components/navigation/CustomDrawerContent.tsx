@@ -12,20 +12,24 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
 
     return (
         <View style={styles.container}>
-            <View style={styles.profileSection}>
-                <View style={styles.avatar}>
-                    <Text style={styles.avatarText}>{initials}</Text>
+            <Pressable
+                onPress={() => router.push("/(protected)/(drawer)/(tabs)/profile")}
+            >
+                <View style={styles.profileSection}>
+                    <View style={styles.avatar}>
+                        <Text style={styles.avatarText}>{initials}</Text>
+                    </View>
+                    <View>
+                        <Text style={styles.name}>{adopter?.first_name} {adopter?.last_name}</Text>
+                        <Text style={styles.email}>{adopter?.email}</Text>
+                    </View>
                 </View>
-                <View>
-                    <Text style={styles.name}>{adopter?.first_name} {adopter?.last_name}</Text>
-                    <Text style={styles.email}>{adopter?.email}</Text>
-                </View>
-            </View>
-
+            </Pressable>
+            
             <View style={styles.navSection}>
                 <Pressable 
                     style={styles.navItem}
-                    onPress={() => router.push("/(protected)/(drawer)/home")}
+                    onPress={() => router.push("/(protected)/(drawer)/(tabs)/home")}
                 >
                     <Ionicons name="home-outline" size={22} color="#fff"/> 
                     <Text style={styles.navLabel}>Home</Text>
@@ -33,7 +37,7 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
 
                 <Pressable 
                     style={styles.navItem}
-                    onPress={() => router.push("/(protected)/(drawer)/matches/swipe")}
+                    onPress={() => router.push("/(protected)/(drawer)/(tabs)/matches/swipe")}
                 >
                     <Ionicons name="paw-outline" size={22} color="#fff"/> 
                     <Text style={styles.navLabel}>Matches</Text>
@@ -41,7 +45,7 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
 
                 <Pressable 
                     style={styles.navItem}
-                    onPress={() => router.push("/(protected)/(drawer)/matches/ranked")}
+                    onPress={() => router.push("/(protected)/(drawer)/(tabs)/matches/ranked")}
                 >
                     <Ionicons name="heart-outline" size={22} color="#fff"/> 
                     <Text style={styles.navLabel}>Favourites</Text>
@@ -49,7 +53,7 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
 
                 <Pressable 
                     style={styles.navItem}
-                    onPress={() => router.push("/(protected)/(drawer)/applications")}
+                    onPress={() => router.push("/(protected)/(drawer)/(tabs)/applications")}
                 >
                     <Ionicons name="document-text-outline" size={22} color="#fff"/> 
                     <Text style={styles.navLabel}>Applications</Text>
@@ -57,7 +61,7 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
 
                 <Pressable 
                     style={styles.navItem}
-                    onPress={() => router.push("/(protected)/(drawer)/bookings")}
+                    onPress={() => router.push("/(protected)/(drawer)/(tabs)/bookings")}
                 >
                     <Ionicons name="calendar-outline" size={22} color="#fff"/> 
                     <Text style={styles.navLabel}>Bookings</Text>
@@ -65,7 +69,7 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
 
                 <Pressable 
                     style={styles.navItem}
-                    onPress={() => router.push("/(protected)/(drawer)/support")}
+                    onPress={() => router.push("/(protected)/(drawer)/(tabs)/support")}
                 >
                     <Ionicons name="book-outline" size={22} color="#fff"/> 
                     <Text style={styles.navLabel}>Support</Text>
@@ -76,7 +80,7 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
 
             <Pressable
                 style={styles.navItem} 
-                onPress={() => router.push("/(protected)/(drawer)/settings")}
+                onPress={() => router.push("/(protected)/(drawer)/(tabs)/settings")}
             >
                 <Ionicons name="settings-outline" size={22} color="#fff"/> 
                 <Text style={styles.navLabel}>Settings</Text>
@@ -91,7 +95,7 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
                 onPress={async () => { await clearToken(); router.replace('/(auth)/login'); }}
             >
                 <Ionicons name="log-out-outline" size={20} color="#fff" />
-                <Text style={styles.navLabel}>Log out</Text>
+                <Text style={styles.signOutText}>Log out</Text>
             </Pressable>
         </View>
     )

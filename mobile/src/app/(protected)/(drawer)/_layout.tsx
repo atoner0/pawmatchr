@@ -17,16 +17,7 @@ export default function DrawerLayout() {
         }}
         drawerContent={(props) => <CustomDrawerContent {...props} />}
     >
-        <Drawer.Screen name="home"/>
-        <Drawer.Screen 
-            name="matches/swipe" 
-            options={{ headerTitle: () => <HeaderTitle title="Matches"/> }} 
-        />
-
-        <Drawer.Screen 
-            name="matches/ranked" 
-            options={{ headerTitle: () => <HeaderTitle title="Favourites"/> }} 
-        />
+        <Drawer.Screen name="(tabs)"/>
     </Drawer>
   );
 }
