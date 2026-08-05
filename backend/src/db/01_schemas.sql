@@ -145,7 +145,7 @@ CREATE TABLE applications(
     status              TEXT NOT NULL DEFAULT 'submitted'
                         CHECK (status IN ('submitted', 'under_review', 'approved', 'adopted', 'rejected', 'withdrawn')),
     readiness_checklist BOOLEAN NOT NULL DEFAULT false,
-    submitted_at        TIMESTAMPTZ,
+    submitted_at        TIMESTAMPTZ DEFAULT now(),
     decision_at         TIMESTAMPTZ,
     adopted_at          TIMESTAMPTZ
 );

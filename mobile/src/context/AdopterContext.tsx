@@ -1,17 +1,18 @@
 import { createContext, useContext, useState, useCallback, ReactNode } from "react";
 import { apiFetch } from "@/lib/api";
 import { QuestionnaireResponse, AccountFields } from "@/types/adopter";
+import { QuestionnaireInput } from "@/types/questionnaireSchema";
 
 type AdopterContextType = {
-    adopter: AccountFields | null;
+    adopter: (AccountFields & QuestionnaireInput) | null;
     loading: boolean;
-    refetch: () => Promise<AccountFields | null>;
+    refetch: () => Promise<(AccountFields & QuestionnaireInput) | null>;
 }
 
 const AdopterContext = createContext<AdopterContextType | undefined>(undefined);
 
 export function AdopterProvider({ children }: { children: ReactNode }) {
-    const [adopter, setAdopter] = useState<AccountFields | null>(null);
+    const [adopter, setAdopter] = useState<(AccountFields & QuestionnaireInput) | null>(null);
     const [loading, setLoading] = useState(true);
 
     const refetch = useCallback(async () => {

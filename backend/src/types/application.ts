@@ -14,7 +14,11 @@ export interface Application {
 export interface ApplicationWithDetails extends Application {
     dog_name: string
     photo_url: string 
+    breed: string
+    gender: string
     first_name: string
     last_name: string
     shelter_id: number
+    shelter_name: string
+    shelter_city: string
 }

@@ -17,11 +17,14 @@ export const createApplication = async (
 export const getAllAdopterApps = async(adopter_id: number): Promise<ApplicationWithDetails[]> => {
     const result = await pool.query(
         `SELECT applications.*,
-            dogs.name AS dog_name, dogs.photo_url, dogs.shelter_id, adopters.first_name, adopters.last_name 
+            dogs.name AS dog_name, dogs.photo_url, dogs.shelter_id, dogs.breed, dogs.gender,
+            shelters.name AS shelter_name, shelters.city AS shelter_city, 
+            adopters.first_name, adopters.last_name 
          FROM applications 
          JOIN dogs ON applications.dog_id = dogs.dog_id
+         JOIN shelters ON applications.dog_id = dogs.dog_id
          JOIN adopters ON applications.adopter_id = adopters.adopter_id
-         WHERE application_id = $1`,
+         WHERE applications.adopter_id = $1`,
         [adopter_id]
     )
     return result.rows
@@ -30,9 +33,12 @@ export const getAllAdopterApps = async(adopter_id: number): Promise<ApplicationW
 export const getAppsByShelter = async(shelter_id: number): Promise<ApplicationWithDetails[]> => {
     const result = await pool.query(
         `SELECT applications.*,
-            dogs.name AS dog_name, dogs.photo_url, adopters.first_name, adopters.last_name
+            dogs.name AS dog_name, dogs.photo_url, dogs.shelter_id, dogs.breed, dogs.gender,
+            shelters.name AS shelter_name, shelters.city AS shelter_city, 
+            adopters.first_name, adopters.last_name 
          FROM applications 
          JOIN dogs ON applications.dog_id = dogs.dog_id
+         JOIN shelters ON applications.dog_id = dogs.dog_id
          JOIN adopters ON applications.adopter_id = adopters.adopter_id
          WHERE dogs.shelter_id = $1`,
         [shelter_id]
@@ -43,9 +49,12 @@ export const getAppsByShelter = async(shelter_id: number): Promise<ApplicationWi
 export const getAppByIdAndShelter = async(application_id: number, shelter_id: number): Promise<ApplicationWithDetails | null > => {
     const result = await pool.query(
         `SELECT applications.*,
-            dogs.name AS dog_name, dogs.photo_url, adopters.first_name, adopters.last_name 
+            dogs.name AS dog_name, dogs.photo_url, dogs.shelter_id, dogs.breed, dogs.gender,
+            shelters.name AS shelter_name, shelters.city AS shelter_city, 
+            adopters.first_name, adopters.last_name 
          FROM applications 
          JOIN dogs ON applications.dog_id = dogs.dog_id
+         JOIN shelters ON applications.dog_id = dogs.dog_id
          JOIN adopters ON applications.adopter_id = adopters.adopter_id
          WHERE application_id = $1 AND dogs.shelter_id = $2`,
         [application_id, shelter_id]
@@ -56,9 +65,12 @@ export const getAppByIdAndShelter = async(application_id: number, shelter_id: nu
 export const getOneAdopterApp = async(application_id: number): Promise<ApplicationWithDetails | null> => {
     const result = await pool.query(
         `SELECT applications.*,
-            dogs.name AS dog_name, dogs.photo_url, dogs.shelter_id, adopters.first_name, adopters.last_name 
+            dogs.name AS dog_name, dogs.photo_url, dogs.shelter_id, dogs.breed, dogs.gender,
+            shelters.name AS shelter_name, shelters.city AS shelter_city, 
+            adopters.first_name, adopters.last_name 
          FROM applications 
          JOIN dogs ON applications.dog_id = dogs.dog_id
+         JOIN shelters ON applications.dog_id = dogs.dog_id
          JOIN adopters ON applications.adopter_id = adopters.adopter_id
          WHERE application_id = $1`,
         [application_id]
@@ -69,11 +81,13 @@ export const getOneAdopterApp = async(application_id: number): Promise<Applicati
 export const getRecentAppsByShelter = async (shelter_id: number, limit: number = 2): Promise<ApplicationWithDetails[]> => {
     const result = await pool.query(
         `SELECT applications.*,
-            dogs.name AS dog_name, dogs.photo_url,
-            adopters.first_name, adopters.last_name
-        FROM applications
-        JOIN dogs ON applications.dog_id = dogs.dog_id
-        JOIN adopters ON applications.adopter_id = adopters.adopter_id
+            dogs.name AS dog_name, dogs.photo_url, dogs.shelter_id, dogs.breed, dogs.gender,
+            shelters.name AS shelter_name, shelters.city AS shelter_city, 
+            adopters.first_name, adopters.last_name 
+         FROM applications 
+         JOIN dogs ON applications.dog_id = dogs.dog_id
+         JOIN shelters ON applications.dog_id = dogs.dog_id
+         JOIN adopters ON applications.adopter_id = adopters.adopter_id
         WHERE dogs.shelter_id = $1
         ORDER BY applications.submitted_at DESC
         LIMIT $2`,

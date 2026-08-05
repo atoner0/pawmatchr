@@ -11,7 +11,7 @@ export default function RankedScreen() {
     const [matches, setMatches] = useState<MatchWithDog[]>([]);
     const [loading, setLoading] = useState(true);
 
-        useEffect(() => {
+    useEffect(() => {
         (async () => {
             const results = await getFavourites();
             setMatches(results);
