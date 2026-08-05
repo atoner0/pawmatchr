@@ -2,6 +2,17 @@ import { getToken } from "./auth";
 
 const BASE_URL = 'http://10.0.2.2:3000/api';
 
+export class ApiError extends Error {
+    status: number;
+    body: any;
+
+    constructor(status: number, body: any) {
+        super(body?.message ?? `Request failed: ${status}`);
+        this.status = status;
+        this.body = body;
+    }
+}
+
 export async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> {
     const token = await getToken()
 
@@ -17,8 +28,7 @@ export async function apiFetch<T>(path: string, options: RequestInit = {}): Prom
 
     if (!response.ok) {
         const errorBody = await response.json().catch(() => null)
-        console.log("Error response body:", errorBody)
-        throw new Error(`Request failed: ${response.status}`)
+        throw new ApiError(response.status, errorBody)
     }
 
     return response.json();

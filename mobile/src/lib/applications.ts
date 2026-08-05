@@ -27,7 +27,7 @@ export const updateChecklist = async (id: number, readiness_checklist: boolean):
     return response.application
 }
 
-export const withdrawApplication = async (id: number): Promise<ApplicationWithDetails> {
+export const withdrawApplication = async (id: number): Promise<ApplicationWithDetails> => {
     const response = await apiFetch<{ application: ApplicationWithDetails }>(`/adopter/applications/${id}/withdraw`, {
         method: "PATCH"
     })
