@@ -14,9 +14,14 @@ export const createApplication = async (
     return result.rows[0] 
 }
 
-export const getAllAdopterApps = async(adopter_id: number): Promise<Application[]> => {
+export const getAllAdopterApps = async(adopter_id: number): Promise<ApplicationWithDetails[]> => {
     const result = await pool.query(
-        `SELECT * FROM applications WHERE adopter_id = $1`,
+        `SELECT applications.*,
+            dogs.name AS dog_name, dogs.photo_url, dogs.shelter_id, adopters.first_name, adopters.last_name 
+         FROM applications 
+         JOIN dogs ON applications.dog_id = dogs.dog_id
+         JOIN adopters ON applications.adopter_id = adopters.adopter_id
+         WHERE application_id = $1`,
         [adopter_id]
     )
     return result.rows
@@ -48,9 +53,14 @@ export const getAppByIdAndShelter = async(application_id: number, shelter_id: nu
     return result.rows[0] ?? null
 }
 
-export const getOneAdopterApp = async(application_id: number): Promise<Application | null> => {
+export const getOneAdopterApp = async(application_id: number): Promise<ApplicationWithDetails | null> => {
     const result = await pool.query(
-        `SELECT * FROM applications WHERE application_id = $1`,
+        `SELECT applications.*,
+            dogs.name AS dog_name, dogs.photo_url, dogs.shelter_id, adopters.first_name, adopters.last_name 
+         FROM applications 
+         JOIN dogs ON applications.dog_id = dogs.dog_id
+         JOIN adopters ON applications.adopter_id = adopters.adopter_id
+         WHERE application_id = $1`,
         [application_id]
     )
     return result.rows[0] ?? null

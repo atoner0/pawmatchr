@@ -46,6 +46,11 @@ export const getApplicationById = async ( req: AdopterAuthRequest, res: Response
             return
         }
 
+        if (application.adopter_id !== req.user!.adopter_id) {
+            res.status(403).json({ message: 'Not your application' })
+            return
+        }
+
         res.status(200).json({application})
     } catch (error) {
         res.status(500).json({ message: 'Error fetching adopter application', error})
@@ -66,18 +71,23 @@ export const updateChecklist = async ( req: AdopterAuthRequest, res: Response): 
             return
         }
 
-        let application = await getOneAdopterApp(id)
+        const application = await getOneAdopterApp(id)
 
         if (!application){
             res.status(404).json({ message: 'Application not found'})
             return
         }
 
+        if (application.adopter_id !== req.user!.adopter_id) {
+            res.status(403).json({ message: 'Not your application' })
+            return
+        }
+
         const checkData = result.data.readiness_checklist
 
-        application = await updateReadinessCheck(id, checkData)
+        const updated = await updateReadinessCheck(id, checkData)
 
-        res.status(200).json({application})
+        res.status(200).json({application: {...application, ...updated}})
     } catch (error) {
         res.status(500).json({ message: 'Error updating readiness checklist', error})
     }
@@ -109,7 +119,7 @@ export const withdrawApplication = async (req: AdopterAuthRequest, res: Response
         }
 
         const updated = await updateApplicationStatus(id, 'withdrawn')
-        res.status(200).json({ application: updated })
+        res.status(200).json({ application: {...application, ...updated} })
     } catch (error) {
         res.status(500).json({ message: 'Error withdrawing application', error })
     }
