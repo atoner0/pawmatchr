@@ -14,9 +14,9 @@ export default function ProtectedIndex() {
             }
 
             if (adopter.matches_reviewed) {
-                router.replace("/(protected)/(drawer)/home");
+                router.replace("/(protected)/(drawer)/(tabs)/home");
             } else if (adopter.completed_at) {
-                router.replace("/(protected)/(drawer)/matches/swipe");
+                router.replace("/(protected)/(drawer)/(tabs)/matches/swipe");
             } else {
                 router.replace("/(protected)/questionnaire")
             }
