@@ -1,13 +1,16 @@
 import { MatchWithDog } from "@/types/match";
 import { apiFetch } from "./api";
+import { Favourite } from "@/types/favourite";
 
-export function addFavourite(dog_id: number): Promise<{ favourite_id: number; dog_id: number; adopter_id: number; saved_at: string}> {
-    return apiFetch("/adopter/favourites", {
+export const addFavourite = async (dog_id: number): Promise<Favourite> => {
+    const response = await apiFetch<{ favourite: Favourite }>("/adopter/favourites", {
         method: "POST",
         body: JSON.stringify({ dog_id })
     });
+    return response.favourite
 }
 
-export function getFavourites(): Promise<MatchWithDog[]> {
-    return apiFetch<{favourites: MatchWithDog[]}>("/adopter/favourites").then(res => res.favourites);
+export const getFavourites = async (): Promise<MatchWithDog[]> => {
+    const response = await apiFetch<{favourites: MatchWithDog[]}>("/adopter/favourites");
+    return response.favourites
 }

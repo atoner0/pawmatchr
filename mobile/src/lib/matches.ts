@@ -1,6 +1,6 @@
 import { apiFetch } from "./api";
 import { MatchWithDog } from "@/types/match";
 
-export function getMatches(): Promise<MatchWithDog[]> {
+export const getMatches = async (): Promise<MatchWithDog[]> => {
     return apiFetch<MatchWithDog[]>("/adopter/matches");
 }
