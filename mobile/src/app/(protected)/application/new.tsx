@@ -1,5 +1,6 @@
 import MatchHeader from "@/components/matches/MatchHeader";
 import TagList from "@/components/matches/TagList";
+import { ApiError } from "@/lib/api";
 import { createApplication } from "@/lib/applications";
 import { MatchWithDog } from "@/types/match";
 import { useLocalSearchParams, router } from "expo-router";
@@ -14,6 +15,8 @@ export default function NewApplication() {
     const [error, setError] = useState("")
 
     const handleApplyPress = async () => {
+        if (loading) return;
+        setLoading(true);
         try {
             const application = await createApplication(match.dog_id);
 
@@ -22,6 +25,17 @@ export default function NewApplication() {
                 params: { id: String(application.application_id)}
             })
         } catch (err) {
+            if (err instanceof ApiError && err.status === 409) {
+                const existingId = err.body?.application?.application_id;
+                if (existingId) {
+                    router.replace({
+                        pathname: "/(protected)/application/[id]",
+                        params: { id: String(existingId)}
+                    });
+                    return;
+                }
+            }
+
             const errorMessage = err instanceof Error ? err.message : "An error occurred. Please try again.";
             setError(errorMessage);
             setLoading(false);

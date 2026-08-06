@@ -1,6 +1,6 @@
 import type { Response } from 'express';
 import type { AdopterAuthRequest } from '../middleware/auth.js';
-import { createApplication, getAllAdopterApps, getOneAdopterApp, updateApplicationStatus, updateReadinessCheck } from '../models/application.js';
+import { createApplication, getActiveApplicationsByDogAndAdopter, getAllAdopterApps, getOneAdopterApp, updateApplicationStatus, updateReadinessCheck } from '../models/application.js';
 import { createApplicationSchema, updateChecklistSchema, type ApplicationStatus } from '../types/applicationSchema.js';
 
 export const createApplicationController = async ( req: AdopterAuthRequest, res: Response): Promise<void> => {
@@ -13,6 +13,12 @@ export const createApplicationController = async ( req: AdopterAuthRequest, res:
         
         const dog = result.data
         const adopter = req.user!
+
+        const existing = await getActiveApplicationsByDogAndAdopter(dog.dog_id, adopter.adopter_id)
+        if (existing) {
+            res.status(409).json({ message: 'An active application already exists for this dog', application: existing })
+            return
+        }
 
         const application = await createApplication(dog.dog_id, adopter.adopter_id)
         res.status(201).json({application})

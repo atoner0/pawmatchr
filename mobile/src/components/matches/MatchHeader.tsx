@@ -1,5 +1,6 @@
 import { View, Text, Image, StyleSheet } from "react-native";
 import { MatchWithDog } from "@/types/match";
+import { Ionicons } from "@expo/vector-icons";
 
 type Props = {
     match: MatchWithDog;
@@ -30,6 +31,7 @@ export default function MatchHeader({ match }: Props) {
             </View>
 
             <View style={styles.locationRow}>
+                <Ionicons name="location-outline" size={14} />
                 <Text style={styles.locationText}>
                     {shelter.name}, {shelter.city}
                 </Text>

@@ -22,7 +22,7 @@ export const getAllAdopterApps = async(adopter_id: number): Promise<ApplicationW
             adopters.first_name, adopters.last_name 
          FROM applications 
          JOIN dogs ON applications.dog_id = dogs.dog_id
-         JOIN shelters ON applications.dog_id = dogs.dog_id
+         JOIN shelters ON dogs.shelter_id = shelters.shelter_id
          JOIN adopters ON applications.adopter_id = adopters.adopter_id
          WHERE applications.adopter_id = $1`,
         [adopter_id]
@@ -38,7 +38,7 @@ export const getAppsByShelter = async(shelter_id: number): Promise<ApplicationWi
             adopters.first_name, adopters.last_name 
          FROM applications 
          JOIN dogs ON applications.dog_id = dogs.dog_id
-         JOIN shelters ON applications.dog_id = dogs.dog_id
+         JOIN shelters ON dogs.shelter_id = shelters.shelter_id
          JOIN adopters ON applications.adopter_id = adopters.adopter_id
          WHERE dogs.shelter_id = $1`,
         [shelter_id]
@@ -54,7 +54,7 @@ export const getAppByIdAndShelter = async(application_id: number, shelter_id: nu
             adopters.first_name, adopters.last_name 
          FROM applications 
          JOIN dogs ON applications.dog_id = dogs.dog_id
-         JOIN shelters ON applications.dog_id = dogs.dog_id
+         JOIN shelters ON dogs.shelter_id = shelters.shelter_id
          JOIN adopters ON applications.adopter_id = adopters.adopter_id
          WHERE application_id = $1 AND dogs.shelter_id = $2`,
         [application_id, shelter_id]
@@ -70,10 +70,23 @@ export const getOneAdopterApp = async(application_id: number): Promise<Applicati
             adopters.first_name, adopters.last_name 
          FROM applications 
          JOIN dogs ON applications.dog_id = dogs.dog_id
-         JOIN shelters ON applications.dog_id = dogs.dog_id
+         JOIN shelters ON dogs.shelter_id = shelters.shelter_id
          JOIN adopters ON applications.adopter_id = adopters.adopter_id
          WHERE application_id = $1`,
         [application_id]
+    )
+    return result.rows[0] ?? null
+}
+
+export const getActiveApplicationsByDogAndAdopter = async (
+    dog_id: number,
+    adopter_id: number
+): Promise<Application | null> => {
+    const result = await pool.query(
+        `SELECT * FROM applications
+        WHERE dog_id = $1 AND adopter_id = $2
+        AND status != 'withdrawn'`,
+        [dog_id, adopter_id]
     )
     return result.rows[0] ?? null
 }
@@ -86,7 +99,7 @@ export const getRecentAppsByShelter = async (shelter_id: number, limit: number =
             adopters.first_name, adopters.last_name 
          FROM applications 
          JOIN dogs ON applications.dog_id = dogs.dog_id
-         JOIN shelters ON applications.dog_id = dogs.dog_id
+         JOIN shelters ON dogs.shelter_id = shelters.shelter_id
          JOIN adopters ON applications.adopter_id = adopters.adopter_id
         WHERE dogs.shelter_id = $1
         ORDER BY applications.submitted_at DESC
