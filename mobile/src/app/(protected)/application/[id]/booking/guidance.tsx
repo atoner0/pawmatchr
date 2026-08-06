@@ -5,7 +5,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import { View, Text, StyleSheet, ScrollView, Pressable } from "react-native";
 
 export default function MultiPetGuidance() {
-    const params = useLocalSearchParams<{ id: string }>();
+    const params = useLocalSearchParams<{ id: string, shelterId: string }>();
     const applicationId = params.id;
     const { adopter } = useAdopter();
 
@@ -16,7 +16,12 @@ export default function MultiPetGuidance() {
     const handleConfirm = () => {
         router.push({
             pathname: "/(protected)/application/[id]/booking/calendar",
-            params: { id: applicationId, guidanceRead: "true"}
+            params: { 
+                id: applicationId,
+                shelterId: params.shelterId,
+                bookingType: "pet_introduction",
+                guidanceRead: "true"
+            }
         });
     };
 

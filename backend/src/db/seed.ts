@@ -328,6 +328,35 @@ const seed = async () => {
       RETURNING availability_id
     `, [shelterId1])
 
+    // ============================================================
+    // Availability — Shelter 2
+    // ============================================================
+    const avail5 = await client.query(`
+      INSERT INTO availability (shelter_id, slot, is_booked)
+      VALUES ($1, '2026-08-10 10:00', false)
+      RETURNING availability_id
+    `, [shelterId2])
+
+    const avail6 = await client.query(`
+      INSERT INTO availability (shelter_id, slot, is_booked)
+      VALUES ($1, '2026-08-10 14:00', false)
+      RETURNING availability_id
+    `, [shelterId2])
+
+    const avail7 = await client.query(`
+      INSERT INTO availability (shelter_id, slot, is_booked)
+      VALUES ($1, '2026-08-12 11:00', false)
+      RETURNING availability_id
+    `, [shelterId2])
+
+    const avail8 = await client.query(`
+      INSERT INTO availability (shelter_id, slot, is_booked)
+      VALUES ($1, '2026-08-14 09:30', false)
+      RETURNING availability_id
+    `, [shelterId2])
+
+    
+
     const availabilityId1 = avail1.rows[0].availability_id
     const availabilityId2 = avail2.rows[0].availability_id
     const availabilityId4 = avail4.rows[0].availability_id

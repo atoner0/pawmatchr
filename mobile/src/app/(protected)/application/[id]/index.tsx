@@ -63,19 +63,27 @@ export default function ViewApplication() {
         return booking?.status === "completed";
     }).length;
 
+    const nextBookingType = requiredBookingTypes.find((type) => !getBookingForType(type));
+
     const petIntroBooking = getBookingForType("pet_introduction")
-    const showGuidanceBanner = needsPetIntroduction && !petIntroBooking
+    const showGuidanceBanner = nextBookingType === 'pet_introduction' && !petIntroBooking
 
     const handleBookVisitPress = () => {
-        if (showGuidanceBanner) {
+        if(!nextBookingType) return;
+
+        if (nextBookingType === 'pet_introduction' && !petIntroBooking) {
             router.push({
                 pathname: "/(protected)/application/[id]/booking/guidance",
-                params: { id: String(applicationId)},
+                params: { id: String(applicationId), shelterId: String(application?.shelter_id) },
             });
         } else {
             router.push({
                 pathname: "/(protected)/application/[id]/booking/calendar",
-                params: { id: String(applicationId)},
+                params: { 
+                    id: String(applicationId), 
+                    shelterId: String(application?.shelter_id),
+                    bookingType: nextBookingType,
+                },
             });
         }
     };
@@ -201,10 +209,19 @@ export default function ViewApplication() {
                     </Text>
                 </View>
             )}
+            {nextBookingType ? (
+                <Pressable onPress={handleBookVisitPress} style={styles.bookButton}>
+                    <Text style={styles.bookButtonText}>Book Visit</Text>
+                </Pressable>
+            ) : (
+                <View style={styles.allBookedBox}>
+                    <Text style={styles.allBookedText}>
+                        All required visits are booked.
+                    </Text>
+                </View>
+            )}
 
-            <Pressable onPress={handleBookVisitPress} style={styles.bookButton}>
-                <Text style={styles.bookButtonText}>Book Visit</Text>
-            </Pressable>
+            
 
             <Pressable onPress={handleWithdraw} disabled={withdrawing}>
                 <Text style={styles.withdrawText}>
@@ -374,5 +391,18 @@ const styles = StyleSheet.create({
         marginTop: 14,
         marginBottom: 24,
         fontWeight: "600",
+    },
+    allBookedBox: {
+        backgroundColor: "#fdf3e8",
+        borderRadius: 16,
+        marginHorizontal: 16,
+        marginTop: 16,
+        marginBottom: 24,
+        padding: 16,
+    },
+    allBookedText: {
+        fontSize: 14,
+        textAlign: "center",
+        color: "#333",
     },
 });

@@ -5,6 +5,7 @@ import applicationRoutes from './application.js'
 import questionnaireRoutes from './questionnaire.js'
 import bookingRoutes from './booking.js'
 import matchRoutes from './match.js'
+import availabilityRoutes from './availability.js'
 
 const router = Router()
 
@@ -15,5 +16,6 @@ router.use('/applications', applicationRoutes)
 router.use('/questionnaire', questionnaireRoutes)
 router.use('/bookings', bookingRoutes)
 router.use('/matches', matchRoutes)
+router.use('/availability', availabilityRoutes)
 
 export default router
