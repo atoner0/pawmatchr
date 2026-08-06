@@ -48,7 +48,7 @@ export default function ViewApplication() {
     
     const {adopter} = useAdopter();
 
-    const needsPetIntroduction = adopter?.current_pets === true;
+    const needsPetIntroduction = adopter?.current_pet_type?.includes('dog') === true;
 
     const requiredBookingTypes: BookingType[] = needsPetIntroduction 
         ? ['initial_meet', 'home_check', 'pet_introduction']
