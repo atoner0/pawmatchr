@@ -1,6 +1,7 @@
 import { Stack, useRouter, useSegments } from "expo-router";
 import { useState, useEffect } from "react";
 import { getToken } from "@/lib/auth";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export default function RootLayout() {
   const [isAuthed, setIsAuthed] = useState<boolean | null>(null);
@@ -34,5 +35,9 @@ export default function RootLayout() {
     })
   }, [segments]);
 
-  return <Stack screenOptions={{ headerShown: false }} />;
+  return (
+    <SafeAreaProvider>
+       <Stack screenOptions={{ headerShown: false }} /> 
+    </SafeAreaProvider>
+    )
 }

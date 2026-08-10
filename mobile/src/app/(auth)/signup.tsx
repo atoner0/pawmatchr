@@ -1,9 +1,12 @@
-import { TextInput, Text, Button, View } from "react-native";
+import { TextInput, Text, Button, View, StyleSheet, Pressable } from "react-native";
 import { useState } from "react";
-import { useRouter } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { apiFetch } from "@/lib/api";
 import { setToken } from "@/lib/auth";
 import { AuthResponse } from "@/types/authSchemas";
+import { colors, spacing, radii, typography } from "@/constants/theme";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function Signup() {
   const [email, setEmail] = useState("");
@@ -39,40 +42,146 @@ export default function Signup() {
   }
 
   return (
-    <View>
-    <TextInput
-        placeholder="First Name"
-        value = {firstName}
-        onChangeText={setFirstName}
-      />
-      <TextInput
-        placeholder="Last Name"
-        value = {lastName}
-        onChangeText={setLastName}
-      />
-      <TextInput
-        placeholder="Email"
-        value = {email}
-        onChangeText={setEmail}
-      />
-      <TextInput
-        placeholder="Password"
-        value = {password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
-      <TextInput
-        placeholder="Phone Number"
-        value = {phoneNo}
-        onChangeText={setPhoneNo}
-      />
-      <TextInput
-        placeholder="Postcode"
-        value = {postcode}
-        onChangeText={setPostcode}
-      />
-      {error ? <Text>{error}</Text> : null}
-      <Button title="Sign Up" onPress={handleSignup}/>
-    </View>
+    <SafeAreaView style={styles.screen}>
+      <View style={styles.header}>
+        <Text style={styles.welcomeText}>Join</Text>
+        <View style={styles.titleRow}>
+          <Text style={styles.title}>Pawmatchr</Text>
+          <Ionicons name="paw" size={28} color={colors.navyDark} style={styles.pawIcon} />
+        </View>
+      </View>
+
+      <View style={styles.card}> 
+        <TextInput
+          style={styles.input}
+          placeholder="First Name"
+          placeholderTextColor={colors.placeholder}
+          value = {firstName}
+          onChangeText={setFirstName}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Last Name"
+          placeholderTextColor={colors.placeholder}
+          value = {lastName}
+          onChangeText={setLastName}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          placeholderTextColor={colors.placeholder}
+          value = {email}
+          onChangeText={setEmail}
+          autoCapitalize="none"
+          keyboardType="email-address"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          placeholderTextColor={colors.placeholder}
+          value = {password}
+          onChangeText={setPassword}
+          secureTextEntry
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Phone Number"
+          placeholderTextColor={colors.placeholder}
+          value = {phoneNo}
+          onChangeText={setPhoneNo}
+          keyboardType="phone-pad"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Postcode"
+          placeholderTextColor={colors.placeholder}
+          value = {postcode}
+          onChangeText={setPostcode}
+          autoCapitalize="characters"
+        />
+
+        {error ? <Text style={styles.errorText}>{error}</Text> : null}
+        
+        <Pressable style={styles.primaryButton} onPress={handleSignup}>
+          <Text style={typography.button}>Sign Up</Text>
+        </Pressable>
+
+        <Link href="/(auth)/login" asChild>
+          <Pressable style={styles.secondaryButton}>
+            <Text style={typography.button}>Already have an account? Log In</Text>
+          </Pressable>
+        </Link>
+      </View>
+    </SafeAreaView>
+    
   );
 }
+
+const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    backgroundColor: colors.background,
+    paddingHorizontal: spacing.lg,
+    justifyContent: "center",
+  },
+  header: {
+    alignItems: "center",
+    marginBottom: spacing.xl,
+  },
+  welcomeText: {
+    ...typography.subheading,
+  },
+  titleRow: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  pawIcon: {
+    marginLeft: spacing.xs,
+  },
+  title: {
+    ...typography.heading,
+    fontSize: 32,
+  },
+  card: {
+    backgroundColor: colors.card,
+    borderRadius: radii.lg,
+    padding: spacing.lg,
+    alignItems: "center",
+  },
+  input: {
+    width: "100%",
+    backgroundColor: colors.inputBackground,
+    borderWidth: 1,
+    borderColor: colors.inputBorder,
+    borderRadius: radii.pill,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm + 4,
+    fontSize: 16,
+    color: colors.textPrimary,
+    marginBottom: spacing.md,
+  },
+  primaryButton: {
+    backgroundColor: colors.navyMid,
+    borderRadius: radii.pill,
+    paddingVertical: spacing.sm + 4,
+    paddingHorizontal: spacing.xl,
+    alignItems: "center",
+    marginTop: spacing.sm,
+    minWidth: 160,
+  },
+  secondaryButton: {
+    backgroundColor: colors.navyMid,
+    opacity: 0.85,
+    borderRadius: radii.pill,
+    paddingVertical: spacing.sm + 4,
+    paddingHorizontal: spacing.xl,
+    alignItems: "center",
+    marginTop: spacing.md,
+    minWidth: 160,
+  },
+  errorText: {
+    color: colors.danger,
+    marginBottom: spacing.sm,
+    textAlign: "center"
+  }
+})

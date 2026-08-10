@@ -28,6 +28,21 @@ export default function AttributeGrid({ match }: Props) {
                 </View>
 
                 <View style={styles.box}>
+                    <Text style={styles.boxTitle}>Neutered?</Text>
+                    <Text style={styles.boxText}>{dog.neutered}</Text>
+                </View>
+
+                <View style={styles.box}>
+                    <Text style={styles.boxTitle}>House Trained?</Text>
+                    <Text style={styles.boxText}>{dog.house_trained}</Text>
+                </View>
+
+                <View style={styles.box}>
+                    <Text style={styles.boxTitle}>Vaccinated?</Text>
+                    <Text style={styles.boxText}>{dog.vaccinated}</Text>
+                </View>
+
+                <View style={styles.box}>
                     <Text style={styles.boxTitle}>Coat Length</Text>
                     <Text style={styles.boxText}>{getDogLabel(coatLengthLabel, dog.coat_length)}</Text>
                 </View>
