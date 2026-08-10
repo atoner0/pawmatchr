@@ -38,3 +38,4 @@ export const getMatches = async (req: AdopterAuthRequest, res: Response): Promis
         res.status(500).json({ message: 'Something went wrong generating matches'})
     }
 }
+

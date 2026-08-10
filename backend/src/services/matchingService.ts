@@ -33,6 +33,8 @@ export const callMatchingService = async (
     }
 
     if (!response.ok) {
+        const errorBody = await response.json().catch(() => null)
+        console.error('Matching service error body:', JSON.stringify(errorBody, null, 2))
         return {success: false, error: 'service_error', status: response.status}
     }
 

@@ -21,7 +21,7 @@ class Adopter(BaseModel):
     hours_alone: Literal["0_2", "2_4", "4_6", "6_8", "8_plus"]
     activity_level: Literal["low", "medium", "moderate", "high", "very_high"]
     first_time_owner: bool
-    multi_pet_exp: bool
+    multi_pet_exp: bool | None = None
     multi_pet_exp_level: Literal["once_twice", "several", "extensive"] | None = None
 
     age_pref: list[Literal["0_2", "3_5", "6_8", "8_plus", "none"]]
