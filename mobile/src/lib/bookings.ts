@@ -6,6 +6,10 @@ export const getBookingsByApplication = async (applicationId: number): Promise<B
     return apiFetch<BookingWithDetails[]>(`/adopter/bookings/${applicationId}`);
 }
 
+export const getUpcomingBooking = async (): Promise<BookingWithDetails | null> => {
+    return apiFetch<BookingWithDetails | null>("/adopter/bookings/upcoming");
+}
+
 export const createBooking = async (
     application_id: number,
     availability_id: number,

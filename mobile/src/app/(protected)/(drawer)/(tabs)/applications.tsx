@@ -18,7 +18,6 @@ export default function ApplicationsPlaceholder() {
                 setError("");
                 try {
                     const data = await getApplications();
-                    console.log("applications length:", data.length, JSON.stringify(data.map(a => a.application_id)));
                     setApplications(data)
                 } catch (err) {
                     const errorMessage = err instanceof Error ? err.message : "Failed to load application."

@@ -1,8 +1,9 @@
 import { Router } from 'express';
-import { createBookingController, getBooking } from '../controllers/booking.js';
+import { createBookingController, getBooking, getUpcomingBooking } from '../controllers/booking.js';
 
 const router = Router()
 
+router.get('/upcoming', getUpcomingBooking)
 router.get('/:applicationId', getBooking)
 
 router.post('/', createBookingController)

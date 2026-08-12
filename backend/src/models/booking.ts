@@ -118,13 +118,34 @@ export const getUpcomingBookingsByShelter = async (shelter_id: number, limit: nu
         JOIN dogs ON applications.dog_id = dogs.dog_id
         JOIN adopters ON applications.adopter_id = adopters.adopter_id
         WHERE dogs.shelter_id = $1
-        AND availability.slot > now()
-        AND bookings.status = 'booked'
+            AND availability.slot > now()
+            AND bookings.status = 'booked'
         ORDER BY availability.slot ASC
         LIMIT $2`,
         [shelter_id, limit]
     )
     return result.rows
+}
+
+export const getNextUpcomingBookingAdopter = async (adopter_id: number): Promise<BookingWithDetails | null> => {
+    const result = await pool.query(
+        `SELECT bookings.*,
+            availability.slot,
+            dogs.name AS dog_name,
+            adopters.first_name, adopters.last_name
+        FROM bookings
+        JOIN availability ON bookings.availability_id = availability.availability_id
+        JOIN applications ON bookings.application_id = applications.application_id
+        JOIN dogs ON applications.dog_id = dogs.dog_id
+        JOIN adopters ON applications.adopter_id = adopters.adopter_id
+        WHERE applications.adopter_id = $1
+            AND availability.slot > now()
+            AND bookings.status = 'booked'
+        ORDER BY availability.slot ASC
+        LIMIT 1`,
+        [adopter_id]
+    )
+    return result.rows[0] ?? null
 }
 
 export const getBookingStats = async (shelter_id: number) => {

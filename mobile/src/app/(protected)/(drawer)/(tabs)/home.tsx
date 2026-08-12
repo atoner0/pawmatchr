@@ -9,28 +9,41 @@ import StatCard from "@/components/home/StatCard";
 import TopMatchCard from "@/components/home/TopMatchCard";
 import UpcomingVisitCard from "@/components/home/UpcomingVisit";
 import { useAdopter } from "@/context/AdopterContext";
+import { ApplicationWithDetails } from "@/types/application";
+import { getApplications } from "@/lib/applications";
+import { getUpcomingBooking } from "@/lib/bookings";
+import { BookingWithDetails } from "@/types/booking";
 
 export default function HomeScreen() {
     const { adopter, loading: adopterLoading } = useAdopter();
     const [matches, setMatches] = useState<MatchWithDog[] | null>(null);
-    const [matchesLoading, setMatchesLoading] = useState(true);
+    const [loading, setLoading] = useState(true);
+    const [applications, setApplications] = useState<ApplicationWithDetails[]>([])
+    const [upcomingBooking, setUpcomingBooking] = useState<BookingWithDetails | null>(null);
+    const [error, setError] = useState("")
 
-        useEffect(() => {
-        async function loadMatches() {
+    useEffect(() => {
+        async function loadHomeData() {
             try {
-                const result = await getMatches();
-                setMatches(result);
+                const [matchResult, applicationsResult, bookingResult] = await Promise.all([
+                    getMatches(),
+                    getApplications(),
+                    getUpcomingBooking(),
+                ]);
+                setMatches(matchResult);
+                setApplications(applicationsResult)
+                setUpcomingBooking(bookingResult)
             } catch (err) {
-                console.error("Failed to load matches", err);
+                console.error("Failed to load home data", err)
                 setMatches([]);
             } finally {
-                setMatchesLoading(false);
+                setLoading(false)
             }
         }
-        loadMatches();
+        loadHomeData();
     }, []);
 
-    if (adopterLoading || matchesLoading || !adopter) {
+    if (adopterLoading || loading || !adopter) {
         return (
             <View style={styles.centered}>
                 <ActivityIndicator />
@@ -39,6 +52,10 @@ export default function HomeScreen() {
     }
 
     const topMatch = matches && matches.length > 0 ? matches[0] : null;
+
+    const applicationCount = applications.filter(app =>
+        ['submitted', 'under_review', 'approved'].includes(app.status)
+    ).length;
 
     return (
         <ScrollView style={styles.container}>
@@ -60,10 +77,10 @@ export default function HomeScreen() {
 
             <View style={styles.statsRow}>
                 <StatCard value={matches?.length ?? 0} label="Total matches"/>
-                <StatCard value="-" label="Active applications"/>
+                <StatCard value={applicationCount} label="Active applications"/>
             </View>
 
-            <UpcomingVisitCard />
+            <UpcomingVisitCard booking={upcomingBooking} />
 
             <QuickLinkButton
                 icon="heart-outline"
