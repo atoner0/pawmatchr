@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet } from "react-native";
+import { colors, spacing, radii } from "@/constants/theme";
 
 type Props = {
     value: string | number;
@@ -16,15 +17,24 @@ export default function StatCard({ value, label }: Props) {
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         alignItems: "center",
-        paddingVertical: 8,
+        justifyContent: "center",
+        backgroundColor: colors.card,
+        borderWidth: 1,
+        borderColor: colors.cardBorder,
+        borderRadius: radii.md,
+        paddingVertical: spacing.sm + 2,
     },
     value: {
-        fontSize: 28,
+        fontSize: 20,
         fontWeight: "700",
+        color: colors.textPrimary
     },
     label: {
         fontSize: 14,
-        color: "#555",
+        color: colors.textSecondary,
+        marginTop: 2,
+        textAlign: "center",
     },
 })

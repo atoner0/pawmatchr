@@ -13,6 +13,7 @@ import { ApplicationWithDetails } from "@/types/application";
 import { getApplications } from "@/lib/applications";
 import { getUpcomingBooking } from "@/lib/bookings";
 import { BookingWithDetails } from "@/types/booking";
+import { colors, spacing, typography } from "@/constants/theme";
 
 export default function HomeScreen() {
     const { adopter, loading: adopterLoading } = useAdopter();
@@ -20,7 +21,6 @@ export default function HomeScreen() {
     const [loading, setLoading] = useState(true);
     const [applications, setApplications] = useState<ApplicationWithDetails[]>([])
     const [upcomingBooking, setUpcomingBooking] = useState<BookingWithDetails | null>(null);
-    const [error, setError] = useState("")
 
     useEffect(() => {
         async function loadHomeData() {
@@ -58,7 +58,7 @@ export default function HomeScreen() {
     ).length;
 
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView style={styles.container} contentContainerStyle={styles.content}>
             <HomeGreeting adopter={adopter}/>
 
             {topMatch ? (
@@ -80,23 +80,35 @@ export default function HomeScreen() {
                 <StatCard value={applicationCount} label="Active applications"/>
             </View>
 
-            <UpcomingVisitCard booking={upcomingBooking} />
+            <View style={styles.section}>
+                <Text style={typography.sectionTitle}>Upcoming Visit</Text>
+                <UpcomingVisitCard booking={upcomingBooking} />
+            </View>
 
-            <QuickLinkButton
-                icon="heart-outline"
-                label="My Favourites"
-                onPress={() => router.push("/(protected)/(drawer)/(tabs)/matches/ranked")}
-            />
-            <QuickLinkButton
-                icon="document-text-outline"
-                label="My Applications"
-                onPress={() => router.push("/(protected)/(drawer)/(tabs)/applications")}
-            />
-            <QuickLinkButton
-                icon="book-outline"
-                label="Support Materials"
-                onPress={() => router.push("/(protected)/(drawer)/(tabs)/support")}
-            />
+            <View style={styles.section}>
+                <Text style={typography.sectionTitle}>Quick Links</Text>
+                <View style={styles.section}>
+                    <QuickLinkButton
+                        icon="heart-outline"
+                        label="My Favourites"
+                        onPress={() => router.push("/(protected)/(drawer)/(tabs)/matches/ranked")}
+                    />
+                    <QuickLinkButton
+                        icon="document-text-outline"
+                        label="My Applications"
+                        onPress={() => router.push("/(protected)/(drawer)/(tabs)/applications")}
+                    />
+                    <QuickLinkButton
+                        icon="book-outline"
+                        label="Support Materials"
+                        onPress={() => router.push("/(protected)/(drawer)/(tabs)/support")}
+                    />
+                </View>
+            </View>
+
+            
+
+            
 
 
         </ScrollView>
@@ -106,7 +118,11 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 16,
+        backgroundColor: colors.background,
+    },
+    content: {
+        padding: spacing.md,
+        gap: spacing.md,
     },
     centered: {
         flex: 1,
@@ -115,11 +131,14 @@ const styles = StyleSheet.create({
     },
     statsRow: {
         flexDirection: "row",
-        gap: 12,
+        gap: spacing.md,
+    },
+    section: {
+        gap: spacing.sm,
     },
     emptyText: {
         fontSize: 16,
-        color: "#555",
-        paddingVertical: 12,
+        color: colors.textSecondary,
+        paddingVertical: spacing.sm,
     },
 });

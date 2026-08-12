@@ -1,6 +1,7 @@
 import { Image, View, Text, StyleSheet, Pressable } from "react-native";
 import { MatchWithDog } from "@/types/match";
 import { Ionicons } from "@expo/vector-icons"
+import { colors, spacing, radii } from "@/constants/theme";
 
 type Props = {
     match: MatchWithDog;
@@ -19,7 +20,7 @@ export default function TopMatchCard({ match, onPress }: Props) {
                     <Text style={styles.title}>Your top match</Text>
                     <Text style={styles.name}>{dog.name} - {scorePercent}%</Text>
                 </View>
-                <Ionicons name="chevron-forward" size={20}/>
+                <Ionicons name="chevron-forward" size={20} color={colors.textOnDark}/>
             </View>
         </Pressable>
             
@@ -30,25 +31,30 @@ const styles = StyleSheet.create({
     container: { 
         flexDirection: "row",
         alignItems: "center",
-        gap: 12,
-        paddingVertical: 8,
+        gap: spacing.md,
+        backgroundColor: colors.navyMid,
+        borderRadius: radii.lg,
+        padding: spacing.md,
+        marginTop: spacing.md,
     },
     photo: { 
-        width: 72, 
-        height: 72, 
-        borderRadius: 12
+        width: 96, 
+        height: 96, 
+        borderRadius: radii.md,
     },
     textBlock: {
         flex: 1,
     },
     name: {
-        fontSize: 18,
+        fontSize: 22,
         fontWeight: "700",
+        color: colors.textOnDark,
+        marginTop: spacing.xs,
     },
     title: {
-        fontSize: 14, 
-        color: "#555",
-        marginTop: 2,
+        fontSize: 15, 
+        color: colors.textOnDark,
+        opacity: 0.8,
     },
 })
 

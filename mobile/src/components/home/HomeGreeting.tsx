@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet } from "react-native";
 import { AccountFields } from "@/types/adopter";
+import { colors, spacing } from "@/constants/theme";
 
 type Props = {
     adopter: AccountFields;
@@ -8,24 +9,20 @@ type Props = {
 export default function HomeGreeting({ adopter }: Props) {
     return (
         <View style={styles.container}>
-            <View style={styles.textBlock}>
-                <Text style={styles.name}>Hey, {adopter.first_name}</Text>
-            </View>
+            <Text style={styles.name}>Hey, {adopter.first_name}</Text>
         </View>     
     )
 }
 
 const styles = StyleSheet.create({
-    container: { 
-        alignItems: "center",
-        paddingVertical: 8,
-    },
-    textBlock: {
-        flex: 1,
+    container: {
+        alignItems: "center", 
+        paddingVertical: spacing.sm,
     },
     name: {
-        fontSize: 32,
+        fontSize: 30,
         fontWeight: "700",
+        color: colors.textPrimary,
     },
 })
 
