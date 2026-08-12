@@ -4,6 +4,7 @@ import { useAdopter } from "@/context/AdopterContext";
 import { router } from "expo-router";
 import { clearToken } from "@/lib/auth";
 import type { DrawerContentComponentProps } from "expo-router/drawer";
+import { colors, radii, spacing } from "@/constants/theme";
 
 
 export default function CustomDrawerContent(props: DrawerContentComponentProps) {
@@ -104,58 +105,58 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#0d3b34",
-        paddingTop: 48,
-        paddingHorizontal: 16,
+        backgroundColor: colors.navyDark,
+        paddingTop: spacing.xl + spacing.md,
+        paddingHorizontal: spacing.md,
     },
     profileSection: {
         flexDirection: "row",
         alignItems: "center",
-        gap: 12,
-        marginBottom: 24,
+        gap: spacing.sm + 4,
+        marginBottom: spacing.lg,
     },
     avatar: {
-        width: 44,
-        height: 44,
-        borderRadius: 22,
-        backgroundColor: "#1f5c52",
+        width: 48,
+        height: 48,
+        borderRadius: 24,
+        backgroundColor: colors.navyMid,
         justifyContent: "center",
         alignItems: "center",
     },
     avatarText: {
-        color: "#fff",
+        color: colors.textOnDark,
         fontWeight: "700",
         fontSize: 16,
     },
     name: {
-        color: "#fff",
+        color: colors.textOnDark,
         fontWeight: "700",
         fontSize: 16,
     },
     email: {
-        color: "#c7d9d5",
+        color: colors.textOnDark,
         fontSize: 13,
     },
     navSection: {
-        gap: 4,
+        gap: spacing.sm,
     },
     navItem: {
         flexDirection: "row",
         alignItems: "center",
-        gap: 14,
-        paddingVertical: 12,
-        paddingHorizontal: 12,
-        borderRadius: 24,
+        gap: spacing.sm + 6,
+        paddingVertical: spacing.md,
+        paddingHorizontal: spacing.sm + 4,
+        borderRadius: radii.lg,
     },
     navLabel: {
-        color: "#fff",
+        color: colors.textOnDark,
         fontSize: 17,
         fontWeight: "500",
     },
     divider: {
         height: 1,
-        backgroundColor: "#2a5c53",
-        marginVertical: 16,
+        backgroundColor: colors.navyMid,
+        marginVertical: spacing.md,
     },
     spacer: {
         flex: 1,
@@ -163,12 +164,12 @@ const styles = StyleSheet.create({
     signOut: {
         flexDirection: "row",
         alignItems: "center",
-        gap: 10,
-        paddingVertical: 16,
-        marginBottom: 24,
+        gap: spacing.sm + 4,
+        paddingVertical: spacing.md,
+        marginBottom: spacing.lg,
     },
     signOutText: {
-        color: "#fff",
+        color: colors.textOnDark,
         fontWeight: "700",
         fontSize: 15,
     },

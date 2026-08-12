@@ -5,6 +5,7 @@ export const colors = {
 
   navyDark: "#0B2A43",   // bottom nav bar, deepest accents
   navyMid: "#2F577F",    // buttons, checkmark circles, header icons
+  navyMuted: "#8FA3B8",
   accentOrange: "#F0B37E",
   accentTeal: "#4F9C8C",
 
