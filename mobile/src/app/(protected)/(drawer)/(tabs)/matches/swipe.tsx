@@ -6,6 +6,8 @@ import { MatchWithDog } from "@/types/match";
 import { getMatches } from "@/lib/matches";
 import { addFavourite } from "@/lib/favourites";
 import { markMatchesReviewed } from "@/lib/adopter";
+import { colors, radii, spacing, typography } from "@/constants/theme";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function SwipeScreen() {
     const router = useRouter();
@@ -54,7 +56,7 @@ export default function SwipeScreen() {
     if (matches.length === 0) {
         return (
             <View style={styles.centered}>
-                <Text>No matches available right now</Text>
+                <Text style={typography.placeholder}>No matches available right now</Text>
             </View>
         )
     }
@@ -65,17 +67,21 @@ export default function SwipeScreen() {
 
     return (
         <View style={styles.container}>
-            <DogMatchCard match={matches[currentIndex]}/>
+            <DogMatchCard match={matches[currentIndex]}
+            footer={
+                <View style={styles.actionBar}>
+                    <Pressable style={styles.actionButton} onPress={handleReject}>
+                        <Ionicons name="close" size={28} color={colors.navyMid} />
+                    </Pressable>
 
-            <View style={styles.actionBar}>
-                <Pressable style={styles.actionButton} onPress={handleReject}>
-                    <Text style={styles.actionIcon}>X</Text>
-                </Pressable>
+                    <Pressable style={styles.actionButton} onPress={handleFavourite}>
+                        <Ionicons name="heart-outline" size={26} color={colors.navyMid} />
+                    </Pressable>
+                </View>
+                }
+            />
 
-                <Pressable style={styles.actionButton} onPress={handleFavourite}>
-                    <Text style={styles.actionIcon}>♥</Text>
-                </Pressable>
-            </View>
+            
         </View>
     )
 }
@@ -83,30 +89,29 @@ export default function SwipeScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: colors.background,
     },
     centered: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
+        backgroundColor: colors.background,
     },
     actionBar: {
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
-        gap: 40,
-        paddingVertical: 16,
+        gap: spacing.xl,
+        paddingVertical: spacing.sm,
+        backgroundColor: colors.background,
     },
     actionButton: {
         width: 56,
         height: 56,
-        borderRadius: 28,
+        borderRadius: radii.pill,
         borderWidth: 2,
-        borderColor: "#0a3b30",
+        borderColor: colors.navyMid,
         justifyContent: "center",
         alignItems: "center",
-    },
-    actionIcon: {
-        fontSize: 24,
-        color: "#0a3b30"
     },
 });

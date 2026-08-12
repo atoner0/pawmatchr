@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet } from "react-native";
 import { MatchWithDog } from "@/types/match";
 import { activityLevelLabel, aloneToleranceLabel, getDogLabel, trainingLevelLabel } from "@/constants/dogLabels";
+import { colors, radii, spacing, typography } from "@/constants/theme";
 
 type Props = {
     match: MatchWithDog;
@@ -10,52 +11,49 @@ export default function RoutineSection({ match }: Props) {
     const { dog } = match;
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.heading}>Routine</Text>
+        <View style={styles.section}>
+            <Text style={typography.sectionTitle}>Routine</Text>
+            <View style={styles.box}>
+                <View style={styles.row}>
+                    <Text style={typography.label}>Hours Alone</Text>
+                    <Text style={typography.value}>{getDogLabel(aloneToleranceLabel, dog.alone_tolerance)}</Text>
+                </View>
 
-            <View style={styles.row}>
-                <Text style={styles.rowLabel}>Hours Alone</Text>
-                <Text style={styles.rowValue}>{getDogLabel(aloneToleranceLabel, dog.alone_tolerance)}</Text>
+                <View style={styles.row}>
+                    <Text style={typography.label}>Activity Level</Text>
+                    <Text style={typography.value}>{getDogLabel(activityLevelLabel, dog.activity_level)}</Text>
+                </View>
+
+                <View style={styles.row}>
+                    <Text style={typography.label}>Training Needed</Text>
+                    <Text style={typography.value}>{getDogLabel(trainingLevelLabel, dog.training_level)}</Text>
+                </View>
             </View>
 
-            <View style={styles.row}>
-                <Text style={styles.rowLabel}>Activity Level</Text>
-                <Text style={styles.rowValue}>{getDogLabel(activityLevelLabel, dog.activity_level)}</Text>
-            </View>
-
-            <View style={styles.row}>
-                <Text style={styles.rowLabel}>Training Needed</Text>
-                <Text style={styles.rowValue}>{getDogLabel(trainingLevelLabel, dog.training_level)}</Text>
-            </View>
+            
 
         </View>
     )
 }
 
 const styles = StyleSheet.create({
-    container: { 
-        backgroundColor: "#fff8f0",
-        borderRadius: 12,
-        padding: 12,
-        marginTop: 10,
+    section: { 
+        gap: spacing.sm,
     },
-    heading: {
-        fontSize: 16,
-        fontWeight: "700",
-        marginBottom: 8,
+    box: {
+        backgroundColor: colors.card,
+        borderRadius: radii.md,
+        padding: spacing.sm + 4,
     },
     row: {
         flexDirection: "row",
         justifyContent: "space-between",
-        paddingVertical: 6,
+        paddingVertical: spacing.xs + 2,
         borderBottomWidth: StyleSheet.hairlineWidth,
-        borderBottomColor: "#e0d5c5",
+        borderBottomColor: colors.cardBorder,
     },
-    rowLabel: {
-        fontSize: 14,
+    rowLast: {
+        borderBottomWidth: 0,
     },
-    rowValue: {
-        fontSize: 14,
-        fontWeight: "600",
-    },
+    
 })

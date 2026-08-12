@@ -1,5 +1,5 @@
 import { useLocalSearchParams } from "expo-router";
-import { Pressable, View, Text, ActivityIndicator } from "react-native";
+import { Pressable, View, Text, ActivityIndicator, StyleSheet } from "react-native";
 import { router } from "expo-router";
 import DogMatchCard from "@/components/matches/DogMatchCard";
 import { MatchWithDog } from "@/types/match";
@@ -7,6 +7,7 @@ import { Ionicons } from "@expo/vector-icons"
 import { useEffect, useState } from "react";
 import { ApplicationWithDetails } from "@/types/application";
 import { getApplications } from "@/lib/applications";
+import { colors, radii, spacing, typography } from "@/constants/theme";
 
 export default function DogDetailScreen() {
     const params = useLocalSearchParams<{ dogId: string; match: string }>();
@@ -46,20 +47,46 @@ export default function DogDetailScreen() {
     }
 
     return (
-        <View style={{ flex: 1, paddingTop: 16 }}>
-            <Pressable onPress={() => router.back()} style={{ padding: 16}}>
+        <View style={styles.container}>
+            <Pressable onPress={() => router.back()} style={styles.backButton}>
                 <Ionicons name="chevron-back" size={20}/>
             </Pressable>
-            <DogMatchCard match={match}/>
+            <DogMatchCard match={match}
+            />
 
             {loadingApplication ? (
-                <ActivityIndicator style={{ marginTop: 16 }} />
+                <ActivityIndicator style={styles.loadingIndicator} />
             ) : (
-                <Pressable onPress={handleApplyPress} style={{ padding: 16, marginTop: 16 }}>
-                    <Text>{existingApplication ? "View Application" : "Apply to Adopt"}</Text>
+                <Pressable onPress={handleApplyPress} style={styles.applyButton}>
+                    <Text style={typography.button}>{existingApplication ? "View Application" : "Apply to Adopt"}</Text>
                 </Pressable>
             )}
         </View>
         
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        paddingTop: spacing.md,
+        backgroundColor: colors.background,
+    },
+    backButton: {
+        padding: spacing.md,
+        marginTop: spacing.sm
+    },
+    loadingIndicator: {
+        marginTop: spacing.md,
+    },
+    buttonWrapper: {
+        paddingHorizontal: spacing.md,
+        paddingBottom: spacing.md,
+    },
+    applyButton: {
+        backgroundColor: colors.navyMid,
+        borderRadius: radii.pill,
+        paddingVertical: spacing.sm + 4,
+        alignItems: "center",
+    },
+})

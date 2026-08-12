@@ -1,6 +1,8 @@
 import { View, Text, StyleSheet } from "react-native";
 import { MatchWithDog } from "@/types/match";
 import { ageLabel, coatLengthLabel, coatTypeLabel, getDogLabel, sheddingLevelLabel, sizeLabel } from "@/constants/dogLabels";
+import { colors, radii, spacing, typography } from "@/constants/theme";
+import { capitaliseFirst } from "@/lib/formatText";
 
 type Props = {
     match: MatchWithDog;
@@ -13,48 +15,48 @@ export default function AttributeGrid({ match }: Props) {
         <View>
             <View style={styles.boxContainer}>
                 <View style={styles.box}>
-                    <Text style={styles.boxTitle}>Colour</Text>
-                    <Text style={styles.boxText}>{dog.colour.join(', ')}</Text>
+                    <Text style={typography.gridLabel}>Colour</Text>
+                    <Text style={typography.gridValue}>{capitaliseFirst(dog.colour.join(', '))}</Text>
                 </View>
 
                 <View style={styles.box}>
-                    <Text style={styles.boxTitle}>Age</Text>
-                    <Text style={styles.boxText}>{getDogLabel(ageLabel, dog.age)}</Text>
+                    <Text style={typography.gridLabel}>Age</Text>
+                    <Text style={typography.gridValue}>{getDogLabel(ageLabel, dog.age)}</Text>
                 </View>
 
                 <View style={styles.box}>
-                    <Text style={styles.boxTitle}>Size</Text>
-                    <Text style={styles.boxText}>{getDogLabel(sizeLabel, dog.size)}</Text>
+                    <Text style={typography.gridLabel}>Size</Text>
+                    <Text style={typography.gridValue}>{getDogLabel(sizeLabel, dog.size)}</Text>
                 </View>
 
                 <View style={styles.box}>
-                    <Text style={styles.boxTitle}>Neutered?</Text>
-                    <Text style={styles.boxText}>{dog.neutered ? 'Yes' : 'No'}</Text>
+                    <Text style={typography.gridLabel}>Neutered</Text>
+                    <Text style={typography.gridValue}>{dog.neutered ? 'Yes' : 'No'}</Text>
                 </View>
 
                 <View style={styles.box}>
-                    <Text style={styles.boxTitle}>House Trained?</Text>
-                    <Text style={styles.boxText}>{dog.house_trained ? 'Yes' : 'No'}</Text>
+                    <Text style={typography.gridLabel}>House-Trained</Text>
+                    <Text style={typography.gridValue}>{dog.house_trained ? 'Yes' : 'No'}</Text>
                 </View>
 
                 <View style={styles.box}>
-                    <Text style={styles.boxTitle}>Vaccinated?</Text>
-                    <Text style={styles.boxText}>{dog.vaccinated ? 'Yes' : 'No'}</Text>
+                    <Text style={typography.gridLabel}>Vaccinated</Text>
+                    <Text style={typography.gridValue}>{dog.vaccinated ? 'Yes' : 'No'}</Text>
                 </View>
 
                 <View style={styles.box}>
-                    <Text style={styles.boxTitle}>Coat Length</Text>
-                    <Text style={styles.boxText}>{getDogLabel(coatLengthLabel, dog.coat_length)}</Text>
+                    <Text style={typography.gridLabel}>Coat Length</Text>
+                    <Text style={typography.gridValue}>{getDogLabel(coatLengthLabel, dog.coat_length)}</Text>
                 </View>
 
                 <View style={styles.box}>
-                    <Text style={styles.boxTitle}>Coat Type</Text>
-                    <Text style={styles.boxText}>{getDogLabel(coatTypeLabel, dog.coat_type)}</Text>
+                    <Text style={typography.gridLabel}>Coat Type</Text>
+                    <Text style={typography.gridValue}>{getDogLabel(coatTypeLabel, dog.coat_type)}</Text>
                 </View>
 
                 <View style={styles.box}>
-                    <Text style={styles.boxTitle}>Shedding</Text>
-                    <Text style={styles.boxText}>{getDogLabel(sheddingLevelLabel, dog.shedding_level)}</Text>
+                    <Text style={typography.gridLabel}>Shedding</Text>
+                    <Text style={typography.gridValue}>{getDogLabel(sheddingLevelLabel, dog.shedding_level)}</Text>
                 </View>
             </View>
         </View>
@@ -65,20 +67,14 @@ const styles = StyleSheet.create({
     boxContainer: { 
         flexDirection: "row",
         flexWrap: "wrap",
-        justifyContent: "space-between"
+        justifyContent: "space-between",
+        gap: spacing.sm,
     },
     box: {
         width: "31%",
-        backgroundColor: "#fff8f0",
-        borderRadius: 12,
-        padding: 12,
-        marginTop: 10,
-    },
-    boxTitle: {
-        fontSize: 14,
-    },
-    boxText: {
-        fontSize: 14,
-        fontWeight: "700"
+        backgroundColor: colors.card,
+        borderRadius: radii.md,
+        padding: spacing.sm + 4,
+        alignItems: "center",
     },
 })
