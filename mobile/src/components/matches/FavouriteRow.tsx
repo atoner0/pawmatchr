@@ -1,6 +1,8 @@
 import { Image, View, Text, StyleSheet, Pressable } from "react-native";
 import { MatchWithDog } from "@/types/match";
 import { Ionicons } from "@expo/vector-icons"
+import { colors, radii, spacing, typography } from "@/constants/theme";
+import { capitaliseFirst } from "@/lib/formatText";
 
 type Props = {
     match: MatchWithDog;
@@ -16,9 +18,9 @@ export default function FavouriteRow({ match, onPress }: Props) {
                 <Image source={{ uri: dog.photo_url }} style={styles.photo}/>
 
                 <View style={styles.textBlock}>
-                    <Text style={styles.name}>{dog.name} - {scorePercent}%</Text>
-                    <Text style={styles.breedGender}>
-                        {dog.breed} | {dog.gender}
+                    <Text style={typography.cardTitle}>{dog.name} - {scorePercent}%</Text>
+                    <Text style={typography.cardSubtitle}>
+                        {dog.breed} | {capitaliseFirst(dog.gender)}
                     </Text>
                 </View>
                 <Ionicons name="chevron-forward" size={20}/>
@@ -32,25 +34,20 @@ const styles = StyleSheet.create({
     container: { 
         flexDirection: "row",
         alignItems: "center",
-        gap: 12,
-        paddingVertical: 8,
+        gap: spacing.sm + 4,
+        backgroundColor: colors.card,
+        borderRadius: radii.lg,
+        borderWidth: 1,
+        borderColor: colors.cardBorder,
+        padding: spacing.sm + 4,
     },
     photo: { 
-        width: 72, 
-        height: 72, 
-        borderRadius: 12
+        width: 64, 
+        height: 64, 
+        borderRadius: radii.md
     },
     textBlock: {
         flex: 1,
-    },
-    name: {
-        fontSize: 18,
-        fontWeight: "700",
-    },
-    breedGender: {
-        fontSize: 14, 
-        color: "#555",
-        marginTop: 2,
     },
 })
 

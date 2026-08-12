@@ -5,6 +5,7 @@ import { MatchWithDog } from "@/types/match";
 import { getFavourites } from "@/lib/favourites"; 
 import FavouriteRow from "@/components/matches/FavouriteRow";
 import { Ionicons } from "@expo/vector-icons"
+import { colors, spacing } from "@/constants/theme";
 
 export default function RankedScreen() {
     const router = useRouter();
@@ -37,15 +38,10 @@ export default function RankedScreen() {
 
     return (
         <View style={styles.container}>
-            <View style={{paddingTop: 16 }}>
-                <Pressable onPress={() => router.back()} style={{ padding: 16}}>
-                    <Ionicons name="chevron-back" size={20}/>
-                </Pressable>
-            </View>
-            
             <FlatList
                 data={matches}
                 keyExtractor={(item) => item.match_id.toString()}
+                contentContainerStyle={styles.listContent}
                 renderItem={({ item }) => (
                     <FavouriteRow
                         match={item}
@@ -69,10 +65,17 @@ export default function RankedScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: colors.background,
     },
     centered: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
+        backgroundColor: colors.background,
     },
+    listContent: {
+        paddingHorizontal: spacing.md,
+        paddingBottom: spacing.xl,
+        gap: spacing.md,
+    }
 });
