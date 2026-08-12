@@ -1,6 +1,6 @@
 import type { Response } from 'express';
 import type { AdopterAuthRequest } from '../middleware/auth.js';
-import { createBooking, getBookingByApplication, getNextUpcomingBookingAdopter } from '../models/booking.js';
+import { createBooking, getAllBookingsByAdopter, getBookingByApplication, getNextUpcomingBookingAdopter } from '../models/booking.js';
 import { getOneAdopterApp } from '../models/application.js';
 import { createBookingSchema } from '../types/bookingSchema.js';
 
@@ -85,5 +85,16 @@ export const getUpcomingBooking = async ( req: AdopterAuthRequest, res: Response
         res.status(200).json(booking)
     } catch (error) {
         res.status(500).json({ message: 'Error fetching upcoming booking', error })
+    }
+}
+
+export const getAllAdopterBookings = async ( req: AdopterAuthRequest, res: Response): Promise<void> => {
+    try {
+        const adopter = req.user!
+        const bookings = await getAllBookingsByAdopter(adopter.adopter_id)
+
+        res.status(200).json(bookings)
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching bookings', error })
     }
 }

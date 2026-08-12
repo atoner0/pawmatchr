@@ -3,9 +3,9 @@ import { getApplications } from "@/lib/applications";
 import { ApplicationWithDetails } from "@/types/application";
 import { router, useFocusEffect } from "expo-router";
 import { useCallback, useState } from "react";
-import { View, Text, StyleSheet, ScrollView, FlatList, ActivityIndicator } from "react-native";
+import { View, Text, StyleSheet, FlatList, ActivityIndicator } from "react-native";
 
-export default function ApplicationsPlaceholder() {
+export default function Applications() {
 
     const [applications, setApplications] = useState<ApplicationWithDetails[]>([])
     const [loading, setLoading] = useState(false);

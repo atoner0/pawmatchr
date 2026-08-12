@@ -71,6 +71,24 @@ export const createBooking = async (
     }
 }
 
+export const getAllBookingsByAdopter = async (adopter_id: number): Promise<BookingWithDetails[]> => {
+    const result = await pool.query(
+        `SELECT bookings.*,
+            availability.slot,
+            dogs.name AS dog_name,
+            adopters.first_name, adopters.last_name
+        FROM bookings
+        JOIN availability ON bookings.availability_id = availability.availability_id
+        JOIN applications ON bookings.application_id = applications.application_id
+        JOIN dogs ON applications.dog_id = dogs.dog_id
+        JOIN adopters on applications.adopter_id = adopters.adopter_id
+        WHERE applications.adopter_id = $1
+        ORDER BY availability.slot ASC`,
+        [adopter_id]
+    )
+    return result.rows
+}
+
 export const getBookingByApplication = async (application_id: number): Promise<BookingWithDetails[]> => {
     const result = await pool.query(
         `SELECT bookings.*,
