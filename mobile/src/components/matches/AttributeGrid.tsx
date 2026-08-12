@@ -29,17 +29,17 @@ export default function AttributeGrid({ match }: Props) {
 
                 <View style={styles.box}>
                     <Text style={styles.boxTitle}>Neutered?</Text>
-                    <Text style={styles.boxText}>{dog.neutered}</Text>
+                    <Text style={styles.boxText}>{dog.neutered ? 'Yes' : 'No'}</Text>
                 </View>
 
                 <View style={styles.box}>
                     <Text style={styles.boxTitle}>House Trained?</Text>
-                    <Text style={styles.boxText}>{dog.house_trained}</Text>
+                    <Text style={styles.boxText}>{dog.house_trained ? 'Yes' : 'No'}</Text>
                 </View>
 
                 <View style={styles.box}>
                     <Text style={styles.boxTitle}>Vaccinated?</Text>
-                    <Text style={styles.boxText}>{dog.vaccinated}</Text>
+                    <Text style={styles.boxText}>{dog.vaccinated ? 'Yes' : 'No'}</Text>
                 </View>
 
                 <View style={styles.box}>
