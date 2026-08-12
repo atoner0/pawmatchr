@@ -1,3 +1,4 @@
+import { colors, radii, spacing, typography } from "@/constants/theme";
 import { View, Text, StyleSheet } from "react-native";
 
 
@@ -5,9 +6,9 @@ import { View, Text, StyleSheet } from "react-native";
 export default function CatIntegrationSection() {
     return (
         <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Settling your new dog in with your cat</Text>
+            <Text style={typography.sectionTitle}>Settling your new dog in with your cat</Text>
 
-            <Text style={styles.intro}>
+            <Text style={styles.introBox}>
                 Shelters don't run a pre-adoption meeting between a resident cat and an adoptable dog. Cats are far more sensitive to unfamiliar, high-stress environments, so this introduction happens gradually at home, after adoption.
             </Text>
 
@@ -60,30 +61,25 @@ export default function CatIntegrationSection() {
 
 const styles = StyleSheet.create({
     section: {
-        marginBottom: 24,
+        gap: spacing.sm + 4,
+        marginBottom: spacing.lg,
     },
-    sectionTitle: {
-        fontSize: 17,
-        fontWeight: "700",
-        marginBottom: 8,
-    },
-    intro: {
-        fontSize: 14,
-        lineHeight: 20,
-        color: "#333",
-        marginBottom: 16,
+    introBox: {
+        backgroundColor: colors.card,
+        borderRadius: radii.md,
+        padding: spacing.sm + 4,
     },
     block: {
-        marginBottom: 14,
+        gap: 3,
     },
     blockTitle: {
         fontSize: 14,
         fontWeight: "700",
-        marginBottom: 3,
+        color: colors.textPrimary,
     },
     blockText: {
         fontSize: 14,
         lineHeight: 20,
-        color: "#555",
+        color: colors.textSecondary,
     },
 });

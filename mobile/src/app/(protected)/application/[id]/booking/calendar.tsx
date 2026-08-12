@@ -1,3 +1,4 @@
+import { colors, radii, spacing, typography } from "@/constants/theme";
 import { ApiError } from "@/lib/api";
 import { getAvailability } from "@/lib/availability";
 import { createBooking } from "@/lib/bookings";
@@ -5,9 +6,11 @@ import { formatSlot } from "@/lib/formatDate";
 import { ApplicationWithDetails } from "@/types/application";
 import { Availability } from "@/types/availability";
 import { BookingType } from "@/types/bookingSchema";
+import { Ionicons } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { View, Text, StyleSheet, ActivityIndicator, FlatList, Pressable, SectionList } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function BookingCalendar() {
     const params = useLocalSearchParams<{ 
@@ -98,8 +101,19 @@ export default function BookingCalendar() {
         );
     }
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
+            <View style={styles.container}>
+                <View style={styles.header}>
+                    <Pressable onPress={() => router.back()}>
+                        <Ionicons name="chevron-back" size={22} color={colors.textPrimary}/>
+                    </Pressable>
+                    <Text style={styles.headerTitle}>Choose a Slot</Text>
+                    <View style={styles.headerSpacer} />
+                </View>
+
             <SectionList
+                style={styles.list}
+                contentContainerStyle={styles.listContent}
                 sections={sections}
                 keyExtractor={(item) => String(item.availability_id)}
                 renderSectionHeader={({ section }) => (
@@ -113,10 +127,10 @@ export default function BookingCalendar() {
                             selectedSlot?.availability_id === item.availability_id && styles.slotRowSelected
                         ]}
                     >
-                        <Text style={styles.slotText}>{formatSlot(item.slot)}</Text>
+                        <Text style={typography.value}>{formatSlot(item.slot)}</Text>
                     </Pressable>
                 )}
-                ListEmptyComponent={<Text style={styles.emptyText}>No available slots right now</Text>}
+                ListEmptyComponent={<Text style={typography.placeholder}>No available slots right now</Text>}
             />
 
             {error ? <Text style={styles.errorText}>{error}</Text> : null}
@@ -126,77 +140,89 @@ export default function BookingCalendar() {
                 disabled={!selectedSlot || submitting}
                 style={[styles.confirmButton, (!selectedSlot || submitting) && styles.confirmButtonDisabled]}
             >
-                <Text style={styles.confirmButtonText}>
+                <Text style={typography.button}>
                     {submitting ? "Booking..." : "Confirm Booking"}
                 </Text>
             </Pressable>
         </View>
+        </SafeAreaView>
+        
     )
 }
 
 const styles = StyleSheet.create({
+    safeArea: {
+        flex: 1,
+        backgroundColor: colors.background
+    },
     container: {
         flex: 1,
-        backgroundColor: "#f7f9f8",
-        paddingHorizontal: 16,
-        paddingTop: 16,
     },
     centered: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
     },
-    dayHeader: {
-        fontSize: 14,
+    header: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        paddingHorizontal: spacing.md,
+        paddingTop: spacing.sm,
+        paddingBottom: spacing.sm,
+    },
+    headerTitle: {
+        fontSize: 18,
         fontWeight: "700",
-        color: "#1f3d3a",
-        backgroundColor: "#f7f9f8",
-        paddingVertical: 8,
-        paddingTop: 16,
+        color: colors.textPrimary,
+    },
+    headerSpacer: {
+        width: 22,
+    },
+    list: {
+        flex: 1,
+        paddingHorizontal: spacing.md,
+    },
+    listContent: {
+        paddingBottom: spacing.md,
+    },
+    dayHeader: {
+        ...typography.sectionTitle,
+        backgroundColor: colors.background,
+        paddingVertical: spacing.sm,
+        paddingTop: spacing.md,
     },
     slotRow: {
-        backgroundColor: "#fff",
-        borderRadius: 12,
+        backgroundColor: colors.card,
+        borderRadius: radii.md,
         borderWidth: 1,
-        borderColor: "#eee",
-        paddingVertical: 14,
-        paddingHorizontal: 16,
-        marginBottom: 10,
+        borderColor: colors.cardBorder,
+        paddingVertical: spacing.sm + 6,
+        paddingHorizontal: spacing.md,
+        marginBottom: spacing.sm,
     },
     slotRowSelected: {
-        borderColor: "#1f3d3a",
+        borderColor: colors.navyMid,
         borderWidth: 2,
-        backgroundColor: "#eef5f3",
-    },
-    slotText: {
-        fontSize: 15,
-        color: "#333",
-    },
-    emptyText: {
-        textAlign: "center",
-        color: "#777",
-        marginTop: 40,
-        fontSize: 14,
+        backgroundColor: colors.navyMuted,
     },
     errorText: {
-        color: "#d33",
+        color: colors.danger,
         textAlign: "center",
-        marginBottom: 8,
+        marginBottom: spacing.xs + 4,
+        paddingHorizontal: spacing.md,
+    },
+    footer: {
+        paddingHorizontal: spacing.md,
+        paddingBottom: spacing.md,
     },
     confirmButton: {
-        backgroundColor: "#1f3d3a",
-        borderRadius: 30,
-        paddingVertical: 14,
+        backgroundColor: colors.navyMid,
+        borderRadius: radii.pill,
+        paddingVertical: spacing.sm + 6,
         alignItems: "center",
-        marginTop: 8,
-        marginBottom: 24,
     },
     confirmButtonDisabled: {
-        backgroundColor: "#93b4a6",
-    },
-    confirmButtonText: {
-        color: "#fff",
-        fontSize: 16,
-        fontWeight: "700",
+        backgroundColor: colors.navyMuted,
     },
 });

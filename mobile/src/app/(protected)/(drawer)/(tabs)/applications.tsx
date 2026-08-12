@@ -1,4 +1,5 @@
 import ApplicationRow from "@/components/application/ApplicationRow";
+import { colors, spacing, typography } from "@/constants/theme";
 import { getApplications } from "@/lib/applications";
 import { ApplicationWithDetails } from "@/types/application";
 import { router, useFocusEffect } from "expo-router";
@@ -41,41 +42,46 @@ export default function Applications() {
     if (applications.length === 0) {
         return (
             <View style={styles.centered}>
-                <Text>You haven't submitted any applications yet</Text>
+                <Text style={typography.placeholder}>You haven't submitted any applications yet</Text>
             </View>
         )
     }
 
     return (
-        <FlatList
-            data={applications}
-            keyExtractor={(item) => String(item.application_id)}
-            renderItem={({ item }) => (
-                <ApplicationRow
-                    application={item}
-                    onPress={() => router.push({
-                        pathname: "/(protected)/application/[id]",
-                        params: { id: String(item.application_id)}
-                    })}
-                />
-            )}
-        />
+        <View style={styles.container}>
+            <FlatList
+                data={applications}
+                keyExtractor={(item) => String(item.application_id)}
+                contentContainerStyle={styles.listContent}
+                renderItem={({ item }) => (
+                    <ApplicationRow
+                        application={item}
+                        onPress={() => router.push({
+                            pathname: "/(protected)/application/[id]",
+                            params: { id: String(item.application_id)}
+                        })}
+                    />
+                )}
+            /> 
+        </View>
+        
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        paddingVertical: 12,
+        flex: 1,
+        backgroundColor: colors.background,
     },
     centered: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        padding: 16,
+        backgroundColor: colors.background,
     },
-    errorText: {
-        color: "#d33",
-        fontSize: 15,
-        textAlign: "center",
-    },
-})
+    listContent: {
+        paddingHorizontal: spacing.md,
+        paddingBottom: spacing.xl,
+        gap: spacing.md,
+    }
+});

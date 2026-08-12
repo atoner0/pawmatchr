@@ -1,9 +1,11 @@
 import ApplicationStepper, { StepperStep } from "@/components/application/ApplicationStepper";
 import { applicationStatusLabels, bookingStatusLabels, bookingTypeLabels } from "@/constants/statusLabels";
+import { colors, radii, spacing, typography } from "@/constants/theme";
 import { useAdopter } from "@/context/AdopterContext";
 import { getApplicationById, withdrawApplication } from "@/lib/applications";
 import { getBookingsByApplication } from "@/lib/bookings";
 import { formatDate } from "@/lib/formatDate";
+import { capitaliseFirst } from "@/lib/formatText";
 import { ApplicationWithDetails } from "@/types/application";
 import { BookingWithDetails } from "@/types/booking";
 import { BookingType } from "@/types/bookingSchema";
@@ -11,6 +13,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator, Pressable, Image, Alert } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ViewApplication() {
     const params = useLocalSearchParams<{ id: string }>();
@@ -149,86 +152,89 @@ export default function ViewApplication() {
     ];
 
     return (
-        <ScrollView style={styles.container}>
-            <View style={styles.header}>
-                <Pressable onPress={() => router.back()}>
-                    <Ionicons name="chevron-back" size={22} />
-                </Pressable>
-                <Text style={styles.headerTitle}>My Application</Text>
-                <Ionicons name="notifications-outline" size={22} />
-            </View>
-
-            <Image source={{ uri: application.photo_url }} style={styles.dogImage} />
-
-            <View style={styles.dogInfoRow}>
-                <Text style={styles.dogName}>{application.dog_name}</Text>
-                <Text style={styles.breedGender}>{application.breed} | {application.gender}</Text>
-            </View>
-
-            <View style={styles.shelterRow}>
-                <View style={styles.shelterPill}>
-                    <Ionicons name="location-outline" size={14} />
-                    <Text style={styles.shelterText}>{application.shelter_name}, {application.shelter_city}</Text>
+        <SafeAreaView style={styles.container} edges={['top']}>
+            <ScrollView>
+                <View style={styles.header}>
+                    <Pressable onPress={() => router.replace("/(protected)/(drawer)/(tabs)/applications")}>
+                        <Ionicons name="chevron-back" size={22} color={colors.textPrimary}/>
+                    </Pressable>
+                    <Text style={styles.headerTitle}>My Application</Text>
+                    <Ionicons name="notifications-outline" size={22} color={colors.textPrimary}/>
                 </View>
-                <Text style={styles.appliedDate}>Applied {formatDate(application.submitted_at)}</Text>
-            </View>
 
-            <View style={styles.progressRow}>
-                <Text style={styles.progressLabel}>PROGRESS</Text>
-                <View style={styles.statusPill}>
-                    <Text style={styles.statusPillText}>{applicationStatusLabels[application.status]}</Text>
+                <Image source={{ uri: application.photo_url }} style={styles.dogImage} />
+
+                <View style={styles.dogInfoRow}>
+                    <Text style={typography.cardTitle}>{application.dog_name}</Text>
+                    <Text style={typography.cardSubtitle}>{application.breed} | {capitaliseFirst(application.gender)}</Text>
                 </View>
-            </View>
 
-            <ApplicationStepper steps={steps} />
+                <View style={styles.shelterRow}>
+                    <View style={styles.shelterPill}>
+                        <Ionicons name="location-outline" size={14} />
+                        <Text style={styles.shelterText}>{application.shelter_name}, {application.shelter_city}</Text>
+                    </View>
+                    <Text style={typography.cardSubtitle}>Applied {formatDate(application.submitted_at)}</Text>
+                </View>
 
-            <View style={styles.bookingsBox}>
-                {requiredBookingTypes.map((type) => {
-                    const booking = getBookingForType(type);
-                    return (
-                        <View key={type} style={styles.bookingRow}>
-                            <Text style={styles.bookingType}>{bookingTypeLabels[type]}</Text>
-                            {booking ? (
-                                <Text style={booking.status == "completed" ? styles.bookingCompleted : styles.bookingPending}>
-                                    {booking.status === "completed"
-                                        ?  `Completed ${booking.slot}`
-                                        : bookingStatusLabels[booking.status]}
-                                </Text>
-                            ) : (
-                                <Text style={styles.bookingNotBooked}>Not booked</Text>
-                            )}
-                        </View>
-                    );
-                })}
-            </View>
+                <View style={styles.progressRow}>
+                    <Text style={typography.sectionTitle}>PROGRESS</Text>
+                    <View style={styles.statusPill}>
+                        <Text style={styles.statusPillText}>{applicationStatusLabels[application.status]}</Text>
+                    </View>
+                </View>
 
-            {showGuidanceBanner && (
-                <View style={styles.guidanceBanner}>
-                    <Text style={styles.guidanceText}>
-                        You must read the multi-pet guidance before booking your pet introduction
+                <ApplicationStepper steps={steps} />
+
+                <View style={styles.bookingsBox}>
+                    {requiredBookingTypes.map((type) => {
+                        const booking = getBookingForType(type);
+                        return (
+                            <View key={type} style={styles.bookingRow}>
+                                <Text style={typography.value}>{bookingTypeLabels[type]}</Text>
+                                {booking ? (
+                                    <Text style={booking.status == "completed" ? styles.bookingCompleted : styles.bookingPending}>
+                                        {booking.status === "completed"
+                                            ?  `Completed ${booking.slot}`
+                                            : bookingStatusLabels[booking.status]}
+                                    </Text>
+                                ) : (
+                                    <Text style={styles.bookingNotBooked}>Not booked</Text>
+                                )}
+                            </View>
+                        );
+                    })}
+                </View>
+
+                {showGuidanceBanner && (
+                    <View style={styles.guidanceBanner}>
+                        <Text style={styles.guidanceText}>
+                            You must read the multi-pet guidance before booking your pet introduction
+                        </Text>
+                    </View>
+                )}
+                {nextBookingType ? (
+                    <Pressable onPress={handleBookVisitPress} style={styles.bookButton}>
+                        <Text style={typography.button}>Book Visit</Text>
+                    </Pressable>
+                ) : (
+                    <View style={styles.allBookedBox}>
+                        <Text style={styles.allBookedText}>
+                            All required visits are booked.
+                        </Text>
+                    </View>
+                )}
+
+                
+
+                <Pressable onPress={handleWithdraw} disabled={withdrawing}>
+                    <Text style={styles.withdrawText}>
+                        {withdrawing ? "Withdrawing..." : "Withdraw Application"}
                     </Text>
-                </View>
-            )}
-            {nextBookingType ? (
-                <Pressable onPress={handleBookVisitPress} style={styles.bookButton}>
-                    <Text style={styles.bookButtonText}>Book Visit</Text>
                 </Pressable>
-            ) : (
-                <View style={styles.allBookedBox}>
-                    <Text style={styles.allBookedText}>
-                        All required visits are booked.
-                    </Text>
-                </View>
-            )}
-
-            
-
-            <Pressable onPress={handleWithdraw} disabled={withdrawing}>
-                <Text style={styles.withdrawText}>
-                    {withdrawing ? "Withdrawing..." : "Withdraw Application"}
-                </Text>
-            </Pressable>
-        </ScrollView>
+            </ScrollView>
+        </SafeAreaView>
+        
         
     )
 }
@@ -236,16 +242,17 @@ export default function ViewApplication() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#f7f9f8",
+        backgroundColor: colors.background,
     },
     centered: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        padding: 16,
+        padding: spacing.md,
+        backgroundColor: colors.background,
     },
     errorText: {
-        color: "#d33",
+        color: colors.danger,
         fontSize: 15,
         textAlign: "center",
     },
@@ -253,156 +260,131 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        paddingHorizontal: 16,
-        paddingTop: 60,
-        paddingBottom: 8,
+        paddingHorizontal: spacing.md,
+        paddingBottom: spacing.sm,
     },
     headerTitle: {
-        fontSize: 18,
+        fontSize: 20,
         fontWeight: "700",
+        color: colors.textPrimary
     },
     dogImage: {
         width: "100%",
         height: 200,
-        borderRadius: 16,
-        marginTop: 8,
+        borderRadius: radii.lg,
+        marginTop: spacing.sm,
     },
     dogInfoRow: {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "flex-end",
-        paddingHorizontal: 16,
-        marginTop: 12,
-    },
-    dogName: {
-        fontSize: 22,
-        fontWeight: "700",
-    },
-    breedGender: {
-        fontSize: 14,
-        color: "#555",
+        paddingHorizontal: spacing.md,
+        marginTop: spacing.sm + 4,
     },
     shelterRow: {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        paddingHorizontal: 16,
-        marginTop: 10,
+        paddingHorizontal: spacing.md,
+        marginTop: spacing.sm + 4,
     },
     shelterPill: {
         flexDirection: "row",
         alignItems: "center",
-        gap: 4,
-        backgroundColor: "#fff",
-        borderRadius: 20,
-        paddingHorizontal: 10,
-        paddingVertical: 6,
+        gap: spacing.xs,
+        backgroundColor: colors.card,
+        borderRadius: radii.pill,
+        paddingHorizontal: spacing.sm + 2,
+        paddingVertical: spacing.xs + 2,
     },
     shelterText: {
         fontSize: 13,
-        color: "#333",
-    },
-    appliedDate: {
-        fontSize: 13,
-        color: "#555",
+        color: colors.textPrimary,
     },
     progressRow: {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        paddingHorizontal: 16,
-        marginTop: 20,
-    },
-    progressLabel: {
-        fontSize: 14,
-        fontWeight: "700",
-        letterSpacing: 0.5,
+        paddingHorizontal: spacing.md,
+        marginTop: spacing.lg,
     },
     statusPill: {
-        backgroundColor: "#f4a462",
-        borderRadius: 16,
-        paddingHorizontal: 12,
-        paddingVertical: 6,
+        backgroundColor: colors.accentOrange,
+        borderRadius: radii.md,
+        paddingHorizontal: spacing.sm + 4,
+        paddingVertical: spacing.xs + 2,
     },
     statusPillText: {
         fontSize: 13,
         fontWeight: "600",
-        color: "#fff",
+        color: colors.textOnDark,
     },
     bookingsBox: {
-        backgroundColor: "#fdf3e8",
-        borderRadius: 16,
-        marginHorizontal: 16,
-        marginTop: 10,
-        padding: 16,
+        backgroundColor: colors.card,
+        borderRadius: radii.lg,
+        marginHorizontal: spacing.md,
+        marginTop: spacing.sm + 2,
+        padding: spacing.md,
     },
     bookingRow: {
         flexDirection: "row",
         justifyContent: "space-between",
-        paddingVertical: 8,
-        borderBottomWidth: 1,
-        borderBottomColor: "#eee",
-    },
-    bookingType: {
-        fontSize: 14,
-        fontWeight: "600",
+        paddingVertical: spacing.sm,
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        borderBottomColor: colors.cardBorder,
     },
     bookingCompleted: {
         fontSize: 13,
-        color: "#2d6a4f",
+        color: colors.textSecondary,
     },
     bookingPending: {
         fontSize: 13,
-        color: "#a67c00",
+        color: colors.textSecondary,
     },
     bookingNotBooked: {
         fontSize: 13,
-        color: "#d33",
+        color: colors.danger,
+        fontWeight: "600",
     },
     guidanceBanner: {
-        backgroundColor: "#fff",
-        borderRadius: 16,
-        marginHorizontal: 16,
-        marginTop: 14,
-        padding: 16,
+        backgroundColor: colors.card,
+        borderRadius: radii.lg,
+        marginHorizontal: spacing.md,
+        marginTop: spacing.sm + 6,
+        padding: spacing.md,
     },
     guidanceText: {
         fontSize: 14,
         textAlign: "center",
-        color: "#333",
+        color: colors.textPrimary,
     },
     bookButton: {
-        backgroundColor: "#1f3d3a",
-        borderRadius: 30,
-        marginHorizontal: 16,
-        marginTop: 16,
-        paddingVertical: 14,
+        backgroundColor: colors.navyMid,
+        borderRadius: radii.pill,
+        marginHorizontal: spacing.md,
+        marginTop: spacing.md,
+        paddingVertical: spacing.sm + 6,
         alignItems: "center",
     },
-    bookButtonText: {
-        color: "#fff",
+    withdrawText: {
+        color: colors.danger,
         fontSize: 16,
+        textAlign: "center",
+        marginTop: spacing.sm + 6,
+        marginBottom: spacing.lg,
         fontWeight: "700",
     },
-    withdrawText: {
-        color: "#c0392b",
-        fontSize: 14,
-        textAlign: "center",
-        marginTop: 14,
-        marginBottom: 24,
-        fontWeight: "600",
-    },
     allBookedBox: {
-        backgroundColor: "#fdf3e8",
-        borderRadius: 16,
-        marginHorizontal: 16,
-        marginTop: 16,
-        marginBottom: 24,
-        padding: 16,
+        backgroundColor: colors.card,
+        borderRadius: radii.lg,
+        marginHorizontal: spacing.md,
+        marginTop: spacing.md,
+        marginBottom: spacing.lg,
+        padding: spacing.md,
     },
     allBookedText: {
         fontSize: 14,
         textAlign: "center",
-        color: "#333",
+        color: colors.textPrimary,
     },
 });

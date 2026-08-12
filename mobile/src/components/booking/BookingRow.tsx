@@ -3,6 +3,7 @@ import { Ionicons } from "@expo/vector-icons"
 import { formatSlot } from "@/lib/formatDate";
 import { BookingWithDetails } from "@/types/booking";
 import { bookingStatusLabels, bookingTypeLabels } from "@/constants/statusLabels";
+import { colors, radii, spacing, typography } from "@/constants/theme";
 
 type Props = {
     booking: BookingWithDetails;
@@ -11,12 +12,11 @@ type Props = {
 
 export default function BookingRow({ booking, onPress }: Props) {  
     return (
-        <Pressable onPress = {onPress}>
-            <View style={styles.container}>
+        <Pressable onPress = {onPress} style={styles.container}>
                 <View style={styles.textBlock}>
-                    <Text style={styles.dogName}>{booking.dog_name}</Text>
-                    <Text style={styles.type}>{bookingTypeLabels[booking.booking_type]}</Text>
-                    <Text style={styles.slot}>{formatSlot(booking.slot)}</Text>
+                    <Text style={typography.cardTitle}>{booking.dog_name}</Text>
+                    <Text style={typography.cardSubtitle}>{bookingTypeLabels[booking.booking_type]}</Text>
+                    <Text style={typography.cardSubtitle}>{formatSlot(booking.slot)}</Text>
                 </View>
 
                 <View style={styles.rightBlock}>
@@ -24,8 +24,7 @@ export default function BookingRow({ booking, onPress }: Props) {
                         {bookingStatusLabels[booking.status]}
                     </Text>
                 </View>
-                <Ionicons name="chevron-forward" size={20}/>
-            </View>
+                <Ionicons name="chevron-forward" size={20} color={colors.textPrimary}/>
         </Pressable>
             
     )
@@ -36,41 +35,30 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        paddingVertical: 12,
-        borderBottomWidth: 1,
-        borderBottomColor: "#eee",
+        backgroundColor: colors.card,
+        borderRadius: radii.lg,
+        borderWidth: 1,
+        borderColor: colors.cardBorder,
+        padding: spacing.sm + 4,
     },
     textBlock: {
         flex: 1,
-    },
-    dogName: {
-        fontSize: 18,
-        fontWeight: "700",
-    },
-    type: {
-        fontSize: 14,
-        color: "#555",
-        marginTop: 2,
-    },
-    slot: {
-        fontSize: 14,
-        color: "#555",
-        marginTop: 2,
+        gap: 2,
     },
     rightBlock: {
         flexDirection: "row",
         alignItems: "center",
-        gap: 8,
+        gap: spacing.sm,
     },
     statusCompleted: {
         fontSize: 13,
         fontWeight: "600",
-        color: "#2d6a4f",
+        color: colors.navyMid,
     },
     statusPending: {
         fontSize: 13,
         fontWeight: "600",
-        color: "#a67c00",
+        color: colors.textSecondary,
     },
 })
 

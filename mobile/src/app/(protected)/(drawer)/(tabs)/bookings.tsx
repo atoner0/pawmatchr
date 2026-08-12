@@ -1,4 +1,5 @@
 import BookingRow from "@/components/booking/BookingRow";
+import { colors, spacing, typography } from "@/constants/theme";
 import { getBookings } from "@/lib/bookings";
 import { BookingWithDetails } from "@/types/booking";
 import { router, useFocusEffect } from "expo-router";
@@ -41,41 +42,51 @@ export default function Bookings() {
     if (bookings.length === 0) {
         return (
             <View style={styles.centered}>
-                <Text>You haven't booked any visits yet</Text>
+                <Text style={typography.placeholder}>You haven't booked any visits yet</Text>
             </View>
         )
     }
 
     return (
-        <FlatList
-            data={bookings}
-            keyExtractor={(item) => String(item.booking_id)}
-            renderItem={({ item }) => (
-                <BookingRow
-                    booking={item}
-                    onPress={() => router.push({
-                        pathname: "/(protected)/application/[id]",
-                        params: { id: String(item.application_id)}
-                    })}
-                />
-            )}
-        />
+        <View style={styles.container}>
+            <FlatList
+                data={bookings}
+                keyExtractor={(item) => String(item.booking_id)}
+                contentContainerStyle={styles.listContent}
+                renderItem={({ item }) => (
+                    <BookingRow
+                        booking={item}
+                        onPress={() => router.push({
+                            pathname: "/(protected)/application/[id]",
+                            params: { id: String(item.application_id)}
+                        })}
+                    />
+                )}
+            />
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        paddingVertical: 12,
+        flex: 1,
+        backgroundColor: colors.background,
     },
     centered: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        padding: 16,
+        padding: spacing.md,
+        backgroundColor: colors.background,
     },
     errorText: {
-        color: "#d33",
+        color: colors.danger,
         fontSize: 15,
         textAlign: "center",
+    },
+    listContent: {
+        paddingHorizontal: spacing.md,
+        paddingBottom: spacing.xl,
+        gap: spacing.md,
     },
 })

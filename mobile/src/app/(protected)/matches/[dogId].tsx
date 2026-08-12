@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { ApplicationWithDetails } from "@/types/application";
 import { getApplications } from "@/lib/applications";
 import { colors, radii, spacing, typography } from "@/constants/theme";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function DogDetailScreen() {
     const params = useLocalSearchParams<{ dogId: string; match: string }>();
@@ -47,21 +48,26 @@ export default function DogDetailScreen() {
     }
 
     return (
-        <View style={styles.container}>
-            <Pressable onPress={() => router.back()} style={styles.backButton}>
-                <Ionicons name="chevron-back" size={20}/>
-            </Pressable>
-            <DogMatchCard match={match}
-            />
+        <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
+           <View style={styles.content}>
+                <View style={styles.header}>
+                    <Pressable onPress={() => router.back()}>
+                        <Ionicons name="chevron-back" size={22} color={colors.textPrimary}/>
+                    </Pressable>
+                </View>
+                <DogMatchCard match={match}
+                />
 
-            {loadingApplication ? (
-                <ActivityIndicator style={styles.loadingIndicator} />
-            ) : (
-                <Pressable onPress={handleApplyPress} style={styles.applyButton}>
-                    <Text style={typography.button}>{existingApplication ? "View Application" : "Apply to Adopt"}</Text>
-                </Pressable>
-            )}
-        </View>
+                {loadingApplication ? (
+                    <ActivityIndicator style={styles.loadingIndicator} />
+                ) : (
+                    <Pressable onPress={handleApplyPress} style={styles.applyButton}>
+                        <Text style={typography.button}>{existingApplication ? "View Application" : "Apply to Adopt"}</Text>
+                    </Pressable>
+                )}
+            </View> 
+        </SafeAreaView>
+        
         
     )
 }
@@ -72,12 +78,22 @@ const styles = StyleSheet.create({
         paddingTop: spacing.md,
         backgroundColor: colors.background,
     },
+    content: {
+        flex: 1,
+    },
     backButton: {
         padding: spacing.md,
         marginTop: spacing.sm
     },
     loadingIndicator: {
         marginTop: spacing.md,
+    },
+    header: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        paddingHorizontal: spacing.md,
+        paddingBottom: spacing.sm,
     },
     buttonWrapper: {
         paddingHorizontal: spacing.md,

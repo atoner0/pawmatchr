@@ -5,7 +5,7 @@ import { MatchWithDog } from "@/types/match";
 import { getFavourites } from "@/lib/favourites"; 
 import FavouriteRow from "@/components/matches/FavouriteRow";
 import { Ionicons } from "@expo/vector-icons"
-import { colors, spacing } from "@/constants/theme";
+import { colors, spacing, typography } from "@/constants/theme";
 
 export default function RankedScreen() {
     const router = useRouter();
@@ -31,7 +31,7 @@ export default function RankedScreen() {
     if (matches.length === 0) {
         return (
             <View style={styles.centered}>
-                <Text>You haven't favourited any dogs yet</Text>
+                <Text style={typography.placeholder}>You haven't favourited any dogs yet</Text>
             </View>
         )
     }

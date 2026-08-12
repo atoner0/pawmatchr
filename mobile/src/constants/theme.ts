@@ -58,7 +58,7 @@ export const typography = {
     color: colors.textOnDark,
   },
   sectionTitle: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: "700" as const,
     color: "#0B2A43",
     textTransform: "uppercase" as const,

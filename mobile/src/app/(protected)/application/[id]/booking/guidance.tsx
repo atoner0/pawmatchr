@@ -1,8 +1,11 @@
 import CatIntegrationSection from "@/components/application/CatIntegrationSection";
 import DogIntroSection from "@/components/application/DogIntroSection";
+import { colors, radii, spacing, typography } from "@/constants/theme";
 import { useAdopter } from "@/context/AdopterContext";
+import { Ionicons } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
 import { View, Text, StyleSheet, ScrollView, Pressable } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function MultiPetGuidance() {
     const params = useLocalSearchParams<{ id: string, shelterId: string }>();
@@ -26,41 +29,73 @@ export default function MultiPetGuidance() {
     };
 
     return (
-        <ScrollView style={styles.container}>
-            {hasResidentDog && <DogIntroSection />}
-            {hasResidentCat && <CatIntegrationSection />}
+        <SafeAreaView style={styles.safeArea} edges={['top']}>
+            <View style={styles.container}>
+                <View style={styles.header}>
+                    <Pressable onPress={() => router.back()}>
+                        <Ionicons name="chevron-back" size={22} color={colors.textPrimary}/>
+                    </Pressable>
+                    <Text style={styles.headerTitle}>Multi-Pet Guidance</Text>
+                    <View style={styles.headerSpacer} />  
+                </View>
 
-            {hasResidentDog ? (
-                <Pressable onPress={handleConfirm} style={styles.confirmButton}>
-                    <Text style={styles.confirmButtonText}>I've Read This Guidance</Text>
-                </Pressable>
-            ) : (
-                <Pressable onPress={() => router.back()} style={styles.confirmButton}>
-                    <Text style={styles.confirmButtonText}>Back to Applications</Text>
-                </Pressable>
-            )}
-        </ScrollView>
+            <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
+                    {hasResidentDog && <DogIntroSection />}
+                    {hasResidentCat && <CatIntegrationSection />}
+
+                    {hasResidentDog ? (
+                        <Pressable onPress={handleConfirm} style={styles.confirmButton}>
+                            <Text style={typography.button}>I've Read This Guidance</Text>
+                        </Pressable>
+                    ) : (
+                        <Pressable onPress={() => router.back()} style={styles.confirmButton}>
+                            <Text style={typography.button}>Back to Applications</Text>
+                        </Pressable>
+                    )}
+                </ScrollView> 
+            </View>
+        </SafeAreaView>
+        
     )
 }
 
 const styles = StyleSheet.create({
+    safeArea: {
+        flex: 1,
+        backgroundColor: colors.background
+    },
     container: {
         flex: 1,
-        backgroundColor: "#f7f9f8",
-        paddingHorizontal: 16,
-        paddingTop: 16,
+    },
+    header: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        paddingHorizontal: spacing.md,
+        paddingTop: spacing.sm,
+        paddingBottom: spacing.sm,
+    },
+    headerTitle: {
+        fontSize: 18,
+        fontWeight: "700",
+        color: colors.textPrimary,
+    },
+    headerSpacer: {
+        width: 22,
+    },
+    scroll: {
+        flex: 1,
+    },
+    content: {
+        paddingHorizontal: spacing.md,
+        paddingBottom: spacing.xl,
     },
     confirmButton: {
-        backgroundColor: "#1f3d3a",
-        borderRadius: 30,
-        paddingVertical: 14,
+        backgroundColor: colors.navyMid,
+        borderRadius: radii.pill,
+        paddingVertical: spacing.sm + 6,
         alignItems: "center",
-        marginTop: 8,
-        marginBottom: 32,
-    },
-    confirmButtonText: {
-        color: "#fff",
-        fontSize: 16,
-        fontWeight: "700",
+        marginTop: spacing.sm,
+        marginBottom: spacing.lg,
     },
 });

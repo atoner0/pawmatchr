@@ -1,3 +1,4 @@
+import { colors, radii, spacing, typography } from "@/constants/theme";
 import { View, Text, StyleSheet } from "react-native";
 
 
@@ -5,9 +6,9 @@ import { View, Text, StyleSheet } from "react-native";
 export default function DogIntroSection() {
     return (
         <View style={styles.section}>
-            <Text style={styles.sectionTitle}>What the pet introduction visit involves</Text>
+            <Text style={typography.sectionTitle}>What the pet introduction visit involves</Text>
 
-            <Text style={styles.intro}>
+            <Text style={styles.introBox}>
                 Because you currently have a dog at home, your adoption process includes a meeting between your dog and the dog you're hoping to adopter
             </Text>
 
@@ -60,30 +61,25 @@ export default function DogIntroSection() {
 
 const styles = StyleSheet.create({
     section: {
-        marginBottom: 24,
+        gap: spacing.sm + 4,
+        marginBottom: spacing.lg,
     },
-    sectionTitle: {
-        fontSize: 17,
-        fontWeight: "700",
-        marginBottom: 8,
-    },
-    intro: {
-        fontSize: 14,
-        lineHeight: 20,
-        color: "#333",
-        marginBottom: 16,
+    introBox: {
+        backgroundColor: colors.card,
+        borderRadius: radii.md,
+        padding: spacing.sm + 4,
     },
     block: {
-        marginBottom: 14,
+        gap: 3,
     },
     blockTitle: {
         fontSize: 14,
         fontWeight: "700",
-        marginBottom: 3,
+        color: colors.textPrimary,
     },
     blockText: {
         fontSize: 14,
         lineHeight: 20,
-        color: "#555",
+        color: colors.textSecondary,
     },
 });

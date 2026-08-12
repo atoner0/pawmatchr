@@ -67,17 +67,19 @@ export default function SwipeScreen() {
 
     return (
         <View style={styles.container}>
-            <DogMatchCard match={matches[currentIndex]}
-            footer={
-                <View style={styles.actionBar}>
-                    <Pressable style={styles.actionButton} onPress={handleReject}>
-                        <Ionicons name="close" size={28} color={colors.navyMid} />
-                    </Pressable>
+            <DogMatchCard 
+                key={matches[currentIndex].dog_id}
+                match={matches[currentIndex]}
+                footer={
+                    <View style={styles.actionBar}>
+                        <Pressable style={styles.actionButton} onPress={handleReject}>
+                            <Ionicons name="close" size={28} color={colors.navyMid} />
+                        </Pressable>
 
-                    <Pressable style={styles.actionButton} onPress={handleFavourite}>
-                        <Ionicons name="heart-outline" size={26} color={colors.navyMid} />
-                    </Pressable>
-                </View>
+                        <Pressable style={styles.actionButton} onPress={handleFavourite}>
+                            <Ionicons name="heart-outline" size={26} color={colors.navyMid} />
+                        </Pressable>
+                    </View>
                 }
             />
 
