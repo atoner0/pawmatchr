@@ -1,6 +1,6 @@
 import type { Response } from 'express'
 import type { AdminAuthRequest } from '../../middleware/auth.js'
-import { getDashboardStats } from '../../models/dog.js'
+import { getDashboardStats, getDogsWithNoApplications } from '../../models/dog.js'
 import { getRecentAppsByShelter } from '../../models/application.js'
 import { getUpcomingBookingsByShelter } from '../../models/booking.js'
 
@@ -11,13 +11,15 @@ export const renderDashboard = async (req: AdminAuthRequest, res: Response) => {
         const stats = await getDashboardStats(shelterId)
         const recentApplications = await getRecentAppsByShelter(shelterId)
         const upcomingVisits = await getUpcomingBookingsByShelter(shelterId)
+        const noApplicationDogs = await getDogsWithNoApplications(shelterId)
 
         res.render('dashboard', {
             title: 'Dashboard',
             user: req.user,
             stats,
             recentApplications,
-            upcomingVisits
+            upcomingVisits,
+            noApplicationDogs
         })
     } catch (error) {
         console.error(error)

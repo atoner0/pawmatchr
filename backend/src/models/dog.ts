@@ -116,25 +116,42 @@ export const deleteDog = async(dog_id: number, shelter_id: number): Promise<void
 export const getDashboardStats = async (shelter_id: number) => {
     const result = await pool.query(
         `SELECT
-            COUNT(*) FILTER (WHERE status = 'available') AS dogs_in_shelter,
-            COUNT(*) FILTER (WHERE status = 'adopted') AS dogs_adopted
+            COUNT(*) FILTER (WHERE status = 'available') AS dogs_in_shelter
         FROM dogs
         WHERE shelter_id = $1`,
         [shelter_id]
     )
 
     const appCountResult = await pool.query(
-        `SELECT COUNT(*) AS current_applications
+        `SELECT 
+            COUNT(*) FILTER (WHERE applications.status NOT IN ('adopted', 'rejected', 'withdrawn')) AS current_applications,
+            COUNT(*) FILTER (WHERE applications.status = 'under_review') AS awaiting_review
         FROM applications
         JOIN dogs ON applications.dog_id = dogs.dog_id
-        WHERE dogs.shelter_id = $1
-        AND applications.status NOT IN ('adopted', 'rejected', 'withdrawn')`,
+        WHERE dogs.shelter_id = $1`,
         [shelter_id]
     )
 
     return {
         dogs_in_shelter: parseInt(result.rows[0].dogs_in_shelter),
-        dogs_adopted: parseInt(result.rows[0].dogs_adopted),
-        current_applications: parseInt(appCountResult.rows[0].current_applications)
+        current_applications: parseInt(appCountResult.rows[0].current_applications),
+        awaiting_review: parseInt(appCountResult.rows[0].awaiting_review)
     }
+}
+
+export const getDogsWithNoApplications = async (shelter_id: number, limit: number = 4) => {
+    const result = await pool.query(
+        `SELECT dog_id, name, photo_url
+        FROM dogs
+        WHERE shelter_id = $1
+        AND status = 'available'
+        AND dog_id NOT IN (
+            SELECT dog_id FROM applications
+            WHERE status NOT IN ('rejected', 'withdrawn')
+        )
+        ORDER BY intake_date DESC
+        LIMIT $2`,
+        [shelter_id, limit]
+    )
+    return result.rows
 }

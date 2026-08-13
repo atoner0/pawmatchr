@@ -9,9 +9,25 @@
             <p>Current Applications</p>
         </div>
         <div class="stat-card">
-            <h2><%= stats.dogs_adopted %></h2>
-            <p>Dogs adopted</p>
+            <h2><%= stats.awaiting_review %></h2>
+            <p>Applications awaiting review</p>
         </div>
+    </div>
+
+    <div class="upcoming-visits-card mt-3">
+        <h4>Dogs with no applications</h4>
+        <% if (noApplicationDogs.length === 0) { %>
+            <p class="text-muted mb-0">Every available dog has at least one application.</p>
+        <% } else { %>
+            <div class="no-application-dogs">
+                <% noApplicationDogs.forEach(dog => { %>
+                    <a href="/admin/dogs/<%= dog.dog_id %>" class="no-application-dog-card">
+                        <img src="<%= dog.photo_url %>" alt="<%= dog.name %>">
+                        <span><%= dog.name %></span>
+                    </a>
+                <% }) %>
+            </div>
+        <% } %>
     </div>
 
     <div class="upcoming-visits-card">
@@ -46,4 +62,6 @@
         <% } %>
         <a href="/admin/applications" class="btn-toolbar-action d-block text-center mt-2">View All</a>
     </div>
+
+    
 </div>

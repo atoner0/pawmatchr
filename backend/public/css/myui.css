@@ -296,6 +296,34 @@ body {
     color: var(--color-text-on-dark);
 }
 
+.no-application-dogs {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    padding-bottom: 0.25rem;
+}
+
+.no-application-dog-card {
+    flex: 0 0 120px;
+    text-decoration: none;
+    text-align: center;
+}
+
+.no-application-dog-card img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 16px;
+}
+
+.no-application-dog-card span {
+    display: block;
+    margin-top: 0.5rem;
+    color: var(--color-text-primary);
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
 /* All dogs */
 .card {
     background-color: var(--color-card);
