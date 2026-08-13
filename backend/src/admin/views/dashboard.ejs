@@ -38,7 +38,7 @@
                 <a href="/admin/applications/<%= app.application_id %>" class="upcoming-visit-item d-flex justify-content-between align-items-center">
                     <span>
                         <strong><%= app.first_name %> <%= app.last_name %> &rarr; <%= app.dog_name %></strong><br>
-                        <span>Submitted <%= app.submitted_at ? new Date(app.submitted_at).toLocaleDateString() : 'N/A' %></span>
+                        <span class="visit-meta">Submitted <%= app.submitted_at ? new Date(app.submitted_at).toLocaleDateString() : 'N/A' %></span>
                     </span>
                     <span class="badge-status badge-<%= app.status %>"><%= app.status %></span>
                 </a>
