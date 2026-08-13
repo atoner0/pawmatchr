@@ -25,3 +25,19 @@ export const ALONE_TOLERANCE_LABELS: Record<string, string> = {
 export function aloneToleranceLabel(value: string): string {
     return ALONE_TOLERANCE_LABELS[value] ?? value;
 }
+
+export const CHILDREN_AGE_LABELS: Record<string, string> = {
+    'any': 'Any',
+    '5_12': '5-12 only',
+    '13_plus': '13+ only',
+    'unknown': 'Unknown'
+}
+
+export function childrenAgeLabel(value: string): string {
+    return CHILDREN_AGE_LABELS[value] ?? value;
+}
+
+export function petCountSummary(count: number, types:string[]): string {
+    if(!types || types.length === 0) return `${count} pet(s)`
+    return `${count} ${types.map(t => t.toLowerCase()).join(', ')}`
+}

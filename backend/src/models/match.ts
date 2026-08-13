@@ -24,6 +24,18 @@ Promise<MatchWithDog[]> => {
     return result.rows
 }
 
+export const getMatchByAdopterAndDog = async (
+    adopter_id: number,
+    dog_id: number
+): Promise<Match | null> => {
+    const result = await pool.query(
+        `SELECT * FROM matches
+        WHERE adopter_id = $1 AND dog_id = $2`,
+        [adopter_id, dog_id]
+    )
+    return result.rows[0] ?? null
+}
+
 export const createMatches = async (
     adopter_id: number,
     results: MatchResultFromPython[]

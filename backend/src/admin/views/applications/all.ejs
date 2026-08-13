@@ -4,14 +4,14 @@
     </div>
 
     <div class="applications-toolbar">
-        <select id="statusFilter" class="btn btn-toolbar-action">
+        <select id="statusFilter" class="btn btn-filter-search">
             <option value="">All Statuses</option>
             <option value="submitted">Submitted</option>
             <option value="under_review">Under Review</option>
             <option value="approved">Approved</option>
             <option value="rejected">Rejected</option>
         </select>
-        <input type="text" id="searchInput" class="btn btn-toolbar-action" placeholder="Search adopter or dog..." />
+        <input type="text" id="searchInput" class="btn btn-filter-search" placeholder="Search adopter or dog..." />
     </div>
 
     <table class="table table-bordered align-middle text-center bg-white applications-table" id="applicationsTable">
@@ -32,7 +32,7 @@
                     <td><%= app.dog_name %></td>
                     <td>
                         <span class="badge-status badge-<%= app.status %>">
-                            <%= app.status.replace('_', ' ') %>
+                            <%= capitaliseFirst(app.status.replace('_', ' ')) %>
                         </span>
                     </td>
                     <td><%= new Date(app.submitted_at).toLocaleDateString('en-GB') %></td>

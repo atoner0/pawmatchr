@@ -9,7 +9,7 @@
             <small class="text-muted">submitted <%= new Date(application.submitted_at).toLocaleDateString('en-GB') %></small>
         </div>
         <span class="badge-status badge-<%= application.status %>">
-            <%= application.status.replace('_', ' ') %>
+            <%= capitaliseFirst(application.status.replace('_', ' ')) %>
         </span>
     </div>
 
@@ -20,19 +20,19 @@
                 <div class="row">
                     <div class="col-6">
                         <div class="summary-label">Home type</div>
-                        <div class="summary-value"><%= adopter.home_type %></div>
+                        <div class="summary-value"><%= capitaliseFirst(adopter.home_type) %></div>
                         <div class="summary-label">Current pets</div>
-                        <div class="summary-value"><%= adopter.current_pets ? adopter.current_pet_count + ' dog(s)' : 'None' %></div>
+                        <div class="summary-value"><%= adopter.current_pets ? petCountSummary(adopter.current_pet_count, adopter.current_pet_type): 'None' %></div>
                         <div class="summary-label">Experience</div>
-                        <div class="summary-value"><%= adopter.first_time_owner ? 'First-time owner' : 'Experienced, multi-pet' %></div>
+                        <div class="summary-value"><%= adopter.first_time_owner ? 'First-time owner' : 'Experienced' %></div>
                     </div>
                     <div class="col-6">
                         <div class="summary-label">Outdoor space</div>
-                        <div class="summary-value"><%= adopter.outdoor_space %></div>
+                        <div class="summary-value"><%= capitaliseFirst(adopter.outdoor_space) %></div>
                         <div class="summary-label">Children</div>
-                        <div class="summary-value"><%= adopter.children ? adopter.youngest_child_age : 'None' %></div>
+                        <div class="summary-value"><%= capitaliseFirst(adopter.children) ? childrenAgeLabel(adopter.youngest_child_age) : 'None' %></div>
                         <div class="summary-label">Activity Level</div>
-                        <div class="summary-value"><%= adopter.activity_level %></div>
+                        <div class="summary-value"><%= capitaliseFirst(adopter.activity_level) %></div>
                     </div>
                 </div>
             </div>
@@ -40,14 +40,19 @@
 
         <div class="col-md-6">
             <div class="profile-card h-100">
-                <div class="d-flex justify-content-between align-items-start">
+                <% if (match) { %>
+                    <div class="d-flex justify-content-between align-items-start">
+                        <h5>Match Details</h5>
+                        <span class="match-score"><%= Math.round(match.overall_score * 100) %>%</span>
+                    </div>
+                    <p><%= match.explanation %></p>
+                    <% match.warnings.forEach(warning => { %>
+                        <span class="warning-flag"><%= warning %></span>
+                    <% }); %>
+                <% } else { %>
                     <h5>Match Details</h5>
-                    <span class="match-score"><%= Math.round(match.overall_score * 100) %>%</span>
-                </div>
-                <p><%= match.explanation %></p>
-                <% match.warnings.forEach(warning => { %>
-                    <span class="warning-flag"><%= warning %></span>
-                <% }); %>
+                    <p class="text-muted mb-0">No match data available for this application</p>
+                <% } %>
             </div>
         </div>
     </div>

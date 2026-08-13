@@ -2,6 +2,7 @@ import type { Response } from 'express'
 import type { AdminAuthRequest } from '../../middleware/auth.js'
 import { getAppsByShelter, getAppByIdAndShelter, getBookingsByApp, updateApplicationStatus } from '../../models/application.js'
 import { getAdopterById } from '../../models/adopter.js'
+import { getMatchByAdopterAndDog } from '../../models/match.js'
 
 export const renderApplicationsDash = async (req: AdminAuthRequest, res: Response): Promise<void> => {
     try {
@@ -39,12 +40,7 @@ export const renderApplicationProfile = async (req: AdminAuthRequest, res: Respo
             ? (req.query['missing'] as string).split(',')
             : []
 
-        // TODO: replace with real match record once matches feature is built
-        const match = {
-            overall_score: 0.87,
-            explanation: 'Strong match on activity level and alone tolerance. Adopter\'s multi-pet experience offsets Buddy\'s reactivity to other dogs',
-            warnings: ['Unknown: good with cats']
-        }
+        const match = await getMatchByAdopterAndDog(application.adopter_id, application.dog_id)
 
         res.render('applications/profile', {
             title: 'Applications',

@@ -7,7 +7,7 @@ import dogRoutes from './routes/dog.js'
 import adopterRoutes from './routes/adopter.js'
 import adminRoutes from './admin/routes/admin.js'
 import { sessionMiddleware } from './config/session.js'
-import { ageLabel, capitaliseFirst, aloneToleranceLabel } from './admin/utils/displayLabels.js'
+import { ageLabel, capitaliseFirst, aloneToleranceLabel, childrenAgeLabel, petCountSummary } from './admin/utils/displayLabels.js'
 
 const projectRoot = process.cwd()
 
@@ -21,6 +21,8 @@ app.set('layout', 'layout')
 app.locals.ageLabel = ageLabel
 app.locals.capitaliseFirst = capitaliseFirst
 app.locals.aloneToleranceLabel = aloneToleranceLabel
+app.locals.childrenAgeLabel = childrenAgeLabel
+app.locals.petCountSummary = petCountSummary
 
 app.use(express.static(path.join(projectRoot, 'public')))
 
