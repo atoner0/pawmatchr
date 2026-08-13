@@ -5,7 +5,7 @@
 
     <div class="profile-card mt-3">
         <p><span class="summary-label">Visit Type</span><br>
-        <span class="summary-value"><%= booking.booking_type.replace('_', ' ') %></span></p>
+        <span class="summary-value"><%= capitaliseFirst(booking.booking_type.replace('_', ' ')) %></span></p>
 
         <p><span class="summary-label">Date/Time</span><br>
         <span class="summary-value"><%= new Date(booking.slot).toLocaleString() %></span></p>
@@ -17,7 +17,7 @@
         <span class="summary-value"><%= adopter.first_name %> <%= adopter.last_name %></span></p>
 
         <p><span class="summary-label">Status</span><br>
-        <span class="badge-status badge-<%= booking.status %>"><%= booking.status %></span></p>
+        <span class="badge-status badge-<%= booking.status %>"><%= capitaliseFirst(booking.status) %></span></p>
 
         <% if (booking.booking_type === 'pet_introduction') { %>
             <p><span class="summary-label">Multi-pet guidance read</span><br>
@@ -26,7 +26,7 @@
     </div>
 
     <% if (booking.status === 'booked') { %>
-        <div class="mt-3">
+        <div class="mt-3 justify-content-center d-flex gap-2">
             <form method="POST" action="/admin/bookings/<%= booking.booking_id %>/complete" class="d-inline">
                 <button type="submit" class="btn-approve">Mark Complete</button>
             </form>
