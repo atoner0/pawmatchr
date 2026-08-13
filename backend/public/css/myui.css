@@ -961,3 +961,55 @@ textarea.form-control {
 .profile-card .summary-value {
     font-size: 1.05rem;
 }
+
+/* Availability */
+.btn-primary {
+    background-color: var(--color-navy-mid);
+    border-color: var(--color-navy-mid);
+    color: var(--color-text-on-dark);
+    border-radius: 999px;
+    padding: 0.6rem 1.75rem;
+    font-weight: 500;
+}
+
+.btn-primary:hover {
+    background-color: var(--color-navy-dark);
+    border-color: var(--color-navy-dark);
+}
+
+#calendar {
+    background-color: var(--color-card);
+    border-radius: 24px;
+    padding: 1.5rem;
+    --fc-border-color: var(--color-card-border);
+    --fc-page-bg-color: var(--color-card);
+    --fc-neutral-bg-color: var(--color-background);
+    --fc-today-bg-color: var(--color-accent-teal-tint);
+    --fc-button-bg-color: var(--color-navy-mid);
+    --fc-button-border-color: var(--color-navy-mid);
+    --fc-button-hover-color: var(--color-navy-dark);
+    --fc-button-hover-border-color: var(--color-navy-dark);
+    --fc-button-active-bg-color: var(--color-navy-dark);
+    color: var(--color-text-primary);
+}
+
+#calendar .fc-toolbar-title {
+    color: var(--color-text-primary);
+    font-weight: 600;
+}
+
+#calendar .fc-button {
+    border-radius: 999px !important;
+    text-transform: capitalize;
+    box-shadow: none !important;
+}
+
+#calendar .fc-daygrid-day-number {
+    color: var(--color-text-secondary);
+}
+
+#calendar .fc.col-header-cell {
+    background-color: var(--color-accent-teal-tint);
+    color: var(--color-navy-dark);
+    font-weight: 600;
+}

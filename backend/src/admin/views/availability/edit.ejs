@@ -5,10 +5,11 @@
         errors: errors || [], 
         actionUrl: `/admin/availability/${slot.availability_id}/edit` 
     }) %>
+
+    <% if (availability_id) { %>
+        <form method="POST" action="/admin/availability/<%= availability_id %>/delete" onsubmit="return confirm('Delete this slot?');" class="mt-3">
+            <button type="submit" class="btn btn-danger">Delete Slot</button>
+        </form>
+    <% } %>
 </div>
 
-<% if (availability_id) { %>
-    <form method="POST" action="/admin/availability/<%= availability_id %>/delete" onsubmit="return confirm('Delete this slot?');">
-        <button type="submit" class="btn btn-danger">Delete Slot</button>
-    </form>
-<% } %>

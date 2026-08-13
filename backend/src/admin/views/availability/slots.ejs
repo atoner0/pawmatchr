@@ -19,7 +19,7 @@
                     id: slot.availability_id,
                     start: slot.slot, 
                     title: slot.is_booked ? 'Booked' : 'Available', 
-                    color: slot.is_booked ? '#dc3545' : '#28a745'
+                    color: slot.is_booked ? 'var(--color-danger)' : 'var(--color-accent-teal)'
                 }
             })) %>,
             eventClick: function(info) {
