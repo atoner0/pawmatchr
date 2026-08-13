@@ -1,4 +1,23 @@
 :root {
+    --color-background: #DCE3EE;
+    --color-card: #fffaf4;
+    --color-card-border: #E2E6F0;
+
+    --color-navy-dark: #0B2A43;
+    --color-navy-mid: #2F577F;
+    --color-navy-muted: #8FA3B8;
+    --color-accent-orange: #F0B37E;
+    --color-accent-teal: #4F9C8C;
+
+    --color-danger: #C0392B;
+    --color-text-primary: #1E3049;
+    --color-text-secondary: #5C6B7A;
+    --color-text-on-dark: #FFFFFF;
+
+    --color-input-bg: #FFFFFF;
+    --color-input-border: #1E3049;
+    --color-placeholder: #8A96A3;
+
     --desert-sand: #ECC8AF;
     --powder-blush: #E7AD99;
     --dusty-rose:   #CE796B;
@@ -103,7 +122,7 @@ body {
 
 /* Login specifics */
 .login-page {
-    background-color: var(--desert-sand);
+    background-color: var(--color-background);
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -117,10 +136,10 @@ body {
 }
 
 .login-card {
-    background: #fff;
+    background: var(--color-card);
     border-radius: 12px;
     padding: 3.5rem;
-    box-shadow: 0 4px 24px rgba(73, 88, 103, 0.12);
+    box-shadow: 0 4px 24px rgba(11, 42, 67, 0.12);
 }
 
 .login-card .form-label {
@@ -128,8 +147,12 @@ body {
 }
 
 .login-card .form-control {
+    background-color: var(--color-input-bg);
+    border: 1.5px solid var(--color-input-border);
+    border-radius: 999px;
     font-size: 1rem;
     padding: 0.65rem 1rem;
+    color: var(--color-text-primary)
 }
 
 .login-card .btn {
@@ -138,38 +161,42 @@ body {
 }
 
 .login-card .btn-primary {
-    background-color: var(--dusty-rose);
-    border-color: var(--dusty-rose);
-    color: #fff;
+    background-color: var(--color-navy-mid);
+    border-color: var(--color-navy-mid);
+    color: var(--color-text-on-dark);
+    border-radius: 999px;
+    padding: 0.75rem 2.5rem;
 }
 
 .login-card .btn-primary:hover {
-    background-color: var(--toasted-almond);
-    border-color: var(--toasted-almond);
+    background-color: var(--color-navy-dark);
+    border-color: var(--color-navy-dark);
 }
 
 .login-header {
     text-align: center;
     margin-bottom: 2rem;
-    color: var(--blue-slate);
 }
 
 .login-header h1 {
     font-size: 2.2rem;
     font-weight: 600;
+    color: var(--color-text-primary);
     margin: 0.5rem 0 0.25rem;
 }
 
 .login-header p {
     font-size: 1rem;
-    color: var(--dusty-rose);
+    color: var(--color-navy-dark);
     letter-spacing: 0.05em;
     text-transform: uppercase;
+    font-weight: 700;
     margin: 0;
 }
 
 .login-header .brand-paw {
-    font-size: 2.6rem;
+    font-size: 2.2rem;
+    color: var(--color-navy-mid);
 }
 
 /* All dogs */
