@@ -418,6 +418,74 @@ body {
     opacity: 0.85;
 }
 
+/* Add/Edit Dog Form */
+.card-header {
+    background-color: var(--color-card-border);
+    color: var(--color-text-primary);
+    border-bottom: none;
+    border-radius: 24px 24px 0 0;
+    padding: 1.25rem 1.75rem;
+}
+
+.card-header h5 {
+    font-weight: 600;
+    margin: 0;
+}
+
+.card-body {
+    background-color: var(--color-card);
+    border-radius: 0 0 24px 24px;
+    padding: 1.75rem;
+}
+
+.card {
+    border: none;
+    border-radius: 24px;
+    overflow: hidden;
+}
+
+.form-label {
+    color: var(--color-text-primary);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.form-control, .form-select {
+    background-color: var(--color-input-bg);
+    border: 1.5px solid var(--color-input-border);
+    border-radius: 999px;
+    padding: 0.65rem 1.25rem;
+    color: var(--color-text-primary);
+}
+
+.form-control::placeholder {
+    color: var(--color-placeholder)
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--color-navy-mid);
+    box-shadow: 0 0 0 0 0.2rem var(--color-accent-teal-tint);
+}
+
+.form-check-input {
+    border: 1.5px solid var(--color-input-border);
+    width: 1.15rem;
+    height: 1.15rem;
+}
+
+.form-check-input:checked {
+    background-color: var(--color-navy-mid);
+    border-color: var(--color-navy-mid);
+}
+
+.form-check-label {
+    color: var(--color-text-primary);
+}
+
+textarea.form-control {
+    border-radius: 16px;
+}
+
 /* Applications */
 .applications-header {
     background-color: var(--desert-sand);

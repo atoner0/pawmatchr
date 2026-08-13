@@ -21,7 +21,7 @@
         <% } else { %>
             <% upcomingVisits.forEach(b => { %>
                 <a href="/admin/bookings/<%= b.booking_id %>" class="upcoming-visit-item">
-                    <strong><%= b.booking_type.replace('_', ' ') %> – <%= b.dog_name %></strong><br>
+                    <strong><%= capitaliseFirst(b.booking_type.replace('_', ' ')) %> – <%= b.dog_name %></strong><br>
                     <span><%= b.first_name %> <%= b.last_name %> — <%= new Date(b.slot).toLocaleString() %></span>
                 </a>
             <% }) %>

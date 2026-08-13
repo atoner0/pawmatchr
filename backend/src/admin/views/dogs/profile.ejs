@@ -8,7 +8,7 @@
         <div class="dog-header-card">
             <div class="d-flex justify-content-between align-items-start mb-3">
                 <h2 class="dog-name"> <%= dog.name %></h2>
-                <span class="badge-available"><%= dog.status %></span>
+                <span class="badge-available"><%= capitaliseFirst(dog.status) %></span>
             </div>
             <div class="dog-detail-grid">
                 <div class="dog-detail-item">
@@ -17,31 +17,31 @@
                 </div>
                 <div class="dog-detail-item">
                     <span class="detail-label">Age</span>
-                    <span class="detail-value"><%= dog.age %></span>
+                    <span class="detail-value"><%= ageLabel(dog.age) %></span>
                 </div>
                 <div class="dog-detail-item">
                     <span class="detail-label">Gender</span>
-                    <span class="detail-value"><%= dog.gender %></span>
+                    <span class="detail-value"><%= capitaliseFirst(dog.gender) %></span>
                 </div>
                 <div class="dog-detail-item">
                     <span class="detail-label">Size</span>
-                    <span class="detail-value"><%= dog.size %></span>
+                    <span class="detail-value"><%= capitaliseFirst(dog.size) %></span>
                 </div>
                 <div class="dog-detail-item">
                     <span class="detail-label">Colour</span>
-                    <span class="detail-value"><%= dog.colour.join(', ') %></span>
+                    <span class="detail-value"><%= capitaliseFirst(dog.colour.join(', ')) %></span>
                 </div>
                 <div class="dog-detail-item">
                     <span class="detail-label">Coat Length</span>
-                    <span class="detail-value"><%= dog.coat_length %></span>
+                    <span class="detail-value"><%= capitaliseFirst(dog.coat_length) %></span>
                 </div>
                 <div class="dog-detail-item">
                     <span class="detail-label">Coat Type</span>
-                    <span class="detail-value"><%= dog.coat_type %></span>
+                    <span class="detail-value"><%= capitaliseFirst(dog.coat_type) %></span>
                 </div>
                 <div class="dog-detail-item">
                     <span class="detail-label">Shedding Level</span>
-                    <span class="detail-value"><%= dog.shedding_level %></span>
+                    <span class="detail-value"><%= capitaliseFirst(dog.shedding_level) %></span>
                 </div>
             </div>
         </div>
@@ -58,20 +58,20 @@
             <h4 class="info-card-title">Compatibility</h4>
             <div class="info-row">
                 <span class="info-label">Dogs</span>
-                <span class="info-value <%= dog.good_with_dogs === 'unknown' ? 'value-flag' : '' %>"><%= dog.good_with_dogs %></span>
+                <span class="info-value <%= dog.good_with_dogs === 'unknown' ? 'value-flag' : '' %>"><%= capitaliseFirst(dog.good_with_dogs) %></span>
             </div>
             <div class="info-row">
                 <span class="info-label">Cats</span>
-                <span class="info-value <%= dog.good_with_cats === 'unknown' ? 'value-flag' : '' %>"><%= dog.good_with_cats %></span>
+                <span class="info-value <%= dog.good_with_cats === 'unknown' ? 'value-flag' : '' %>"><%= capitaliseFirst(dog.good_with_cats) %></span>
             </div>
             <div class="info-row">
                 <span class="info-label">Children</span>
-                <span class="info-value <%= dog.good_with_children === 'unknown' ? 'value-flag' : '' %>"><%= dog.good_with_children %></span>
+                <span class="info-value <%= dog.good_with_children === 'unknown' ? 'value-flag' : '' %>"><%= capitaliseFirst(dog.good_with_children) %></span>
             </div>
             <% if (dog.good_with_children === 'yes') { %>
                 <div class="info-row">
                     <span class="info-label">Children Age</span>
-                    <span class="info-value <%= dog.children_age === 'unknown' ? 'value-flag' : '' %>"><%= dog.children_age%></span>
+                    <span class="info-value <%= dog.children_age === 'unknown' ? 'value-flag' : '' %>"><%= capitaliseFirst(dog.children_age) %></span>
                 </div>
             <% } %>
         </div>
@@ -81,11 +81,11 @@
             <h4 class="info-card-title">Routine</h4>
             <div class="info-row">
                 <span class="info-label">Hours Alone</span>
-                <span class="info-value"><%= dog.alone_tolerance %></span>
+                <span class="info-value"><%= aloneToleranceLabel(dog.alone_tolerance) %></span>
             </div>
             <div class="info-row">
                 <span class="info-label">Activity Level</span>
-                <span class="info-value"><%= dog.activity_level %></span>
+                <span class="info-value"><%= capitaliseFirst(dog.activity_level) %></span>
             </div>
         </div>
     </div>
@@ -94,7 +94,7 @@
             <h4 class="info-card-title">Training</h4>
             <div class="info-row">
                 <span class="info-label">Required Level</span>
-                <span class="info-value"><%= dog.training_level %></span>
+                <span class="info-value"><%= capitaliseFirst(dog.training_level)%></span>
             </div>
         </div>
     </div>
