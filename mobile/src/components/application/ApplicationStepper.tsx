@@ -1,3 +1,4 @@
+import { colors, radii, spacing } from "@/constants/theme";
 import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, Text, View } from "react-native";
 
@@ -16,25 +17,23 @@ interface ApplicationStepperProps {
 export default function ApplicationStepper({ steps }: ApplicationStepperProps) {
     return (
         <View style={styles.stepper}>
-            {steps.map((step, i) => (
-                <View key={step.label} style={styles.stepGroup}>
-                    <View style={styles.step}>
-                        <View style={[
-                            styles.stepCircle,
-                            step.state === 'complete' && styles.stepComplete,
-                            step.state === 'in_progress' && styles.stepInProgress,
-                        ]}>
-                            {step.state === 'complete' && <Ionicons name="checkmark" size={16} color="#fff" />}
-                            {step.state === 'in_progress' && step.countLabel && (
-                                <Text style={styles.stepCount}>{step.countLabel}</Text>
-                            )}
-                            {step.state === 'pending' && <Ionicons name="flag-outline" size={16} />}
+            {steps.map((step, i) => {
+                const isComplete = step.state === 'complete';
+                return (
+                    <View key={step.label} style={styles.stepGroup}>
+                        <View style={styles.step}>
+                            <View style={[styles.stepCircle, isComplete ? styles.stepComplete : styles.stepUpcoming]}>
+                                {isComplete && <Ionicons name="checkmark" size={16} color={colors.textOnDark} />}
+                                {!isComplete && step.countLabel && (
+                                    <Text style={styles.stepCount}>{step.countLabel}</Text>
+                                )}
+                                {!isComplete && step.state === 'pending' && <Ionicons name="flag-outline" size={16} color={colors.textOnDark} />}
+                            </View>
+                            <Text style={styles.stepLabel}>{step.label}</Text>
                         </View>
-                        <Text style={styles.stepLabel}>{step.label}</Text>
+                        {i < steps.length - 1 && <View style={styles.stepLine} />}
                     </View>
-                    {i < steps.length - 1 && <View style={styles.stepLine} />}
-                </View>
-            ))}
+            )})}
         </View>
     );
 }
@@ -44,11 +43,11 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "flex-start",
         justifyContent: "space-between",
-        backgroundColor: "#fdf3e8",
-        borderRadius: 16,
-        marginHorizontal: 16,
-        marginTop: 14,
-        padding: 16,
+        backgroundColor: colors.card,
+        borderRadius: radii.lg,
+        marginHorizontal: spacing.md,
+        marginTop: spacing.sm + 6,
+        padding: spacing.md,
     },
     step: {
         alignItems: "center",
@@ -63,35 +62,30 @@ const styles = StyleSheet.create({
         width: 32,
         height: 32,
         borderRadius: 16,
-        borderWidth: 1.5,
-        borderColor: "#ccc",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#fff",
     },
     stepComplete: {
-        backgroundColor: "#2d6a4f",
-        borderColor: "#2d6a4f",
+        backgroundColor: colors.navyMid,
     },
-    stepInProgress: {
-        backgroundColor: "#9bbf9e",
-        borderColor: "#9bbf9e",
+    stepUpcoming: {
+        backgroundColor: colors.accentTeal,
     },
     stepCount: {
         fontSize: 11,
         fontWeight: "700",
-        color: "#fff",
+        color: colors.textOnDark,
     },
     stepLabel: {
         fontSize: 11,
-        color: "#555",
-        marginTop: 4,
+        color: colors.textSecondary,
+        marginTop: spacing.xs,
         textAlign: "center",
     },
     stepLine: {
         height: 1,
-        backgroundColor: "#ccc",
+        backgroundColor: colors.cardBorder,
         flex: 0.5,
-        marginTop: 16,
+        marginTop: spacing.md,
     },
 })

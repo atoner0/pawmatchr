@@ -1,10 +1,13 @@
 import { CheckBox } from "@/components/questionnaire/Checkbox";
 import { readinessChecklistSections } from "@/constants/readinessChecklistItems";
+import { colors, radii, spacing, typography } from "@/constants/theme";
 import { updateChecklist } from "@/lib/applications";
 import { MatchWithDog } from "@/types/match";
+import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, router } from "expo-router";
 import { useState } from "react";
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ReadinessChecklist() {
     const params = useLocalSearchParams<{ id: string }>();
@@ -46,83 +49,104 @@ export default function ReadinessChecklist() {
     }
 
     return (
-        <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 32}}>
-            <View>
-                {readinessChecklistSections.map((section) => (
-                    <View key = {section.title} style={styles.section}>
-                        <Text style={styles.sectionTitle}>{section.title}</Text>
-                        {section.info && <Text style={styles.sectionInfo}>{section.info}</Text>}
-                        {section.items.map((item) => (
-                            <CheckBox 
-                                key={item.id} 
-                                label={item.label} 
-                                isChecked={checkedItems.has(item.id)} 
-                                onPress={() => toggleItem(item.id)} 
-                            />
-                        ))}
-                    </View>
-                ))}
-
-                {allChecked && (
-                    <Pressable 
-                        onPress={onSubmit} 
-                        disabled={loading}
-                        style={[styles.submitButton, loading && styles.submitButtonDisabled]}
-                    >
-                        <Text style={styles.submitButtonText}>{loading ? "Submitting..." : "Submit"}</Text>
+        <SafeAreaView style={styles.safeArea} edges={['top']}>
+            <View style={styles.header}>
+                    <Pressable onPress={() => router.back()}>
+                        <Ionicons name="chevron-back" size={22} color={colors.textPrimary}/>
                     </Pressable>
-                )}
+                    <Text style={styles.headerTitle}>Readiness Checklist</Text>
+                    <View style={styles.headerSpacer} />  
+                </View>
 
-                {error ? <Text style={styles.errorText}>{error}</Text> : null}
-                
-            </View>
-        </ScrollView>
+            <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+                <View>
+                    {readinessChecklistSections.map((section) => (
+                        <View key = {section.title} style={styles.section}>
+                            <Text style={typography.sectionTitle}>{section.title}</Text>
+                            {section.info && <Text style={styles.sectionInfo}>{section.info}</Text>}
+                            {section.items.map((item) => (
+                                <CheckBox 
+                                    key={item.id} 
+                                    label={item.label} 
+                                    isChecked={checkedItems.has(item.id)} 
+                                    onPress={() => toggleItem(item.id)} 
+                                />
+                            ))}
+                        </View>
+                    ))}
+
+                    {allChecked && (
+                        <Pressable 
+                            onPress={onSubmit} 
+                            disabled={loading}
+                            style={[styles.submitButton, loading && styles.submitButtonDisabled]}
+                        >
+                            <Text style={typography.button}>{loading ? "Submitting..." : "Submit"}</Text>
+                        </Pressable>
+                    )}
+
+                    {error ? <Text style={styles.errorText}>{error}</Text> : null}
+                    
+                </View>
+            </ScrollView>
+        </SafeAreaView>
+        
         
     )
 }
 
 const styles = StyleSheet.create({
+    safeArea: {
+        flex: 1,
+        backgroundColor: colors.background,
+    },
     container: {
         flex: 1,
-        paddingHorizontal: 16,
-        paddingVertical: 12,
+    },
+    header: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        paddingHorizontal: spacing.md,
+        paddingTop: spacing.sm,
+        paddingBottom: spacing.sm,
+    },
+    headerTitle: {
+        fontSize: 18,
+        fontWeight: "700",
+        color: colors.textPrimary,
+    },
+    headerSpacer: {
+        width: 22,
+    },
+    content: {
+        paddingHorizontal: spacing.md,
+        paddingVertical: spacing.sm,
+        paddingBottom: spacing.xl,
+        gap: spacing.lg,
     },
     section: {
-        marginBottom: 24,
-    },
-    sectionTitle: {
-        fontSize: 16,
-        fontWeight: "700",
-        textTransform: "uppercase",
-        marginBottom: 6,
+        gap: spacing.sm,
     },
     sectionInfo: {
         fontSize: 14,
         lineHeight: 20,
-        color: "#555",
-        backgroundColor: "#f5f5f5",
-        borderRadius: 8,
-        padding: 12,
-        marginBottom: 10,
+        color: colors.textSecondary,
+        backgroundColor: colors.card,
+        borderRadius: radii.md,
+        padding: spacing.sm + 4,
     },
     submitButton: {
-        backgroundColor: "#2563eb",
-        borderRadius: 10,
-        paddingVertical: 14,
+        backgroundColor: colors.navyMid,
+        borderRadius: radii.pill,
+        paddingVertical: spacing.sm + 6,
         alignItems: "center",
-        marginTop: 12,
     },
     submitButtonDisabled: {
-        backgroundColor: "#93b4f0",
-    },
-    submitButtonText: {
-        color: "#fff",
-        fontSize: 16,
-        fontWeight: "600",
+        backgroundColor: colors.navyMuted,
     },
     errorText: {
-        color: "#d33",
-        marginTop: 10,
+        color: colors.danger,
         textAlign: "center",
     },
 });

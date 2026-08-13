@@ -1,3 +1,4 @@
+import { colors, radii, spacing, typography } from "@/constants/theme";
 import { View, Text, StyleSheet } from "react-native";
 
 
@@ -10,12 +11,12 @@ export default function TagList({ label, tags }: Props) {
     if (tags.length === 0) return null
 
     return (
-       <View style={styles.section}>
-        <Text style={styles.heading}>{label}</Text>
+       <View style={styles.group}>
+        <Text style={typography.tagGroupLabel}>{label}</Text>
         <View style={styles.tagRow}>
             {tags.map((tag) => (
                 <View key={tag} style={styles.tag}>
-                    <Text style={styles.tagText}>{tag}</Text>
+                    <Text style={typography.tagText}>{tag}</Text>
                 </View>
             ))}
         </View>
@@ -24,26 +25,19 @@ export default function TagList({ label, tags }: Props) {
 }
 
 const styles = StyleSheet.create({
-    section: { 
-        marginTop: 12,
-    },
-    heading: {
-        fontSize: 16,
-        fontWeight: "700",
-        marginBottom: 8,
+    group: { 
+        gap: spacing.sm,
+        marginTop: spacing.sm + 4,
     },
     tagRow: {
         flexDirection: "row",
         flexWrap: "wrap",
-        gap: 8,
+        gap: spacing.sm,
     },
     tag: {
-        backgroundColor: "#f4c7c3",
-        borderRadius: 20,
-        paddingHorizontal: 14,
-        paddingVertical: 6,
-    },
-    tagText: {
-        fontSize: 13,
+        backgroundColor: colors.tagAlert,
+        borderRadius: radii.pill,
+        paddingHorizontal: spacing.sm + 6,
+        paddingVertical: spacing.xs + 2,
     },
 })

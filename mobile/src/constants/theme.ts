@@ -17,6 +17,9 @@ export const colors = {
   inputBorder: "#1E3049",
 
   placeholder: "#8A96A3",
+
+  tagAlert: "#F2B8B0",
+  tagAlertText: "#7A2E24",
 } as const;
 
 export const spacing = {
@@ -55,10 +58,50 @@ export const typography = {
     color: colors.textOnDark,
   },
   sectionTitle: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: "700" as const,
     color: "#0B2A43",
     textTransform: "uppercase" as const,
     letterSpacing: 0.5,
+  },
+  cardTitle: {
+    fontSize: 24,
+    fontWeight: "700" as const,
+    color: colors.textPrimary,
+  },
+  cardSubtitle: {
+    fontSize: 15,
+    color: colors.textSecondary,
+  },
+  label: {
+    fontSize: 15,
+    color: colors.textSecondary,
+  },
+  value: {
+    fontSize: 15,
+    fontWeight: "700" as const,
+    colors: colors.textPrimary,
+  },
+  gridLabel: {
+    fontSize: 14,
+    color: colors.textSecondary,
+  },
+  gridValue: {
+    fontSize: 16,
+    fontWeight: "700" as const,
+    color: colors.textPrimary,
+  },
+  tagGroupLabel: {
+    fontSize: 15,
+    fontWeight: "600" as const,
+    color: colors.textPrimary,
+  },
+  tagText: {
+    fontSize: 14,
+    color: colors.tagAlertText
+  },
+  placeholder: {
+    fontSize: 16,
+    color: colors.textSecondary,
   },
 } as const;

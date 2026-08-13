@@ -1,11 +1,13 @@
 import MatchHeader from "@/components/matches/MatchHeader";
 import TagList from "@/components/matches/TagList";
+import { colors, radii, spacing, typography } from "@/constants/theme";
 import { ApiError } from "@/lib/api";
 import { createApplication } from "@/lib/applications";
 import { MatchWithDog } from "@/types/match";
 import { useLocalSearchParams, router } from "expo-router";
 import { useState } from "react";
 import { View, Text, StyleSheet, FlatList, Pressable, ScrollView } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function NewApplication() {
     const params = useLocalSearchParams<{ dogId: string; match: string }>();
@@ -43,146 +45,143 @@ export default function NewApplication() {
     }
 
     return (
+        <SafeAreaView style={styles.safeArea} edges={['top']}>
+            <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 32 }}>
+                <View>
+                    <MatchHeader match={match} />
 
-        <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 32 }}>
-            <View>
-                <MatchHeader match={match} />
-
-                
-                <Text style={styles.introText}>You're applying to adopt {match.dog.name}</Text>
-                
-
-                {match.warnings.length > 0 && (
-                    <View style={styles.warningBox}>
-                        <Text style={styles.title}>This dog has the following warnings:</Text>
-                        {match.warnings.map((warning, i) => (
-                            <Text key={i} style={styles.warningText}>{warning}</Text>
-                        ))}
+                    <View style={styles.introBlock}>
+                       <Text style={styles.introText}>You're applying to adopt {match.dog.name}</Text> 
                     </View>
-                )}
+                    
+                    {match.warnings.length > 0 && (
+                        <View style={styles.warningBox}>
+                            <Text style={typography.sectionTitle}>This dog has the following warnings:</Text>
+                            {match.warnings.map((warning, i) => (
+                                <Text key={i} style={typography.body}>{warning}</Text>
+                            ))}
+                        </View>
+                    )}
 
-                {(match.dog.medical_issues.length > 0 || match.dog.behavioural_flags.length > 0 || match.dog.known_triggers.length > 0) && (
-                    <View style={styles.warningBox}>
-                        <Text style={styles.title}>Things to Know</Text>
-                        <TagList label="Medical Issues" tags={match.dog.medical_issues}/>
-                        <TagList label="Behavioural Issues" tags={match.dog.behavioural_flags}/>
-                        <TagList label="Known Triggers" tags={match.dog.known_triggers}/>
+                    {(match.dog.medical_issues.length > 0 || match.dog.behavioural_flags.length > 0 || match.dog.known_triggers.length > 0) && (
+                        <View style={styles.warningBox}>
+                            <Text style={typography.sectionTitle}>Things to Know</Text>
+                            <TagList label="Medical Issues" tags={match.dog.medical_issues}/>
+                            <TagList label="Behavioural Issues" tags={match.dog.behavioural_flags}/>
+                            <TagList label="Known Triggers" tags={match.dog.known_triggers}/>
+                        </View>
+                    )}
+
+                    {match.dog.medical_issues.length > 0 && (
+                        <View style={styles.warningBox}>
+                            <Text style={typography.sectionTitle}>This dog has the following medical issues:</Text>
+                            {match.dog.medical_issues.map((issue, i) => (
+                                <Text key={i} style={typography.body}>{issue}</Text>
+                            ))}
+                            {match.dog.medical_notes ? (
+                                <Text style={typography.body}>{match.dog.medical_notes}</Text>
+                            ): null}
+                            
+                        </View>
+                    )}
+
+                    <View style={styles.nextStepsBox}>
+                        <Text style={styles.nextStepsTitle}>What's next if you apply:</Text>
+                        <Text style={styles.nextStepItem}>1. Readiness checklist</Text>
+                        <Text style={styles.nextStepItem}>2. Visit bookings</Text>
+                        <Text style={styles.nextStepItem}>3. Shelter review</Text>
                     </View>
-                )}
 
-                {match.dog.medical_issues.length > 0 && (
-                    <View style={styles.warningBox}>
-                        <Text style={styles.title}>This dog has the following medical issues:</Text>
-                        {match.dog.medical_issues.map((issue, i) => (
-                            <Text key={i} style={styles.warningText}>{issue}</Text>
-                        ))}
-                        {match.dog.medical_notes ? (
-                            <Text style={styles.warningText}>{match.dog.medical_notes}</Text>
-                        ): null}
+                    <View style={styles.buttonGroup}>
+                        <Pressable 
+                            onPress={handleApplyPress} 
+                            disabled={loading} 
+                            style={[styles.applyButton, loading && styles.applyButtonDisabled]}
+                        >
+                            <Text style={typography.button}>{loading ? "Applying..." : "Apply"}</Text>
+                        </Pressable>
+
+                        <Pressable onPress={() => router.back()} style={styles.cancelButton}>
+                            <Text style={styles.cancelButtonText}>Cancel</Text>
+                        </Pressable>
+                    </View>
                         
-                    </View>
-                )}
 
-
-                <View style={styles.nextStepsBox}>
-                    <Text style={styles.nextStepsTitle}>What's next if you apply:</Text>
-                    <Text style={styles.nextStepItem}>1. Readiness checklist</Text>
-                    <Text style={styles.nextStepItem}>2. Visit bookings</Text>
-                    <Text style={styles.nextStepItem}>3. Shelter review</Text>
+                    {error ? <Text style={styles.errorText}>{error}</Text> : null}
+                    
                 </View>
-
-                <Pressable 
-                    onPress={handleApplyPress} 
-                    disabled={loading} 
-                    style={[styles.applyButton, loading && styles.applyButtonDisabled]}
-                >
-                    <Text style={styles.applyButtonText}>{loading ? "Applying..." : "Apply"}</Text>
-                </Pressable>
-
-                <Pressable onPress={() => router.back()} style={styles.cancelButton}>
-                    <Text style={styles.cancelButtonText}>Cancel</Text>
-                </Pressable>
-
-                {error ? <Text style={styles.errorText}>{error}</Text> : null}
-                
-            </View>
-        </ScrollView>
-        
+            </ScrollView>
+        </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
+    safeArea: {
+        flex: 1,
+        backgroundColor: colors.background
+    },
     container: {
         flex: 1,
-        paddingHorizontal: 16,
-        paddingVertical: 12,
+    },
+    content: {
+        paddingHorizontal: spacing.md,
+        paddingVertical: spacing.sm + 4,
+        paddingBottom: spacing.xl,
+        gap: spacing.lg,
+    },
+    introBlock: {
+        marginTop: spacing.md,
+        marginBottom: spacing.sm,
     },
     introText: {
-        fontSize: 16,
-        fontWeight: "600",
-        marginTop: 16,
-        marginBottom: 8,
-    },
-    title: {
-        fontSize: 14,
+        fontSize: 20,
         fontWeight: "700",
-        textTransform: "uppercase",
+        color: colors.textPrimary,
     },
     warningBox: {
-        backgroundColor: "#fff8f0",
-        borderRadius: 12,
-        padding: 12,
-        marginTop: 10,
-    },
-    warningText: {
-        fontSize: 14,
-        lineHeight: 20,
+        backgroundColor: colors.card,
+        borderRadius: radii.md,
+        padding: spacing.md,
+        marginTop: spacing.sm,
     },
     nextStepsBox: {
-        backgroundColor: "#f5f5f5",
-        borderRadius: 12,
-        padding: 12,
-        marginTop: 16,
+        backgroundColor: colors.card,
+        borderRadius: radii.md,
+        padding: spacing.md,
     },
     nextStepsTitle: {
-        fontSize: 14,
-        fontWeight: "700",
-        textTransform: "uppercase",
-        marginBottom: 6,
+        ...typography.sectionTitle,
+        marginBottom: spacing.xs + 2,
     },
     nextStepItem: {
         fontSize: 14,
         lineHeight: 22,
-        color: "#333",
+        color: colors.textPrimary,
+    },
+    buttonGroup: {
+        gap: spacing.sm,
+        marginTop: spacing.sm
     },
     applyButton: {
-        backgroundColor: "#2563eb",
-        borderRadius: 10,
-        paddingVertical: 14,
+        backgroundColor: colors.navyMid,
+        borderRadius: radii.pill,
+        paddingVertical: spacing.sm + 6,
         alignItems: "center",
-        marginTop: 20,
     },
     applyButtonDisabled: {
-        backgroundColor: "#93b4f0",
-    },
-    applyButtonText: {
-        color: "#fff",
-        fontSize: 16,
-        fontWeight: "600",
+        backgroundColor: colors.navyMuted,
     },
     cancelButton: {
-        paddingVertical: 14,
+        paddingVertical: spacing.sm + 6,
         alignItems: "center",
-        marginTop: 10,
     },
     cancelButtonText: {
-        color: "#555",
+        color: colors.textSecondary,
         fontSize: 15,
         fontWeight: "500",
     },
     errorText: {
-        color: "#d33",
-        marginTop: 10,
+        color: colors.danger,
         textAlign: "center",
     },
 })
