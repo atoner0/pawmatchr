@@ -14,6 +14,7 @@
     --color-shadow-navy: rgba(11, 42, 67, 0.08);
 
     --color-danger: #C0392B;
+    --color-danger-hover: #a32e21;
     --color-text-primary: #1E3049;
     --color-text-secondary: #5C6B7A;
     --color-text-on-dark: #FFFFFF;
@@ -21,6 +22,9 @@
     --color-input-bg: #FFFFFF;
     --color-input-border: #1E3049;
     --color-placeholder: #8A96A3;
+
+    --tag-alert-bg: #F2B8B0;
+    --tag-alert-text: #7A2E24;
 
     --desert-sand: #ECC8AF;
     --powder-blush: #E7AD99;
@@ -204,9 +208,214 @@ body {
 }
 
 /* All dogs */
+
+.card {
+    background-color: var(--color-card);
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px var(--color-shadow-navy);
+}
 .card-img-top {
     height: 280px;
     object-fit: cover;
+}
+
+.card-title {
+    color: var(--color-text-primary);
+    font-weight: 600;
+}
+
+.card-text {
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+}
+
+.card-footer {
+    background-color: var(--color-card);
+    border-top: 1px solid var(--color-card-border)
+}
+
+.btn-secondary {
+    background-color: var(--color-navy-dark);
+    border: none;
+    color: var(--color-text-on-dark);
+    border-radius: 999px;
+    padding: 0.6rem 2rem;
+    font-weight: 500;
+}
+
+.btn-secondary:hover {
+    background-color: var(--color-navy-mid);
+    color: var(--color-text-on-dark)
+}
+
+.btn-danger {
+    background-color: var(--color-danger);
+    border: none;
+    color: var(--color-text-on-dark);
+    border-radius: 999px;
+    padding: 0.6rem 1.5rem;
+    font-weight: 500;
+}
+
+.btn-danger:hover {
+    background-color: var(--color-danger-hover);
+    border-color: var(--color-danger-hover);
+}
+
+/* Dog Profile */
+.dog-photo {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 24px;
+}
+
+.dog-header-card {
+    background-color: var(--color-card);
+    border-radius: 24px;
+    padding: 1.75rem;
+    height: 100%;
+}
+
+.dog-name {
+    color: var(--color-text-primary);
+    font-weight: 600;
+    margin: 0;
+}
+
+.badge-available {
+    background-color: var(--color-accent-teal-tint);
+    columns: var(--color-text-primary);
+    border-radius: 999px;
+    padding: 0.4rem 1.25rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.dog-detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 1rem;
+    column-gap: 1.5rem;
+}
+
+.detail-label {
+    display: block;
+    color: var(--color-text-secondary);
+    font-size: 0.85rem;
+}
+
+.detail-value {
+    display: block;
+    color: var(--color-text-primary);
+    font-weight: 500;
+}
+
+.description-card {
+    background-color: var(--color-card);
+    border-radius: 24px;
+    padding: 1.75rem;
+    color: var(--color-text-primary);
+    text-align: center;
+}
+
+.info-card {
+    background-color: var(--color-card);
+    border-radius: 24px;
+    padding: 1.5rem;
+    height: 100%;
+}
+
+.info-card-title {
+    text-align: center;
+    color: var(--color-text-primary);
+    font-weight: 600;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04rem;
+    margin-bottom: 1rem;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.4rem 0;
+}
+
+.info-label {
+    color: var(--color-text-secondary);
+}
+
+.info-value {
+    color: var(--color-text-primary);
+    font-weight: 600;
+}
+
+.value-flag {
+    color: var(--color-danger);
+}
+
+.flags-card {
+    background-color: var(--color-card);
+    border-radius: 24px;
+    padding: 1.75rem;
+}
+
+.flags-title {
+    color: var(--color-text-primary);
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.flag-pills {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.flag-pill {
+    background-color: var(--tag-alert-bg);
+    color: var(--tag-alert-text);
+    border-radius: 999px;
+    padding: 0.4rem 1rem;
+    font-size: 0.85rem;
+}
+
+.flag-notes {
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.btn-edit {
+    background-color: var(--color-navy-dark);
+    color: var(--color-text-on-dark);
+    border-radius: 999px;
+    padding: 0.6rem 2.5rem;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.btn-edit:hover {
+    background-color: var(--color-navy-mid);
+    color: var(--color-text-on-dark);
+}
+
+.btn-delete {
+    background-color: var(--color-accent-teal);
+    color: var(--color-text-on-dark);
+    border: none;
+    border-radius: 999px;
+    padding: 0.6rem 2.5rem;
+    font-weight: 500;
+}
+
+.btn-delete:hover {
+    opacity: 0.85;
 }
 
 /* Applications */

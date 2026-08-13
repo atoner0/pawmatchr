@@ -7,6 +7,7 @@ import dogRoutes from './routes/dog.js'
 import adopterRoutes from './routes/adopter.js'
 import adminRoutes from './admin/routes/admin.js'
 import { sessionMiddleware } from './config/session.js'
+import { ageLabel } from './admin/utils/displayLabels.js'
 
 const projectRoot = process.cwd()
 
@@ -16,6 +17,8 @@ app.set('view engine', 'ejs')
 app.set('views', path.join(projectRoot, 'src/admin/views'))
 app.use(ejsLayouts)
 app.set('layout', 'layout')
+
+app.locals.ageLabel = ageLabel
 
 app.use(express.static(path.join(projectRoot, 'public')))
 

@@ -9,7 +9,7 @@
                         <img src="<%= dog.photo_url || '/images/placeholder-dog.jpg' %>" class="card-img-top" alt="<%= dog.name %>">
                         <div class="card-body">
                             <h5 class="card-title"><%= dog.name %></h5>
-                            <p class="card-text"><%= dog.breed %> | <%= dog.age %></p>
+                            <p class="card-text"><%= dog.breed %> | <%= ageLabel(dog.age) %></p>
                         </div>
                         <div class="card-footer">
                             <a href="/admin/dogs/<%= dog.dog_id %>/edit" class="btn btn-sm btn-secondary">Edit</a>
