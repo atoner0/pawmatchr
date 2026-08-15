@@ -17,7 +17,7 @@ from fastapi import FastAPI
 from config import settings
 from schemas import MatchRequest, MatchResponse
 from filters.hard_filters import apply_hard_filters
-from semantic.embeddings import get_embedding
+from semantic.embeddings import get_embedding, get_embeddings_batch
 from scorer import score_dogs_batch
 from explanation.generate import generate_explanation
 import numpy as np
@@ -39,7 +39,7 @@ def create_app() -> FastAPI:
             return MatchResponse(results=[])
         
         adopter_embedding = get_embedding(adopter.pref_notes)
-        dog_embeddings = np.array([get_embedding(dog.description) for dog in eligible_dogs])
+        dog_embeddings = get_embeddings_batch([dog.description for dog in eligible_dogs])
 
         results, factors = score_dogs_batch(adopter, eligible_dogs, adopter_embedding, dog_embeddings)
 
