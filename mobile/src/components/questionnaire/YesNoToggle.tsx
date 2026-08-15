@@ -1,3 +1,4 @@
+import { colors, radii, spacing, typography } from "@/constants/theme";
 import { Text, Pressable, View, StyleSheet } from "react-native"
 
 type Props = {
@@ -8,8 +9,8 @@ type Props = {
 
 export function YesNoToggle({ label, value, onChange}: Props) {
     return (
-        <View>
-            <Text>{label}</Text>
+        <View style={styles.field}>
+            <Text style={typography.label}>{label}</Text>
             <View style={styles.row}>
                 <Pressable
                     onPress={() => onChange(true)}
@@ -29,30 +30,28 @@ export function YesNoToggle({ label, value, onChange}: Props) {
 }
 
 const styles = StyleSheet.create({
+    field: {
+        gap: spacing.sm,
+    },
     row: {
         flexDirection: "row",
-        gap: 12,
-        marginTop: 4
+        gap: spacing.sm,
     },
     button: {
         flex: 1,
-        paddingVertical: 10,
-        borderRadius: 6,
-        borderWidth: 1,
-        borderColor: "#999",
+        paddingVertical: spacing.sm + 4,
+        borderRadius: radii.pill,
+        backgroundColor: colors.card,
         alignItems: "center"
     },
     selected: {
-        backgroundColor: "#2563eb",
-        borderColor: "#2563eb"
-    },
-    unselected: {
-        backgroundColor: "#fff"
+        backgroundColor: colors.navyMid,
     },
     selectedText: {
-        color: "#fff", fontWeight: "600"
+        color: colors.textOnDark, 
+        fontWeight: "600"
     },
     unselectedText: {
-        color: "#333"
+        color: colors.textPrimary
     }
 });

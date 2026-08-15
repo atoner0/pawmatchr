@@ -1,6 +1,7 @@
 import { Text, Pressable, View, StyleSheet } from "react-native"
 import { Option } from "@/constants/questionnaireOptions"
 import { Picker } from '@react-native-picker/picker';
+import { colors, radii, spacing, typography } from "@/constants/theme";
 
 type Props<T> = {
     label: string;
@@ -13,30 +14,41 @@ type Props<T> = {
 export function Dropdown<T>({ label, options, value, onChange, error}: Props<T>) {
     return (
         <View style={styles.field}>
-            <Text style={styles.label}>{label}</Text>
-            <Picker
-                selectedValue={value ?? ""}
-                onValueChange={(itemValue) => {
-                    if (itemValue === "") return
-                    onChange(itemValue as T)
-                }}
-            >
-                <Picker.Item label="Select..." value= "" enabled={false}/>
-                {options.map((option) => (
-                    <Picker.Item key={option.value as string} label={option.label} value={option.value} />
-                ))}
-            </Picker>
-            {error && <Text style={{ color: "red"}}>{error}</Text>}
+            <Text style={typography.label}>{label}</Text>
+            <View style={styles.pickerWrapper}>
+               <Picker
+                    selectedValue={value ?? ""}
+                    onValueChange={(itemValue) => {
+                        if (itemValue === "") return
+                        onChange(itemValue as T)
+                    }}
+                    style={styles.picker}
+                >
+                    <Picker.Item label="Select..." value= "" enabled={false} color={colors.placeholder}/>
+                    {options.map((option) => (
+                        <Picker.Item key={option.value as string} label={option.label} value={option.value} />
+                    ))}
+                </Picker> 
+            </View>
+            {error && <Text style={styles.errorText}>{error}</Text>}
         </View>
     ) 
 }
 
 const styles = StyleSheet.create({
     field: {
-       marginBottom: 16 
+       gap: spacing.sm,
     },
-    label: {
-        marginBottom: 4,
-        fontWeight: "600"
+    pickerWrapper: {
+        backgroundColor: colors.card,
+        borderRadius: radii.md,
+        overflow: "hidden",
+    },
+    picker: {
+        color: colors.textPrimary,
+    },
+    errorText: {
+        color: colors.danger,
+        fontSize: 13,
     },
 });
