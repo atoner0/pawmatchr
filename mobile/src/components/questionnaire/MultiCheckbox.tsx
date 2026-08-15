@@ -1,6 +1,7 @@
 import { Text, Pressable, View, StyleSheet } from "react-native"
 import { CheckBox } from "./Checkbox"
 import { Option } from "@/constants/questionnaireOptions"
+import { colors, radii, spacing, typography } from "@/constants/theme";
 
 type Props<T> = {
     label: string;
@@ -28,17 +29,36 @@ export function MultiCheckbox<T>({ label, options, value, onChange, error, noneV
     }
 
     return (
-        <View>
-            <Text>{label}</Text>
-            {options.map((option) => (
-                <CheckBox
-                    key={option.value as string}
-                    label={option.label}
-                    isChecked={value.includes(option.value)}
-                    onPress={() => handleToggle(option.value)}
-                />
-            ))}
-            {error && <Text style={{ color: "red"}}>{error}</Text>}
+        <View style={styles.field}>
+            <Text style={typography.label}>{label}</Text>
+            <View style={styles.optionsBox}>
+                {options.map((option) => (
+                    <CheckBox
+                        key={option.value as string}
+                        label={option.label}
+                        isChecked={value.includes(option.value)}
+                        onPress={() => handleToggle(option.value)}
+                    />
+                ))}
+            </View>
+            
+            {error && <Text style={styles.errorText}>{error}</Text>}
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    field: {
+        gap: spacing.sm,
+    },
+    optionsBox: {
+        backgroundColor: colors.card,
+        borderRadius: radii.md,
+        paddingHorizontal: spacing.sm + 4,
+        paddingVertical: spacing.xs,
+    },
+    errorText: {
+        color: colors.danger,
+        fontSize: 13,
+    },
+})
