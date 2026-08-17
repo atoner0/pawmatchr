@@ -1,4 +1,5 @@
 import numpy as np
+from datetime import datetime
 
 from tests.tuning.csv_conversion import load_test_cases, load_adopters, load_dogs
 from tests.helpers import make_adopter, make_dog
@@ -21,10 +22,12 @@ def classify_band(score: float) -> str:
             return band
     return "out_of_range"
 
-def run_report():
+def run_report(output_path: str = "tests/tuning/tuning_report.txt"):
     adopters = load_adopters("tests/tuning/adopters.csv")
     dogs = load_dogs("tests/tuning/dogs.csv")
     cases = load_test_cases("tests/tuning/test_cases.csv", adopters, dogs)
+
+    lines = [f"Ranking test report - generated {datetime.now().isoformat(timespec='seconds')}\n"]
 
     for case in cases:
         adopter = make_adopter(**case.adopter_overrides)
@@ -35,11 +38,11 @@ def run_report():
 
         if case.expected_hard_filter_result == "fail":
             status = "OK" if excluded else "MISMATCH - expected exclusion"
-            print(f"{case.test_id} [{case.category}]: excluded={excluded}    {status}")
+            lines.append(f"{case.test_id} [{case.category}]: excluded={excluded}    {status}")
             continue
 
         if excluded:
-            print(f"{case.test_id} [{case.category}]: excluded=True    "
+            lines.append(f"{case.test_id} [{case.category}]: excluded=True    "
                   f"MISMATCH - expected pass")
             continue
 
@@ -55,7 +58,7 @@ def run_report():
         band = classify_band(result.overall_score)
         flag = "" if band == case.expected_final_score_band else " <-- check"
 
-        print(
+        lines.append(
             f"{case.test_id} [{case.category}]: \n"
             f"fuzzy={result.fuzzy_score:.3f} \n "
             f"raw-semantic={raw_semantic_scores[0]:.3f} | "
@@ -63,6 +66,11 @@ def run_report():
             f"overall={result.overall_score:.3f} \n "
             f"({band}, expected {case.expected_final_score_band}){flag}\n"
         )
+
+    with open(output_path, "w") as f:
+            f.write("\n".join(lines))
+
+    print(f"Report written to {output_path}")
 
 if __name__ == "__main__":
     run_report()
