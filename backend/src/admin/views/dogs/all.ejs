@@ -4,11 +4,15 @@
     <div class="row row-cols-1 row-cols-md-3 g-4">
         <% dogs.forEach((dog) => { %>
             <div class="col">
-                <a href="/admin/dogs/<%= dog.dog_id %>" class="text-decoration-none text-dark">
                     <div class="card">
                         <img src="<%= dog.photo_url || '/images/placeholder-dog.jpg' %>" class="card-img-top" alt="<%= dog.name %>">
                         <div class="card-body">
-                            <h5 class="card-title"><%= dog.name %></h5>
+                            <h5 class="card-title">
+                                <a href="/admin/dogs/<%= dog.dog_id %>" class="text-decoration-none text-dark stretched-link">
+                                   <%= dog.name %> 
+                                </a>
+                                
+                            </h5>
                             <p class="card-text"><%= dog.breed %> | <%= ageLabel(dog.age) %></p>
                         </div>
                         <div class="card-footer">

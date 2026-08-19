@@ -4,6 +4,7 @@
     </div>
 
     <div class="applications-toolbar">
+        <label for="statusFilter" class="visually-hidden">Select Status</label>
         <select id="statusFilter" class="btn btn-filter-search">
             <option value="">All Statuses</option>
             <option value="submitted">Submitted</option>
@@ -11,6 +12,7 @@
             <option value="approved">Approved</option>
             <option value="rejected">Rejected</option>
         </select>
+        <label for="searchInput" class="visually-hidden">Search adopter or dog...</label>
         <input type="text" id="searchInput" class="btn btn-filter-search" placeholder="Search adopter or dog..." />
     </div>
 
@@ -22,11 +24,12 @@
                 <th>Status</th>
                 <th>Submitted Date</th>
                 <th>Readiness Checklist</th>
-                <th></th>
+                <td></td>
             </tr>
         </thead>
         <tbody>
-            <% applications.forEach(app => { %>
+            <% applications.forEach(app => { %> 
+                <% const checkboxId = 'checkbox-' + app.application_id; %>
                 <tr data-status="<%= app.status %>" data-search="<%= (app.first_name + ' ' + app.last_name + ' ' + app.dog_name).toLowerCase() %>">
                     <td><%= app.first_name %> <%= app.last_name %></td>
                     <td><%= app.dog_name %></td>
@@ -37,7 +40,8 @@
                     </td>
                     <td><%= new Date(app.submitted_at).toLocaleDateString('en-GB') %></td>
                     <td>
-                        <input type="checkbox" disabled <%= app.readiness_checklist ? 'checked' : '' %> />
+                        <label for="<%= checkboxId %>" class="visually-hidden">Check</label>
+                        <input type="checkbox" id="<%= checkboxId %>" disabled <%= app.readiness_checklist ? 'checked' : '' %> />
                     </td>
                     <td>
                         <a href="/admin/applications/<%= app.application_id %>" class="btn btn-view">View</a>

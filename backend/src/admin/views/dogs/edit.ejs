@@ -10,7 +10,7 @@
             </div>
 
             <div class="mb-3">
-                <label for="breed" class="form-label">Breed</label>
+                <label for="breedInput" class="form-label">Breed</label>
                 <input type="text" name="breed" id="breedInput" class="form-control" placeholder="Search breed..." autocomplete="off" list="breedList" value="<%= dog.breed %>">
                 <datalist id="breedList"></datalist>
             </div>
@@ -27,17 +27,19 @@
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Gender</label>
-                <div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="gender" value="male" <%= dog.gender === 'male' ? 'checked' : '' %> required>
-                        <label class="form-check-label">Male</label>
+                <fieldset>
+                    <legend class="form-label h6">Gender</legend>
+                    <div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" id="genderMale" value="male" <%= dog.gender === 'male' ? 'checked' : '' %> required>
+                            <label class="form-check-label" for="genderMale">Male</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" id="genderFemale" value="female" <%= dog.gender === 'female' ? 'checked' : '' %>>
+                            <label class="form-check-label" for="genderFemale">Female</label>
+                        </div>
                     </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="gender" value="female" <%= dog.gender === 'female' ? 'checked' : '' %>>
-                        <label class="form-check-label">Female</label>
-                    </div>
-                </div>
+                </fieldset>
             </div>
 
             <div class="mb-3">
@@ -52,17 +54,21 @@
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Colour</label>
-                <div class="row">
-                    <% ['black', 'brown', 'white', 'red', 'yellow', 'blue', 'golden', 'gray', 'brindle', 'merle', 'spotted/patched'].forEach(c => { %>
-                        <div class="col-4">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="colour" value="<%= c %>" <%= dog.colour.includes(c) ? 'checked' : '' %>>
-                                <label class="form-check-label"><%= c.charAt(0).toUpperCase() + c.slice(1) %></label>
+                <fieldset>
+                    <legend class="form-label h6">Colour</legend>
+                    <div class="row">
+                        <% ['black', 'brown', 'white', 'red', 'yellow', 'blue', 'golden', 'gray', 'brindle', 'merle', 'spotted/patched'].forEach(c => { %>
+                            <% const colourId = 'colour-' + c.replace('/', '-'); %>
+                            <div class="col-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="colour" id="<%= colourId  %>" value="<%= c %>" <%= dog.colour.includes(c) ? 'checked' : '' %>>
+                                    <label class="form-check-label" for="<%= colourId  %>"><%= c.charAt(0).toUpperCase() + c.slice(1) %></label>
+                                </div>
                             </div>
-                        </div>
-                    <% }) %>
-                </div>
+                        <% }) %>
+                    </div>
+                </fieldset>
+                
             </div>
 
             <div class="mb-3">
@@ -78,45 +84,52 @@
         </div>
         <div class="card-body">
             <div class="mb-3">
-                <label class="form-label">Neutered</label>
-                <div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="neutered" value="true" <%= dog.neutered ? 'checked' : '' %> required>
-                        <label class="form-check-label">Yes</label>
+                <fieldset>
+                    <legend class="form-label h6">Neutered</legend>
+                    <div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="neutered" id="neuteredTrue" value="true" <%= dog.neutered ? 'checked' : '' %> required>
+                            <label class="form-check-label" for="neuteredTrue">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="neutered" id="neuteredFalse" value="false" <%= !dog.neutered ? 'checked' : '' %>>
+                            <label class="form-check-label" for="neuteredFalse">No</label>
+                        </div>
                     </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="neutered" value="false" <%= !dog.neutered ? 'checked' : '' %>>
-                        <label class="form-check-label">No</label>
-                    </div>
-                </div>
+                </fieldset>
+                
             </div>
 
             <div class="mb-3">
-                <label class="form-label">House Trained</label>
-                <div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="house_trained" value="true" <%= dog.house_trained ? 'checked' : '' %> required>
-                        <label class="form-check-label">Yes</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="house_trained" value="false" <%= !dog.house_trained ? 'checked' : '' %>>
-                        <label class="form-check-label">No</label>
-                    </div>
-                </div>
+                <fieldset>
+                   <legend class="form-label h6">House Trained</legend>
+                    <div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="house_trained" id="houseTrainedTrue" value="true" <%= dog.house_trained ? 'checked' : '' %> required>
+                            <label class="form-check-label" for="houseTrainedTrue">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="house_trained" id="houseTrainedFalse" value="false" <%= !dog.house_trained ? 'checked' : '' %>>
+                            <label class="form-check-label" for="houseTrainedFalse">No</label>
+                        </div>
+                    </div> 
+                </fieldset>
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Vaccinated</label>
-                <div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="vaccinated" value="true" <%= dog.vaccinated ? 'checked' : '' %> required>
-                        <label class="form-check-label">Yes</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="vaccinated" value="false" <%= !dog.vaccinated ? 'checked' : '' %>>
-                        <label class="form-check-label">No</label>
-                    </div>
-                </div>
+                <fieldset>
+                   <legend class="form-label h6">Vaccinated</legend>
+                    <div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="vaccinated" id="vaccinatedTrue" value="true" <%= dog.vaccinated ? 'checked' : '' %> required>
+                            <label class="form-check-label" for="vaccinatedTrue">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="vaccinated" id="vaccinatedFalse" value="false" <%= !dog.vaccinated ? 'checked' : '' %>>
+                            <label class="form-check-label" for="vaccinatedFalse">No</label>
+                        </div>
+                    </div> 
+                </fieldset>
             </div>
 
             <div class="mb-3">
@@ -163,57 +176,64 @@
         </div>
         <div class="card-body">
             <div class="mb-3">
-                <label class="form-label">Good with Dogs</label>
-                <div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="good_with_dogs" value="yes" <%= dog.good_with_dogs === 'yes' ? 'checked' : '' %> required>
-                        <label class="form-check-label">Yes</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="good_with_dogs" value="no" <%= dog.good_with_dogs === 'no' ? 'checked' : '' %>>
-                        <label class="form-check-label">No</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="good_with_dogs" value="unknown" <%= dog.good_with_dogs === 'unknown' ? 'checked' : '' %>>
-                        <label class="form-check-label">Unknown</label>
-                    </div>
-                </div>
+                <fieldset>
+                  <legend class="form-label h6">Good with Dogs</legend>
+                    <div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="good_with_dogs" id="goodDogsTrue" value="yes" <%= dog.good_with_dogs === 'yes' ? 'checked' : '' %> required>
+                            <label class="form-check-label" for="goodDogsTrue">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="good_with_dogs" id="goodDogsFalse" value="no" <%= dog.good_with_dogs === 'no' ? 'checked' : '' %>>
+                            <label class="form-check-label" for="goodDogsFalse">No</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="good_with_dogs" id="goodDogsUnknown" value="unknown" <%= dog.good_with_dogs === 'unknown' ? 'checked' : '' %>>
+                            <label class="form-check-label" for="goodDogsUnknown">Unknown</label>
+                        </div>
+                    </div>  
+                </fieldset>
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Good with Cats</label>
-                <div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="good_with_cats" value="yes" <%= dog.good_with_cats === 'yes' ? 'checked' : '' %> required>
-                        <label class="form-check-label">Yes</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="good_with_cats" value="no" <%= dog.good_with_cats === 'no' ? 'checked' : '' %>>
-                        <label class="form-check-label">No</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="good_with_cats" value="unknown" <%= dog.good_with_cats === 'unknown' ? 'checked' : '' %>>
-                        <label class="form-check-label">Unknown</label>
-                    </div>
-                </div>
+                <fieldset>
+                   <legend class="form-label h6">Good with Cats</legend>
+                    <div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="good_with_cats" id="goodCatsTrue" value="yes" <%= dog.good_with_cats === 'yes' ? 'checked' : '' %> required>
+                            <label class="form-check-label" for="goodCatsTrue">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="good_with_cats" id="goodCatsFalse" value="no" <%= dog.good_with_cats === 'no' ? 'checked' : '' %>>
+                            <label class="form-check-label" for="goodCatsFalse">No</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="good_with_cats" id="goodCatsUnknown" value="unknown" <%= dog.good_with_cats === 'unknown' ? 'checked' : '' %>>
+                            <label class="form-check-label" for="goodCatsUnknown">Unknown</label>
+                        </div>
+                    </div> 
+                </fieldset>
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Good with Children</label>
-                <div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="good_with_children" value="yes" <%= dog.good_with_children === 'yes' ? 'checked' : '' %> required>
-                        <label class="form-check-label">Yes</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="good_with_children" value="no" <%= dog.good_with_children === 'no' ? 'checked' : '' %>>
-                        <label class="form-check-label">No</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="good_with_children" value="unknown" <%= dog.good_with_children === 'unknown' ? 'checked' : '' %>>
-                        <label class="form-check-label">Unknown</label>
-                    </div>
-                </div>
+                <fieldset>
+                   <legend class="form-label h6">Good with Children</legend>
+                    <div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="good_with_children" id="goodChildrenTrue" value="yes" <%= dog.good_with_children === 'yes' ? 'checked' : '' %> required>
+                            <label class="form-check-label" for="goodChildrenTrue">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="good_with_children" id="goodChildrenFalse" value="no" <%= dog.good_with_children === 'no' ? 'checked' : '' %>>
+                            <label class="form-check-label" for="goodChildrenFalse">No</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="good_with_children" id="goodChildrenUnknown" value="unknown" <%= dog.good_with_children === 'unknown' ? 'checked' : '' %>>
+                            <label class="form-check-label" for="goodChildrenUnknown">Unknown</label>
+                        </div>
+                    </div> 
+                </fieldset>
+                
             </div>
 
             <div class="mb-3" id="children_age_field" style="display: <%= dog.good_with_children === 'yes' ? 'block' : 'none' %>;">
@@ -270,17 +290,20 @@
         </div>
         <div class="card-body">
             <div class="mb-3">
-                <label class="form-label">Medical Issues</label>
-                <div class="row">
-                    <% ['epilepsy', 'diabetes', 'hip dysplasia', 'heart condition', 'skin condition', 'allergies', 'dental issues', 'mobility issues', 'anxiety', 'requires medication', 'none known'].forEach(c => { %>
-                        <div class="col-4">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="medical_issues" value="<%= c %>" <%= dog.medical_issues.includes(c) ? 'checked' : '' %>>
-                                <label class="form-check-label"><%= c.charAt(0).toUpperCase() + c.slice(1) %></label>
+                <fieldset>
+                   <legend class="form-label h6">Medical Issues</legend>
+                    <div class="row">
+                        <% ['epilepsy', 'diabetes', 'hip dysplasia', 'heart condition', 'skin condition', 'allergies', 'dental issues', 'mobility issues', 'anxiety', 'requires medication', 'none known'].forEach(c => { %>
+                            <% const medicalId = 'medical-' + c.toLowerCase().replace(/\s+/g, '-'); %>
+                            <div class="col-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="medical_issues" id="<%= medicalId %>" value="<%= c %>" <%= dog.medical_issues.includes(c) ? 'checked' : '' %>>
+                                    <label class="form-check-label" for="<%= medicalId %>"><%= c.charAt(0).toUpperCase() + c.slice(1) %></label>
+                                </div>
                             </div>
-                        </div>
-                    <% }) %>
-                </div>
+                        <% }) %>
+                    </div> 
+                </fieldset>
             </div>
 
             <div class="mb-3">
@@ -296,17 +319,20 @@
         </div>
         <div class="card-body">
             <div class="mb-3">
-                <label class="form-label">Behavioural Issues</label>
-                <div class="row">
-                    <% ['pulls on lead', 'jumps at people', 'separation anxiety', 'reactive to dogs', 'resource guarding', 'not recall trained', 'excessive barking', 'destructive when alone', 'none known'].forEach(c => { %>
-                        <div class="col-4">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="behavioural_flags" value="<%= c %>" <%= dog.behavioural_flags.includes(c) ? 'checked' : '' %>>
-                                <label class="form-check-label"><%= c.charAt(0).toUpperCase() + c.slice(1) %></label>
+                <fieldset>
+                  <legend class="form-label h6">Behavioural Issues</legend>
+                    <div class="row">
+                        <% ['pulls on lead', 'jumps at people', 'separation anxiety', 'reactive to dogs', 'resource guarding', 'not recall trained', 'excessive barking', 'destructive when alone', 'none known'].forEach(c => { %>
+                            <% const behaviouralId = 'behavioural-' + c.toLowerCase().replace(/\s+/g, '-'); %>
+                            <div class="col-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="behavioural_flags" id="<%= behaviouralId %>" value="<%= c %>" <%= dog.behavioural_flags.includes(c) ? 'checked' : '' %>>
+                                    <label class="form-check-label" for="<%= behaviouralId %>"><%= c.charAt(0).toUpperCase() + c.slice(1) %></label>
+                                </div>
                             </div>
-                        </div>
-                    <% }) %>
-                </div>
+                        <% }) %>
+                    </div>  
+                </fieldset>
             </div>
 
             <div class="mb-3">
@@ -315,17 +341,20 @@
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Known Triggers</label>
-                <div class="row">
-                    <% ['loud noises', 'strangers', 'other dogs', 'cats', 'children', 'fast movement', 'cars', 'none known'].forEach(c => { %>
-                        <div class="col-4">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="known_triggers" value="<%= c %>" <%= dog.known_triggers.includes(c) ? 'checked' : '' %>>
-                                <label class="form-check-label"><%= c.charAt(0).toUpperCase() + c.slice(1) %></label>
+                <fieldset>
+                   <legend class="form-label h6">Known Triggers</legend>
+                    <div class="row">
+                        <% ['loud noises', 'strangers', 'other dogs', 'cats', 'children', 'fast movement', 'cars', 'none known'].forEach(c => { %>
+                            <% const triggersId = 'trigger-' + c.toLowerCase().replace(/\s+/g, '-'); %>
+                            <div class="col-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="known_triggers" id="<%= triggersId %>" value="<%= c %>" <%= dog.known_triggers.includes(c) ? 'checked' : '' %>>
+                                    <label class="form-check-label" for="<%= triggersId %>"><%= c.charAt(0).toUpperCase() + c.slice(1) %></label>
+                                </div>
                             </div>
-                        </div>
-                    <% }) %>
-                </div>
+                        <% }) %>
+                    </div> 
+                </fieldset>
             </div>
 
             <div class="mb-3">

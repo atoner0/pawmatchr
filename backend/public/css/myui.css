@@ -5,9 +5,10 @@
 
     --color-navy-dark: #0B2A43;
     --color-navy-mid: #2F577F;
+    --color-light-blue: #96b4d0;
     --color-navy-muted: #8FA3B8;
     --color-accent-orange: #F0B37E;
-    --color-accent-teal: #4F9C8C;
+    --color-accent-teal: #54af9d;
 
     --color-accent-teal-tint: rgba(79, 156, 140, 0.18);
     --color-accent-teal-tint-hover: rgba(79, 156, 140, 0.3);
@@ -25,14 +26,9 @@
 
     --tag-alert-bg: #F2B8B0;
     --tag-alert-text: #7A2E24;
-
-    --desert-sand: #ECC8AF;
-    --powder-blush: #E7AD99;
-    --dusty-rose:   #CE796B;
-    --toasted-almond: #C18C5D;
-    --blue-slate:   #495867;
-    --sage: #6b9080;
 }
+
+
 
 body {
     background-color: var(--color-background);
@@ -713,8 +709,8 @@ textarea.form-control {
 
 .badge-withdrawn,
 .badge-adopted {
-    background-color: var(--color-navy-muted);
-    color: var(--color-text-on-dark);
+    background-color: var(--color-accent-orange);
+    color: var(--color-text-primary);
 }
 
 .badge-booked {
@@ -728,7 +724,7 @@ textarea.form-control {
 
 .badge-completed {
     background-color: var(--color-accent-teal);
-    color: var(--color-text-on-dark);
+    color: var(--color-text-primary);
     padding: 0.4rem 1rem;
     border-radius: 999px;
     font-size: 0.85rem;
@@ -758,7 +754,7 @@ textarea.form-control {
 }
 
 .back-link {
-    color: var(--color-text-secondary);
+    color: var(--color-text-primary);
     text-decoration: none;
     font-size: 0.95rem;
 }
@@ -861,7 +857,7 @@ textarea.form-control {
 
 .step-count {
     background-color: var(--color-accent-teal);
-    color: var(--color-text-on-dark);
+    color: var(--color-text-primary);
     font-size: 0.85rem;
 }
 
@@ -927,8 +923,8 @@ textarea.form-control {
 
 /* All Bookings */
 .badge-booking-type {
-    background-color: var(--color-navy-muted);
-    color: var(--color-text-on-dark);
+    background-color: var(--color-light-blue);
+    color: var(--color-text-primary);
     border-radius: 999px;
     padding: 0.35rem 0.9rem;
     font-size: 0.85rem;
@@ -1026,10 +1022,21 @@ textarea.form-control {
     font-weight: 600;
 }
 
+#calendar .fc-col-header-cell-cushion {
+    color: var(--color-navy-dark);
+    text-decoration: none;
+}
+
 #calendar .fc-button {
     border-radius: 999px !important;
     text-transform: capitalize;
     box-shadow: none !important;
+}
+
+#calendar .fc-button-primary {
+    color: var(--color-text-on-dark);
+    background-color: var(--color-navy-mid);
+    border-color: var(--color-navy-mid);
 }
 
 #calendar .fc-daygrid-day-number {
@@ -1040,4 +1047,9 @@ textarea.form-control {
     background-color: var(--color-accent-teal-tint);
     color: var(--color-navy-dark);
     font-weight: 600;
+}
+
+#calendar .fc-event-time,
+#calendar .fc-event-title {
+    color: var(--color-navy-dark)
 }
