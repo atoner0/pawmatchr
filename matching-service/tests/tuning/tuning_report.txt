@@ -1,65 +1,65 @@
-Ranking test report - generated 2026-08-17T12:58:03
+Ranking test report - generated 2026-08-19T10:33:25
 
 TC01 [strong match]: 
 fuzzy=1.000 
  raw-semantic=0.568 | scaled-semantic=0.613 
- overall=0.884 
+ overall=0.865 
  (very_high, expected very_high)
 
 TC02 [strong match]: 
 fuzzy=0.921 
  raw-semantic=0.713 | scaled-semantic=0.855 
- overall=0.901 
+ overall=0.898 
  (very_high, expected very_high)
 
 TC03 [clear mismatch, activity gap]: 
 fuzzy=0.677 
  raw-semantic=0.313 | scaled-semantic=0.188 
- overall=0.530 
+ overall=0.506 
  (moderate, expected moderate)
 
 TC04 [semantic trap, cat in notes]: 
 fuzzy=0.966 
  raw-semantic=0.497 | scaled-semantic=0.495 
- overall=0.825 
+ overall=0.801 
  (high, expected high)
 
 TC05 [hard filter cat]: excluded=True    OK
 TC06 [multi pet weighting check]: 
 fuzzy=0.963 
  raw-semantic=0.609 | scaled-semantic=0.681 
- overall=0.878 
+ overall=0.864 
  (very_high, expected very_high)
 
 TC07 [edge case, unknown field]: 
 fuzzy=0.704 
  raw-semantic=0.301 | scaled-semantic=0.169 
- overall=0.543 
+ overall=0.517 
  (moderate, expected moderate)
 
 TC08 [boundary children age match]: 
 fuzzy=0.922 
  raw-semantic=0.462 | scaled-semantic=0.436 
- overall=0.776 
+ overall=0.752 
  (high, expected high)
 
 TC09 [hard filter children age]: excluded=True    OK
 TC10 [urban risk, offset experience]: 
 fuzzy=0.905 
  raw-semantic=0.606 | scaled-semantic=0.677 
- overall=0.837 
+ overall=0.825 
  (high, expected high)
 
 TC11 [urban risk, worst case, first time owner]: 
 fuzzy=0.256 
  raw-semantic=0.547 | scaled-semantic=0.578 
- overall=0.352 
+ overall=0.369 
  (low, expected low)
 
 TC12 [first time owner, training gap]: 
 fuzzy=0.089 
  raw-semantic=0.493 | scaled-semantic=0.489 
- overall=0.209 
+ overall=0.229 
  (very_low, expected very_low)
 
 TC13 [hard filter dog]: excluded=True    OK
