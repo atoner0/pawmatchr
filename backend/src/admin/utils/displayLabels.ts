@@ -37,6 +37,17 @@ export function childrenAgeLabel(value: string): string {
     return CHILDREN_AGE_LABELS[value] ?? value;
 }
 
+export const TRAINING_LEVEL_LABELS: Record<string, string> = {
+    'none': 'None',
+    'basic': 'Basic Obedience',
+    'moderate': 'Moderate',
+    'experienced_only': 'High - Experienced Only'
+}
+
+export function trainingLevelLabel(value: string): string {
+    return TRAINING_LEVEL_LABELS[value] ?? value;
+}
+
 export function petCountSummary(count: number, types:string[]): string {
     if(!types || types.length === 0) return `${count} pet(s)`
     return `${count} ${types.map(t => t.toLowerCase()).join(', ')}`

@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback, ReactNode } from "react";
+import { createContext, useContext, useState, useCallback, ReactNode, useEffect } from "react";
 import { apiFetch } from "@/lib/api";
 import { QuestionnaireResponse, AccountFields } from "@/types/adopter";
 import { QuestionnaireInput } from "@/types/questionnaireSchema";
@@ -27,6 +27,10 @@ export function AdopterProvider({ children }: { children: ReactNode }) {
             setLoading(false);
         }
     }, []);
+
+    useEffect(() => {
+        refetch();
+    }, [refetch])
 
     return (
         <AdopterContext.Provider value={{ adopter, loading, refetch}}>

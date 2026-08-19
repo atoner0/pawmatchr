@@ -71,7 +71,7 @@
             <% if (dog.good_with_children === 'yes') { %>
                 <div class="info-row">
                     <span class="info-label">Children Age</span>
-                    <span class="info-value <%= dog.children_age === 'unknown' ? 'value-flag' : '' %>"><%= capitaliseFirst(dog.children_age) %></span>
+                    <span class="info-value <%= dog.children_age === 'unknown' ? 'value-flag' : '' %>"><%= childrenAgeLabel(dog.children_age) %></span>
                 </div>
             <% } %>
         </div>
@@ -93,8 +93,8 @@
         <div class="info-card">
             <h4 class="info-card-title">Training</h4>
             <div class="info-row">
-                <span class="info-label">Required Level</span>
-                <span class="info-value"><%= capitaliseFirst(dog.training_level)%></span>
+                <span class="info-label">Amount Needed</span>
+                <span class="info-value"><%= trainingLevelLabel(dog.training_level)%></span>
             </div>
         </div>
     </div>

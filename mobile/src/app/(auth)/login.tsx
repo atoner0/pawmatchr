@@ -2,7 +2,7 @@ import { TextInput, Text, Button, View, Pressable, StyleSheet } from "react-nati
 import { useState } from "react";
 import { useRouter, Link } from "expo-router";
 import { apiFetch } from "@/lib/api";
-import { setToken } from "@/lib/auth";
+import { clearToken, setToken } from "@/lib/auth";
 import { AuthResponse } from "@/types/authSchemas";
 import { colors, spacing, radii, typography } from "@/constants/theme";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -67,14 +67,11 @@ export default function Login() {
           <Text style={typography.button}>Log In</Text>
         </Pressable>
 
-        <Link href="/(auth)/signup" asChild>
-          <Pressable style={styles.secondaryButton}>
-            <Text style={typography.button}>Don't have an account? Sign Up</Text>
-          </Pressable>
-        </Link>
-      </View>
-      
+        <Pressable style={styles.secondaryButton} onPress={async () => { await clearToken(); router.push("/(auth)/signup"); }}>
+          <Text style={typography.button}>Don't have an account? Sign Up</Text>
+        </Pressable>
 
+      </View>
     </SafeAreaView>
   );
 }
