@@ -8,18 +8,19 @@ export const colors = {
   navyMuted: "#8FA3B8",
   accentOrange: "#F0B37E",
   accentTeal: "#4F9C8C",
+  accentTealDarker: "#1a6556",
 
-  danger: "#C0392B",
+  danger: "#d03423",
   textPrimary: "#1E3049",
   textOnDark: "#FFFFFF",
-  textSecondary: "#5C6B7A",
+  textSecondary: "#4c5c6c",
   inputBackground: "#FFFFFF",
   inputBorder: "#1E3049",
 
   placeholder: "#8A96A3",
 
   tagAlert: "#F2B8B0",
-  tagAlertText: "#7A2E24",
+  tagAlertText: "#8b2f23",
 } as const;
 
 export const spacing = {

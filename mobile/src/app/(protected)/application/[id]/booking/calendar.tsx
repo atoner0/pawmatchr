@@ -95,7 +95,12 @@ export default function BookingCalendar() {
 
     if (loading) {
         return (
-            <View style={styles.centered}>
+            <View 
+                accessibilityRole="progressbar"
+                accessibilityState={{busy : true}}
+                accessibilityLabel="Loading application"
+                style={styles.centered}
+            >
                 <ActivityIndicator size="large" />
             </View>
         );
@@ -104,8 +109,13 @@ export default function BookingCalendar() {
         <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
             <View style={styles.container}>
                 <View style={styles.header}>
-                    <Pressable onPress={() => router.back()}>
-                        <Ionicons name="chevron-back" size={22} color={colors.textPrimary}/>
+                    <Pressable 
+                        accessibilityLabel={"Back button"}
+                        accessibilityRole="button"
+                        onPress={() => router.back()} 
+                        style={styles.backButton}
+                    >
+                        <Ionicons name="chevron-back" size={26} color={colors.textPrimary}/>
                     </Pressable>
                     <Text style={styles.headerTitle}>Choose a Slot</Text>
                     <View style={styles.headerSpacer} />
@@ -126,6 +136,7 @@ export default function BookingCalendar() {
                             styles.slotRow,
                             selectedSlot?.availability_id === item.availability_id && styles.slotRowSelected
                         ]}
+                        accessibilityLabel={`${formatSlot(item.slot)} + ${item.availability_id}`}
                     >
                         <Text style={typography.value}>{formatSlot(item.slot)}</Text>
                     </Pressable>
@@ -162,6 +173,11 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
+    },
+    backButton: {
+        minHeight: 48,
+        minWidth: 48,
+        padding: spacing.sm,
     },
     header: {
         flexDirection: "row",

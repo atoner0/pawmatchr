@@ -5,7 +5,7 @@ export const readinessChecklistSections: ChecklistSection[] = [
         title: "Home Readiness",
         items: [
             { id: "home_1", label: "I have secured a safe outdoor space (garden fencing, no escape routes) if applicable" },
-            { id: "home_2", label: "I have checked my tenancy agreement/landlord permission allows a dog (if renting)" },
+            { id: "home_2", label: "My tenancy agreement/landlord permission allows a dog (if renting)" },
             { id: "home_3", label: "Everyone in my household has agreed to and is prepared for this adoption" },
             { id: "home_4", label: "I understand the shelter will carry out a home visit before final approval" }
         ],

@@ -33,7 +33,12 @@ export default function Bookings() {
 
     if (loading) {
         return (
-            <View style={styles.centered}>
+            <View 
+                accessibilityRole="progressbar"
+                accessibilityState={{busy : true}}
+                accessibilityLabel="Loading application"
+                style={styles.centered}
+            >
                 <ActivityIndicator size="large" />
             </View>
         );

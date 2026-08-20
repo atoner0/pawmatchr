@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
   primaryButton: {
     backgroundColor: colors.navyMid,
     borderRadius: radii.pill,
-    paddingVertical: spacing.sm + 4,
+    paddingVertical: spacing.sm + 6,
     paddingHorizontal: spacing.xl,
     alignItems: "center",
     marginTop: spacing.sm,
@@ -130,9 +130,9 @@ const styles = StyleSheet.create({
   },
   secondaryButton: {
     backgroundColor: colors.navyMid,
-    opacity: 0.85,
+    opacity: 0.95,
     borderRadius: radii.pill,
-    paddingVertical: spacing.sm + 4,
+    paddingVertical: spacing.sm + 6,
     paddingHorizontal: spacing.xl,
     alignItems: "center",
     marginTop: spacing.md,

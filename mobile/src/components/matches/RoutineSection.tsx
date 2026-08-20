@@ -14,17 +14,29 @@ export default function RoutineSection({ match }: Props) {
         <View style={styles.section}>
             <Text style={typography.sectionTitle}>Routine</Text>
             <View style={styles.box}>
-                <View style={styles.row}>
+                <View 
+                    style={styles.row}
+                    accessible={true}
+                    accessibilityLabel={`Alone Tolerance: ${getDogLabel(aloneToleranceLabel, dog.alone_tolerance)}`}
+                >
                     <Text style={typography.label}>Hours Alone</Text>
                     <Text style={typography.value}>{getDogLabel(aloneToleranceLabel, dog.alone_tolerance)}</Text>
                 </View>
 
-                <View style={styles.row}>
+                <View 
+                    style={styles.row}
+                    accessible={true}
+                    accessibilityLabel={`Activity Level: ${getDogLabel(activityLevelLabel, dog.activity_level)}`}
+                >
                     <Text style={typography.label}>Activity Level</Text>
                     <Text style={typography.value}>{getDogLabel(activityLevelLabel, dog.activity_level)}</Text>
                 </View>
 
-                <View style={styles.row}>
+                <View 
+                    style={styles.row}
+                    accessible={true}
+                    accessibilityLabel={`Training Needed: ${getDogLabel(trainingLevelLabel, dog.training_level)}`}
+                >
                     <Text style={typography.label}>Training Needed</Text>
                     <Text style={typography.value}>{getDogLabel(trainingLevelLabel, dog.training_level)}</Text>
                 </View>

@@ -4,6 +4,7 @@ import { Option } from "@/constants/questionnaireOptions"
 import { colors, radii, spacing, typography } from "@/constants/theme";
 
 type Props<T> = {
+    title: string;
     label: string;
     options: Option<T>[];
     value: T[];
@@ -12,7 +13,7 @@ type Props<T> = {
     noneValue?: T;
 }
 
-export function MultiCheckbox<T>({ label, options, value, onChange, error, noneValue }: Props<T> ) {
+export function MultiCheckbox<T>({ title, label, options, value, onChange, error, noneValue }: Props<T> ) {
     const handleToggle = (optionValue: T) => {
         const isSelected = value.includes(optionValue)
         if (isSelected) {
@@ -31,11 +32,15 @@ export function MultiCheckbox<T>({ label, options, value, onChange, error, noneV
     return (
         <View style={styles.field}>
             <Text style={typography.label}>{label}</Text>
-            <View style={styles.optionsBox}>
+            <View 
+                style={styles.optionsBox}
+                accessibilityLabel={title}
+            >
                 {options.map((option) => (
                     <CheckBox
                         key={option.value as string}
                         label={option.label}
+                        accessibilityLabel={`${title}: ${option.label}`}
                         isChecked={value.includes(option.value)}
                         onPress={() => handleToggle(option.value)}
                     />

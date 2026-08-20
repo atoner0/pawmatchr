@@ -6,11 +6,18 @@ type Props = {
     label: string;
     isChecked: boolean;
     onPress: () => void;
+    accessibilityLabel?: string;
 }
 
-export function CheckBox({ label, isChecked, onPress }: Props) {
+export function CheckBox({ label, isChecked, accessibilityLabel, onPress }: Props) {
     return (
-        <Pressable onPress={onPress} style={styles.row}>
+        <Pressable 
+            onPress={onPress} 
+            style={styles.row}
+            accessibilityRole="checkbox"
+            accessibilityState={{ checked: isChecked }}
+            accessibilityLabel={accessibilityLabel ?? label}
+        >
             <View style={[styles.box, isChecked && styles.checked]}/>
             <Text style={styles.label}>{label}</Text>
         </Pressable>
@@ -22,7 +29,7 @@ const styles = StyleSheet.create({
         flexDirection: "row", 
         alignItems: "center", 
         gap: spacing.sm + 2, 
-        paddingVertical: spacing.xs + 4,
+        paddingVertical: spacing.sm + 4,
     },
     box: {
         width: 24,

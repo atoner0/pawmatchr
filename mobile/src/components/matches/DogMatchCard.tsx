@@ -31,13 +31,13 @@ export default function DogMatchCard({ match, footer }: Props) {
             <CompatibilitySection match={match}/>
             <RoutineSection match={match}/>
 
-            {(dog.medical_issues.length > 0 || dog.behavioural_flags.length > 0 || dog.known_triggers.length > 0) && (
+            {(dog.medical_issues.length > 0 || dog.behavioural_flags.length > 0 || dog.known_triggers.length > 0 || dog.medical_notes || dog.behavioural_notes || dog.trigger_notes) && (
                 <View style={styles.section}>
                     <Text style={typography.sectionTitle}>Things to Know</Text>
                     <View style={styles.box}>
-                        <TagList label="Medical Issues" tags={dog.medical_issues}/>
-                        <TagList label="Behavioural Issues" tags={dog.behavioural_flags}/>
-                        <TagList label="Known Triggers" tags={dog.known_triggers}/>
+                        <TagList label="Medical Issues" tags={dog.medical_issues} notes={dog.medical_notes} />
+                        <TagList label="Behavioural Issues" tags={dog.behavioural_flags} notes={dog.behavioural_notes} />
+                        <TagList label="Known Triggers" tags={dog.known_triggers} notes={dog.trigger_notes} />
                     </View>
                 </View>
         )}

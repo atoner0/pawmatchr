@@ -25,7 +25,9 @@ export default function SwipeScreen() {
 
     useEffect(() => {
         if (!loading && matches.length > 0 && currentIndex >= matches.length) {
-            markMatchesReviewed().then(() => {
+            markMatchesReviewed()
+            .catch((err) => console.error("Failed to mark matches reviewed", err))
+            .finally(() => {
                 router.replace("/(protected)/(drawer)/(tabs)/matches/ranked")
             });
         }
@@ -47,7 +49,12 @@ export default function SwipeScreen() {
 
     if (loading) {
         return (
-            <View style={styles.centered}>
+            <View 
+                accessibilityRole="progressbar"
+                accessibilityState={{busy : true}}
+                accessibilityLabel="Loading application"
+                style={styles.centered}
+            >
                 <ActivityIndicator size="large" />
             </View>
         );
@@ -72,11 +79,21 @@ export default function SwipeScreen() {
                 match={matches[currentIndex]}
                 footer={
                     <View style={styles.actionBar}>
-                        <Pressable style={styles.actionButton} onPress={handleReject}>
+                        <Pressable 
+                            accessibilityLabel={"Reject dog button"}
+                            accessibilityRole="button"
+                            style={styles.actionButton} 
+                            onPress={handleReject}
+                        >
                             <Ionicons name="close" size={28} color={colors.navyMid} />
                         </Pressable>
 
-                        <Pressable style={styles.actionButton} onPress={handleFavourite}>
+                        <Pressable 
+                            accessibilityLabel={"Favourite dog button"}
+                            accessibilityRole="button"
+                            style={styles.actionButton} 
+                            onPress={handleFavourite}
+                        >
                             <Ionicons name="heart-outline" size={26} color={colors.navyMid} />
                         </Pressable>
                     </View>

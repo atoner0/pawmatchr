@@ -15,13 +15,23 @@ interface ApplicationStepperProps {
 }
 
 export default function ApplicationStepper({ steps }: ApplicationStepperProps) {
+    const getStateText = (step: StepperStep) => {
+        if (step.state === 'complete') return 'complete';
+        if (step.state === 'in_progress') return step.countLabel ? `in progress, ${step.countLabel}` : 'in progress';
+        return 'pending';
+    }
+
     return (
         <View style={styles.stepper}>
             {steps.map((step, i) => {
                 const isComplete = step.state === 'complete';
                 return (
                     <View key={step.label} style={styles.stepGroup}>
-                        <View style={styles.step}>
+                        <View 
+                            style={styles.step}
+                            accessible={true}
+                            accessibilityLabel={`${step.label}: ${getStateText(step)}`}
+                        >
                             <View style={[styles.stepCircle, isComplete ? styles.stepComplete : styles.stepUpcoming]}>
                                 {isComplete && <Ionicons name="checkmark" size={16} color={colors.textOnDark} />}
                                 {!isComplete && step.countLabel && (
@@ -69,7 +79,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors.navyMid,
     },
     stepUpcoming: {
-        backgroundColor: colors.accentTeal,
+        backgroundColor: colors.accentTealDarker,
     },
     stepCount: {
         fontSize: 11,

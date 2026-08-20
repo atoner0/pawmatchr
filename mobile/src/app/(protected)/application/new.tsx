@@ -93,7 +93,9 @@ export default function NewApplication() {
                     </View>
 
                     <View style={styles.buttonGroup}>
-                        <Pressable 
+                        <Pressable
+                            accessibilityLabel={"Apply button"}
+                            accessibilityRole="button" 
                             onPress={handleApplyPress} 
                             disabled={loading} 
                             style={[styles.applyButton, loading && styles.applyButtonDisabled]}
@@ -101,7 +103,12 @@ export default function NewApplication() {
                             <Text style={typography.button}>{loading ? "Applying..." : "Apply"}</Text>
                         </Pressable>
 
-                        <Pressable onPress={() => router.back()} style={styles.cancelButton}>
+                        <Pressable
+                            accessibilityLabel={"Cancel button"}
+                            accessibilityRole="button" 
+                            onPress={() => router.back()} 
+                            style={styles.cancelButton}
+                        >
                             <Text style={styles.cancelButtonText}>Cancel</Text>
                         </Pressable>
                     </View>
@@ -148,6 +155,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors.card,
         borderRadius: radii.md,
         padding: spacing.md,
+        marginTop: spacing.sm,
     },
     nextStepsTitle: {
         ...typography.sectionTitle,

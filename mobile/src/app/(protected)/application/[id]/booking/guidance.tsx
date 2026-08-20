@@ -32,8 +32,13 @@ export default function MultiPetGuidance() {
         <SafeAreaView style={styles.safeArea} edges={['top']}>
             <View style={styles.container}>
                 <View style={styles.header}>
-                    <Pressable onPress={() => router.back()}>
-                        <Ionicons name="chevron-back" size={22} color={colors.textPrimary}/>
+                    <Pressable 
+                        accessibilityLabel={"Back button"}
+                        accessibilityRole="button"
+                        onPress={() => router.back()} 
+                        style={styles.backButton}
+                    >
+                        <Ionicons name="chevron-back" size={26} color={colors.textPrimary}/>
                     </Pressable>
                     <Text style={styles.headerTitle}>Multi-Pet Guidance</Text>
                     <View style={styles.headerSpacer} />  
@@ -66,6 +71,11 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
+    },
+    backButton: {
+        minHeight: 48,
+        minWidth: 48,
+        padding: spacing.sm,
     },
     header: {
         flexDirection: "row",

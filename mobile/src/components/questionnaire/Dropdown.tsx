@@ -4,6 +4,7 @@ import { Picker } from '@react-native-picker/picker';
 import { colors, radii, spacing, typography } from "@/constants/theme";
 
 type Props<T> = {
+    title: string,
     label: string;
     options: Option<T>[];
     value: T | undefined;
@@ -11,7 +12,7 @@ type Props<T> = {
     error?: string
 }
 
-export function Dropdown<T>({ label, options, value, onChange, error}: Props<T>) {
+export function Dropdown<T>({ title, label, options, value, onChange, error}: Props<T>) {
     return (
         <View style={styles.field}>
             <Text style={typography.label}>{label}</Text>
@@ -23,8 +24,9 @@ export function Dropdown<T>({ label, options, value, onChange, error}: Props<T>)
                         onChange(itemValue as T)
                     }}
                     style={styles.picker}
+                    accessibilityLabel={title}
                 >
-                    <Picker.Item label="Select..." value= "" enabled={false} color={colors.placeholder}/>
+                    <Picker.Item label={`Select ${title}...`} value= "" enabled={false} color={colors.placeholder}/>
                     {options.map((option) => (
                         <Picker.Item key={option.value as string} label={option.label} value={option.value} />
                     ))}

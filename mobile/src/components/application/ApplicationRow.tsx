@@ -1,7 +1,7 @@
 import { Image, View, Text, StyleSheet, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons"
 import { ApplicationWithDetails } from "@/types/application";
-import { formatDate } from "@/lib/formatDate";
+import { formatDate, formatDateAccessible } from "@/lib/formatDate";
 import { colors, radii, spacing, typography } from "@/constants/theme";
 import { capitaliseFirst } from "@/lib/formatText";
 
@@ -18,7 +18,12 @@ export default function ApplicationRow({ application, onPress }: Props) {
 
                 <View style={styles.textBlock}>
                     <Text style={typography.cardTitle}>{application.dog_name}</Text>
-                    <Text style={typography.cardSubtitle}>Submitted: {formatDate(application.submitted_at)}</Text>
+                    <Text 
+                        style={typography.cardSubtitle}
+                        accessibilityLabel={`Submitted ${formatDateAccessible(application.submitted_at)}`}
+                    >
+                        Submitted: {formatDate(application.submitted_at)}
+                    </Text>
                     <Text style={typography.cardSubtitle}>Status: {capitaliseFirst(application.status)}</Text>
                 </View>
                 <Ionicons name="chevron-forward" size={20}/>

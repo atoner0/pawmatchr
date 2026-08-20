@@ -1,5 +1,5 @@
 import { useLocalSearchParams } from "expo-router";
-import { Pressable, View, Text, ActivityIndicator, StyleSheet } from "react-native";
+import { Pressable, View, Text, ActivityIndicator, StyleSheet, AccessibilityInfo } from "react-native";
 import { router } from "expo-router";
 import DogMatchCard from "@/components/matches/DogMatchCard";
 import { MatchWithDog } from "@/types/match";
@@ -23,10 +23,13 @@ export default function DogDetailScreen() {
                 const applications = await getApplications();
                 const found = applications.find(app => app.dog_id === match.dog_id);
                 setExistingApplication(found ?? null);
+                AccessibilityInfo.announceForAccessibility(
+                    found ? "Application loaded" : "Ready to apply to adopt"
+                )
             } catch (err) {
                 console.log("Error checking applications:", err)
             } finally {
-                setLoadingApplication(false);
+                setLoadingApplication(false);   
             }
         };
 
@@ -51,17 +54,33 @@ export default function DogDetailScreen() {
         <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
            <View style={styles.content}>
                 <View style={styles.header}>
-                    <Pressable onPress={() => router.back()}>
-                        <Ionicons name="chevron-back" size={22} color={colors.textPrimary}/>
+                    <Pressable
+                        accessibilityLabel={"Back button"}
+                        accessibilityRole="button" 
+                        onPress={() => router.back()} 
+                        style={styles.backButton}
+                    >
+                        <Ionicons name="chevron-back" size={26} color={colors.textPrimary}/>
                     </Pressable>
                 </View>
                 <DogMatchCard match={match}
                 />
 
                 {loadingApplication ? (
-                    <ActivityIndicator style={styles.loadingIndicator} />
+                    <View
+                        accessibilityRole="progressbar"
+                        accessibilityState={{busy : true}}
+                        accessibilityLabel="Loading application"
+                    > 
+                        <ActivityIndicator style={styles.loadingIndicator} />
+                    </View>
                 ) : (
-                    <Pressable onPress={handleApplyPress} style={styles.applyButton}>
+                    <Pressable 
+                        accessibilityLabel={`${existingApplication ? "View Application" : "Apply to Adopt"}`}
+                        accessibilityRole="button"
+                        onPress={handleApplyPress} 
+                        style={styles.applyButton}
+                    >
                         <Text style={typography.button}>{existingApplication ? "View Application" : "Apply to Adopt"}</Text>
                     </Pressable>
                 )}
@@ -82,8 +101,9 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     backButton: {
-        padding: spacing.md,
-        marginTop: spacing.sm
+        minHeight: 48,
+        minWidth: 48,
+        padding: spacing.sm,
     },
     loadingIndicator: {
         marginTop: spacing.md,
@@ -102,7 +122,7 @@ const styles = StyleSheet.create({
     applyButton: {
         backgroundColor: colors.navyMid,
         borderRadius: radii.pill,
-        paddingVertical: spacing.sm + 4,
+        paddingVertical: spacing.sm + 6,
         alignItems: "center",
     },
 })

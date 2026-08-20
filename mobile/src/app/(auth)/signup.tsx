@@ -1,7 +1,7 @@
 import { TextInput, Text, Button, View, StyleSheet, Pressable } from "react-native";
 import { useState } from "react";
 import { Link, useRouter } from "expo-router";
-import { apiFetch } from "@/lib/api";
+import { ApiError, apiFetch } from "@/lib/api";
 import { setToken } from "@/lib/auth";
 import { AuthResponse } from "@/types/authSchemas";
 import { colors, spacing, radii, typography } from "@/constants/theme";
@@ -36,8 +36,13 @@ export default function Signup() {
     
       router.replace('/(protected)/questionnaire')
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "An error occurred. Please try again.";
-      setError(errorMessage);
+      if (err instanceof ApiError && err.body?.errors?.length > 0) {
+        setError(err.body.errors[0].message);
+      } else {
+        const errorMessage = err instanceof Error ? err.message : "An error occurred. Please try again.";
+        setError(errorMessage);
+      }
+      
     }
   }
 
@@ -163,7 +168,7 @@ const styles = StyleSheet.create({
   primaryButton: {
     backgroundColor: colors.navyMid,
     borderRadius: radii.pill,
-    paddingVertical: spacing.sm + 4,
+    paddingVertical: spacing.sm + 6,
     paddingHorizontal: spacing.xl,
     alignItems: "center",
     marginTop: spacing.sm,
@@ -171,9 +176,9 @@ const styles = StyleSheet.create({
   },
   secondaryButton: {
     backgroundColor: colors.navyMid,
-    opacity: 0.85,
+    opacity: 0.95,
     borderRadius: radii.pill,
-    paddingVertical: spacing.sm + 4,
+    paddingVertical: spacing.sm + 6,
     paddingHorizontal: spacing.xl,
     alignItems: "center",
     marginTop: spacing.md,

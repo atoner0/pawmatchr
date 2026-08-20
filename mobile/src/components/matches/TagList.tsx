@@ -5,21 +5,27 @@ import { View, Text, StyleSheet } from "react-native";
 type Props = {
     label: string;
     tags: string[];
+    notes?: string | null;
 };
 
-export default function TagList({ label, tags }: Props) {
-    if (tags.length === 0) return null
+export default function TagList({ label, tags, notes }: Props) {
+    if (tags.length === 0 && !notes) return null
 
     return (
        <View style={styles.group}>
         <Text style={typography.tagGroupLabel}>{label}</Text>
-        <View style={styles.tagRow}>
-            {tags.map((tag) => (
-                <View key={tag} style={styles.tag}>
-                    <Text style={typography.tagText}>{tag}</Text>
-                </View>
-            ))}
-        </View>
+        {tags.length > 0 && (
+            <View style={styles.tagRow}>
+                {tags.map((tag) => (
+                    <View key={tag} style={styles.tag}>
+                        <Text style={typography.tagText}>{tag}</Text>
+                    </View>
+                ))}
+            </View>  
+        )}
+        {notes && <Text style={styles.notesText}>{notes}</Text>}
+
+        
        </View> 
     )
 }
@@ -40,4 +46,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: spacing.sm + 6,
         paddingVertical: spacing.xs + 2,
     },
+    notesText: {
+        fontSize: 13,
+        color: colors.textSecondary,
+    }
 })

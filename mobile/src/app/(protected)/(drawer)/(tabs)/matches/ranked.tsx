@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { View, Pressable, StyleSheet, ActivityIndicator, Text, FlatList } from "react-native";
-import { useRouter } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import { MatchWithDog } from "@/types/match";
 import { getFavourites } from "@/lib/favourites"; 
 import FavouriteRow from "@/components/matches/FavouriteRow";
@@ -11,18 +11,35 @@ export default function RankedScreen() {
     const router = useRouter();
     const [matches, setMatches] = useState<MatchWithDog[]>([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("")
 
-    useEffect(() => {
-        (async () => {
-            const results = await getFavourites();
-            setMatches(results);
-            setLoading(false);
-        })();
-    }, []);
+    useFocusEffect(
+        useCallback(() => {
+            const fetchFavourites = async () => {
+                setLoading(true);
+                setError("");
+                try {
+                    const data = await getFavourites();
+                    setMatches(data);
+                } catch (err) {
+                    const errorMessage = err instanceof Error ? err.message : "Failed to load favourites."
+                    setError(errorMessage);
+                } finally {
+                    setLoading(false);
+                }
+            };
+            fetchFavourites();
+        }, [])
+    )
 
     if (loading) {
             return (
-                <View style={styles.centered}>
+                <View 
+                    accessibilityRole="progressbar"
+                    accessibilityState={{busy : true}}
+                    accessibilityLabel="Loading application"
+                    style={styles.centered}
+                >
                     <ActivityIndicator size="large" />
                 </View>
             );

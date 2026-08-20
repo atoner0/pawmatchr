@@ -105,6 +105,7 @@ export default function QuestionnaireScreen() {
                             name="home_type"
                             render={({ field }) => (
                                 <Dropdown
+                                    title="Home Type"
                                     label="What type of house do you live in?"
                                     options={homeTypeOptions}
                                     value={field.value}
@@ -119,6 +120,7 @@ export default function QuestionnaireScreen() {
                             name="home_location"
                             render={({ field }) => (
                                 <Dropdown
+                                    title="Home Location"
                                     label="What type of area do you live in?"
                                     options={homeLocationOptions}
                                     value={field.value}
@@ -133,6 +135,7 @@ export default function QuestionnaireScreen() {
                             name="outdoor_space"
                             render={({ field }) => (
                                 <Dropdown
+                                    title="Outdoor Space"
                                     label="How would you describe your outdoor space (may be shared or private)?"
                                     options={outdoorSpaceOptions}
                                     value={field.value}
@@ -149,6 +152,7 @@ export default function QuestionnaireScreen() {
                             name="current_pets"
                             render={({ field }) => (
                                 <YesNoToggle
+                                    title="Current Pets"
                                     label="Do you currently own any pets?"
                                     value={field.value}
                                     onChange={field.onChange}
@@ -162,6 +166,7 @@ export default function QuestionnaireScreen() {
                                 name="current_pet_type"
                                 render={({ field }) => (
                                     <MultiCheckbox
+                                        title="Current Pet Type"
                                         label="What kind of pet do you own? (You can select multiple)"
                                         options={petTypeOptions}
                                         value={field.value}
@@ -178,6 +183,7 @@ export default function QuestionnaireScreen() {
                                 name="current_pet_count"
                                 render={({ field }) => (
                                     <Dropdown
+                                        title="Current Pet Count"
                                         label="How many pets do you currently own?"
                                         options={petCountOptions}
                                         value={field.value}
@@ -193,6 +199,7 @@ export default function QuestionnaireScreen() {
                             name="children"
                             render={({ field }) => (
                                 <YesNoToggle
+                                    title="Children"
                                     label="Do you currently have any children?"
                                     value={field.value}
                                     onChange={field.onChange}
@@ -206,6 +213,7 @@ export default function QuestionnaireScreen() {
                                 name="youngest_child_age"
                                 render={({ field }) => (
                                     <Dropdown
+                                        title="Youngest Child Age"
                                         label="How old is your youngest child?"
                                         options={youngestChildOptions}
                                         value={field.value}
@@ -226,6 +234,7 @@ export default function QuestionnaireScreen() {
                             name="hours_alone"
                             render={({ field }) => (
                                 <Dropdown
+                                    title="Hours Alone"
                                     label="On average, how many hours a day would you be leaving a pet alone?"
                                     options={hoursAloneOptions}
                                     value={field.value}
@@ -240,6 +249,7 @@ export default function QuestionnaireScreen() {
                             name="activity_level"
                             render={({ field }) => (
                                 <Dropdown
+                                    title="Activity Level"
                                     label="On average per day, how would you describe your activity level?"
                                     options={activityLevelOptions}
                                     value={field.value}
@@ -254,6 +264,7 @@ export default function QuestionnaireScreen() {
                             name="training_commitment"
                             render={({ field }) => (
                                 <Dropdown
+                                    title="Training Commitment"
                                     label="What level of training are you willing to commit to?"
                                     options={trainingCommitmentOptions}
                                     value={field.value}
@@ -272,6 +283,7 @@ export default function QuestionnaireScreen() {
                             name="first_time_owner"
                             render={({ field }) => (
                                 <YesNoToggle
+                                    title="First Time Owner"
                                     label="Have you owned a dog before?"
                                     value={!field.value}
                                     onChange={(hasOwned) => field.onChange(!hasOwned)}
@@ -285,6 +297,7 @@ export default function QuestionnaireScreen() {
                                 name="multi_pet_exp"
                                 render={({ field }) => (
                                     <YesNoToggle
+                                        title="Multi Pet Experience"
                                         label="Have you ever owned multiple dogs at the same time?"
                                         value={field.value}
                                         onChange={field.onChange}
@@ -299,6 +312,7 @@ export default function QuestionnaireScreen() {
                                 name="multi_pet_exp_level"
                                 render={({ field }) => (
                                     <Dropdown
+                                        title="Multi Pet Experience Level"
                                         label="How would you describe your experience owning multiple dogs?"
                                         options={multiPetLevelOptions}
                                         value={field.value}
@@ -318,6 +332,7 @@ export default function QuestionnaireScreen() {
                             name="age_pref"
                             render={({ field }) => (
                                 <MultiCheckbox
+                                    title="Age Preference"
                                     label="What age range would you prefer? (You can select multiple)"
                                     options={agePrefOptions}
                                     value={field.value}
@@ -333,6 +348,7 @@ export default function QuestionnaireScreen() {
                             name="gender_pref"
                             render={({ field }) => (
                                 <Dropdown
+                                    title="Gender Preference"
                                     label="What gender would you prefer?"
                                     options={genderPrefOptions}
                                     value={field.value}
@@ -347,6 +363,7 @@ export default function QuestionnaireScreen() {
                             name="size_pref"
                             render={({ field }) => (
                                 <MultiCheckbox
+                                    title="Size Preference"
                                     label="What size of dog would you prefer? (You can select multiple)"
                                     options={sizePrefOptions}
                                     value={field.value}
@@ -362,6 +379,7 @@ export default function QuestionnaireScreen() {
                             name="shedding_pref"
                             render={({ field }) => (
                                 <Dropdown
+                                    title="Shedding Preference"
                                     label="What is the highest shedding level you would be comfortable with?"
                                     options={sheddingPrefOptions}
                                     value={field.value}
@@ -391,17 +409,32 @@ export default function QuestionnaireScreen() {
 
                 <View style={styles.buttonRow}>
                     { step > 0 && (
-                        <Pressable onPress={handleBack} style={styles.backButton}>
+                        <Pressable 
+                            accessibilityLabel={"Back button"}
+                            accessibilityRole="button"
+                            onPress={handleBack} 
+                            style={styles.backButton}
+                        >
                             <Text style={styles.backButtonText}>Back</Text>
                         </Pressable>
                     )}
 
                     {step < totalSteps - 1 ? (
-                        <Pressable onPress={handleNext} style={[styles.nextButton, step === 0 && styles.nextButtonFull]}>
-                            <Text style={typography.button}>Next -&gt;</Text>
+                        <Pressable 
+                            accessibilityLabel={"Next button"}
+                            accessibilityRole="button"
+                            onPress={handleNext} 
+                            style={[styles.nextButton, step === 0 && styles.nextButtonFull]}
+                        >
+                            <Text style={typography.button}>Next</Text>
                         </Pressable>
                     ) : (
-                        <Pressable onPress={handleSubmit(onSubmit)} style={[styles.nextButton, step === 0 && styles.nextButtonFull]}>
+                        <Pressable
+                            accessibilityLabel={"Submit button"}
+                            accessibilityRole="button" 
+                            onPress={handleSubmit(onSubmit)} 
+                            style={[styles.nextButton, step === 0 && styles.nextButtonFull]}
+                        >
                             <Text style={typography.button}>Submit</Text>
                         </Pressable>
                     )}

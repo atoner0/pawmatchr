@@ -1,6 +1,7 @@
-import { Drawer, DrawerToggleButton } from "expo-router/drawer";
+import { Drawer } from "expo-router/drawer";
+import { useNavigation, DrawerActions } from "expo-router/build/react-navigation";
 import { Ionicons } from "@expo/vector-icons";
-import { StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 import CustomDrawerContent from "@/components/navigation/CustomDrawerContent";
 import HeaderTitle from "@/components/navigation/HeaderTitle";
 import { colors, spacing } from "@/constants/theme";
@@ -23,6 +24,19 @@ export default function DrawerLayout() {
         screenOptions={{
             headerStyle: { backgroundColor: colors.background},
             headerShadowVisible: false,
+            headerLeft: () => {
+                const navigation = useNavigation();
+                return (
+                  <Pressable
+                    onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+                    style={styles.toggleButton}
+                    accessibilityRole="button"
+                    accessibilityLabel="Open navigation menu"
+                >
+                    <Ionicons name="menu-outline" size={26} color={colors.navyDark} />
+                </Pressable>  
+                );
+            },
             headerRight: () => (
                 <View style={{ paddingRight: spacing.md }}>
                     <Ionicons name="notifications-outline" size={24} color={colors.navyDark} />
@@ -44,3 +58,12 @@ export default function DrawerLayout() {
     </Drawer>
   );
 }
+
+const styles = StyleSheet.create({
+    toggleButton: {
+        minWidth: 48,
+        minHeight: 48,
+        justifyContent: "center",
+        alignItems: "center"
+    }
+})

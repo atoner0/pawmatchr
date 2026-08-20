@@ -51,8 +51,13 @@ export default function ReadinessChecklist() {
     return (
         <SafeAreaView style={styles.safeArea} edges={['top']}>
             <View style={styles.header}>
-                    <Pressable onPress={() => router.back()}>
-                        <Ionicons name="chevron-back" size={22} color={colors.textPrimary}/>
+                    <Pressable
+                        accessibilityLabel={"Back button"}
+                        accessibilityRole="button" 
+                        onPress={() => router.back()} 
+                        style={styles.backButton}
+                    >
+                        <Ionicons name="chevron-back" size={26} color={colors.textPrimary}/>
                     </Pressable>
                     <Text style={styles.headerTitle}>Readiness Checklist</Text>
                     <View style={styles.headerSpacer} />  
@@ -76,7 +81,9 @@ export default function ReadinessChecklist() {
                     ))}
 
                     {allChecked && (
-                        <Pressable 
+                        <Pressable
+                            accessibilityLabel={"Submit button"}
+                            accessibilityRole="button" 
                             onPress={onSubmit} 
                             disabled={loading}
                             style={[styles.submitButton, loading && styles.submitButtonDisabled]}
@@ -102,6 +109,11 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
+    },
+    backButton: {
+        minHeight: 48,
+        minWidth: 48,
+        padding: spacing.sm,
     },
     header: {
         flexDirection: "row",
