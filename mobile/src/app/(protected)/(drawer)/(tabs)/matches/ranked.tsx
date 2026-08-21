@@ -74,7 +74,7 @@ export default function RankedScreen() {
                     />
                 )}
             />
-
+            {error ? <Text style={styles.errorText}>{error}</Text> : null}
         </View>
     )
 
@@ -94,5 +94,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: spacing.md,
         paddingBottom: spacing.xl,
         gap: spacing.md,
-    }
+    },
+    errorText: {
+        color: colors.danger,
+        textAlign: "center",
+    },
 });

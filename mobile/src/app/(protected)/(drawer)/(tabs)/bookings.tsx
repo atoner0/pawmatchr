@@ -68,6 +68,7 @@ export default function Bookings() {
                     />
                 )}
             />
+            {error ? <Text style={styles.errorText}>{error}</Text> : null}
         </View>
     )
 }

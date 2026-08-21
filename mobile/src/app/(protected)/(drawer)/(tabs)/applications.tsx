@@ -68,6 +68,7 @@ export default function Applications() {
                     />
                 )}
             /> 
+            {error ? <Text style={styles.errorText}>{error}</Text> : null}
         </View>
         
     )
@@ -88,5 +89,10 @@ const styles = StyleSheet.create({
         paddingHorizontal: spacing.md,
         paddingBottom: spacing.xl,
         gap: spacing.md,
-    }
+    },
+    errorText: {
+        color: colors.danger,
+        fontSize: 15,
+        textAlign: "center",
+    },
 });

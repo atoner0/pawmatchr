@@ -12,14 +12,20 @@ async def summary_explanation(top_bullets: str, warning_bullets: str) -> tuple[s
     """
     try:
         response = await client.chat.completions.create(
-            model = "gpt-4.1-nano",
+            model = "gpt-4.1-mini",
             max_tokens = 200,
-            messages=[{
-                "role": "user",
-                "content": (
-                    "Rewrite the following compatibility notes as clear, natural, conversational prose, 3-4 sentences. Use UK spelling and terminology (e.g. garden not yard). Avoid sales-style adjectives. Do not add any facts not listed below. Do not invent numbers. Do not generalise or rephrase a specific statement into a broader claim, keep notes framed around an adopter's home or space that way rather than a general statement. Preserve the exact meaning and direction of every comparison, if a note says the adopter is more active than the dog needs, the rewritten sentence must still say the adopter is more active, not the dog\n\n"f"{top_bullets}"
-                ),
-            }],
+            messages=[
+                {
+                    "role": "system",
+                    "content": (
+                        "Rewrite compatibility notes as clear, natural, conversational prose, 3-4 sentences. Use UK spelling and terminology (e.g. garden not yard). Avoid sales-style adjectives. Every claim in your rewrite must be directly stated in the notes provided - do not add, infer, or elaborate on any fact, number, comparison, direction, or degree that is not explicitly present."
+                    ),
+                },
+                {
+                    "role": "user",
+                    "content": top_bullets
+                }
+            ],
         )
         summary = response.choices[0].message.content
 

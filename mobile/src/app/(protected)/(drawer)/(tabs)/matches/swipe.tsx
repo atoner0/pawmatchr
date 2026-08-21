@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { View, Pressable, StyleSheet, ActivityIndicator, Text } from "react-native";
-import { useRouter } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import DogMatchCard from "@/components/matches/DogMatchCard";
 import { MatchWithDog } from "@/types/match";
 import { getMatches } from "@/lib/matches";
@@ -8,20 +8,34 @@ import { addFavourite } from "@/lib/favourites";
 import { markMatchesReviewed } from "@/lib/adopter";
 import { colors, radii, spacing, typography } from "@/constants/theme";
 import { Ionicons } from "@expo/vector-icons";
+import { ApiError } from "@/lib/api";
 
 export default function SwipeScreen() {
     const router = useRouter();
     const [matches, setMatches] = useState<MatchWithDog[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("")
 
-    useEffect(() => {
-        (async () => {
-            const results = await getMatches();
-            setMatches(results);
-            setLoading(false);
-        })();
-    }, []);
+    useFocusEffect(
+        useCallback(() => {
+            const fetchMatches = async () => {
+                setLoading(true);
+                setError("");
+                try {
+                    const data = await getMatches();
+                    setMatches(data);
+                    setCurrentIndex(0);
+                } catch (err) {
+                    const errorMessage = err instanceof Error ? err.message : "Failed to load matches."
+                    setError(errorMessage);
+                } finally {
+                    setLoading(false);
+                }
+            };
+            fetchMatches();
+        }, [])
+    )
 
     useEffect(() => {
         if (!loading && matches.length > 0 && currentIndex >= matches.length) {
@@ -43,7 +57,17 @@ export default function SwipeScreen() {
 
     const handleFavourite = async () => {
         const current = matches[currentIndex];
-        await addFavourite(current.dog_id);
+        try {
+            await addFavourite(current.dog_id);
+        } catch (err) {
+            if (err instanceof ApiError && err.status === 409) {
+                advance();
+                return;
+            }
+            const errorMessage = err instanceof ApiError ? err.message : "Failed to favourite dog"
+            setError(errorMessage)
+            return;
+        }
         advance();
     }
 
@@ -52,7 +76,7 @@ export default function SwipeScreen() {
             <View 
                 accessibilityRole="progressbar"
                 accessibilityState={{busy : true}}
-                accessibilityLabel="Loading application"
+                accessibilityLabel="Loading matches"
                 style={styles.centered}
             >
                 <ActivityIndicator size="large" />
@@ -97,9 +121,11 @@ export default function SwipeScreen() {
                             <Ionicons name="heart-outline" size={26} color={colors.navyMid} />
                         </Pressable>
                     </View>
+
+                    
                 }
             />
-
+            {error ? <Text style={styles.errorText}>{error}</Text> : null}
             
         </View>
     )
@@ -132,5 +158,9 @@ const styles = StyleSheet.create({
         borderColor: colors.navyMid,
         justifyContent: "center",
         alignItems: "center",
+    },
+    errorText: {
+        color: colors.danger,
+        textAlign: "center",
     },
 });
