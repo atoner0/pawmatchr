@@ -7,8 +7,6 @@ import { createTestToken } from '../utils/createTestToken.js'
 
 import { fakeAdopterFull, fakeQuestionnaireInput } from '../utils/fakeProfiles.js'
 
-
-
 beforeEach(() => {
   jest.restoreAllMocks()
 })
@@ -24,7 +22,7 @@ describe('GET /api/adopter/questionnaire', () => {
         .set('Authorization', `Bearer ${adopterToken}`)
 
         expect(res.status).toBe(200)
-        expect(res.body.profile.first_name).toBe('Jane')
+        expect(res.body.adopter.first_name).toBe('Jane')
     })
 
     it('should return 401 if no token is found', async () => {
@@ -82,7 +80,7 @@ describe('PUT /api/adopter/questionnaire', () => {
         .set('Authorization', `Bearer ${adopterToken}`)
 
         expect(res.status).toBe(200)
-        expect(res.body.fullAdopter.first_name).toBe('Jane')
+        expect(res.body.adopter.first_name).toBe('Jane')
     })
 
     it('should return 401 if no token is found', async () => {
@@ -144,7 +142,7 @@ describe('PATCH /api/adopter/questionnaire', () => {
         .set('Authorization', `Bearer ${adopterToken}`)
 
         expect(res.status).toBe(200)
-        expect(res.body.updatedAdopter.first_name).toBe('Jane')
+        expect(res.body.adopter.first_name).toBe('Jane')
     })
 
     it('should return 401 if no token is found', async () => {

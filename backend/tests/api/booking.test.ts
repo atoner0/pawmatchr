@@ -6,7 +6,7 @@ import * as BookingModel from '../../src/models/booking.js'
 import * as ApplicationModel from '../../src/models/application.js'
 import * as AdopterModel from '../../src/models/adopter.js'
 import { createTestToken } from '../utils/createTestToken.js'
-import { fakeAdopterPartial, fakeApplicationOtherAdopter, fakeApplicationSubmitted, fakeBooking, fakeBookingPetIntroduction } from '../utils/fakeProfiles.js'
+import { fakeAdopterPartial, fakeApplicationOtherAdopter, fakeApplicationSubmitted, fakeBooking, fakeBookingPetIntroduction, fakeBookingPetIntroductionWithDetails, fakeBookingWithDetails, withDetails } from '../utils/fakeProfiles.js'
 
 beforeEach(() => {
   jest.restoreAllMocks()
@@ -15,8 +15,8 @@ beforeEach(() => {
 describe('GET /api/adopter/bookings/:applicationId', () => {
     it('gets bookings for application and returns 200', async () => {
         jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
-        jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(fakeApplicationSubmitted)
-        jest.spyOn(BookingModel, 'getBookingByApplication').mockResolvedValue([fakeBooking, fakeBookingPetIntroduction])
+        jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(withDetails(fakeApplicationSubmitted))
+        jest.spyOn(BookingModel, 'getBookingByApplication').mockResolvedValue([fakeBookingWithDetails, fakeBookingPetIntroductionWithDetails])
 
         const adopterToken = createTestToken({ id: 1, type: 'adopter' })
 
@@ -29,7 +29,7 @@ describe('GET /api/adopter/bookings/:applicationId', () => {
 
     it('gets bookings for application and returns 200, even if array is empty', async () => {
         jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
-        jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(fakeApplicationSubmitted)
+        jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(withDetails(fakeApplicationSubmitted))
         jest.spyOn(BookingModel, 'getBookingByApplication').mockResolvedValue([])
 
         const adopterToken = createTestToken({ id: 1, type: 'adopter' })
@@ -43,8 +43,8 @@ describe('GET /api/adopter/bookings/:applicationId', () => {
 
     it('should return 400 if id is invalid', async () => {
         jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
-        jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(fakeApplicationSubmitted)
-        jest.spyOn(BookingModel, 'getBookingByApplication').mockResolvedValue([fakeBooking, fakeBookingPetIntroduction])
+        jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(withDetails(fakeApplicationSubmitted))
+        jest.spyOn(BookingModel, 'getBookingByApplication').mockResolvedValue([fakeBookingWithDetails, fakeBookingPetIntroductionWithDetails])
 
         const adopterToken = createTestToken({ id: 1, type: 'adopter' })
 
@@ -57,8 +57,8 @@ describe('GET /api/adopter/bookings/:applicationId', () => {
     })
 
     it('should return 401 if missing token', async () => {
-        jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(fakeApplicationSubmitted)
-        jest.spyOn(BookingModel, 'getBookingByApplication').mockResolvedValue([fakeBooking, fakeBookingPetIntroduction])
+        jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(withDetails(fakeApplicationSubmitted))
+        jest.spyOn(BookingModel, 'getBookingByApplication').mockResolvedValue([fakeBookingWithDetails, fakeBookingPetIntroductionWithDetails])
 
         const res = await request(app)
         .get('/api/adopter/bookings/1')
@@ -84,7 +84,7 @@ describe('GET /api/adopter/bookings/:applicationId', () => {
 
     it('should return 403 if application belongs to a different adopter', async () => {
     jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
-    jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(fakeApplicationOtherAdopter)
+    jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(withDetails(fakeApplicationOtherAdopter))
     jest.spyOn(BookingModel, 'getBookingByApplication').mockResolvedValue([])
 
     const adopterToken = createTestToken({ id: 1, type: 'adopter' })
@@ -99,7 +99,7 @@ describe('GET /api/adopter/bookings/:applicationId', () => {
 
     it('should return 500 if a database error occurs', async () => {
         jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
-        jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(fakeApplicationSubmitted)
+        jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(withDetails(fakeApplicationSubmitted))
         jest.spyOn(BookingModel, 'getBookingByApplication').mockRejectedValue(new Error('Database error'))
 
         const adopterToken = createTestToken({ id: 1, type: 'adopter' })
@@ -116,7 +116,7 @@ describe('GET /api/adopter/bookings/:applicationId', () => {
 describe('POST /api/adopter/bookings', () => {
     it('creates booking and returns 201', async () => {
         jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
-        jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(fakeApplicationSubmitted)
+        jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(withDetails(fakeApplicationSubmitted))
         jest.spyOn(BookingModel, 'createBooking').mockResolvedValue({
             success: true,
             booking: fakeBooking
@@ -140,7 +140,7 @@ describe('POST /api/adopter/bookings', () => {
 
     it('creates booking for pet introduction and returns 201', async () => {
         jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
-        jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(fakeApplicationSubmitted)
+        jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(withDetails(fakeApplicationSubmitted))
         jest.spyOn(BookingModel, 'createBooking').mockResolvedValue({
             success: true,
             booking: fakeBookingPetIntroduction
@@ -164,7 +164,7 @@ describe('POST /api/adopter/bookings', () => {
 
     it('should return 400 if zod schema is invalid', async () => {
         jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
-        jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(fakeApplicationSubmitted)
+        jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(withDetails(fakeApplicationSubmitted))
         jest.spyOn(BookingModel, 'createBooking').mockResolvedValue({
             success: true,
             booking: fakeBooking
@@ -187,7 +187,7 @@ describe('POST /api/adopter/bookings', () => {
     })
 
     it('should return 401 if missing token', async () => {
-    jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(fakeApplicationSubmitted)
+    jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(withDetails(fakeApplicationSubmitted))
     jest.spyOn(BookingModel, 'createBooking').mockResolvedValue({
         success: true,
         booking: fakeBooking
@@ -232,7 +232,7 @@ describe('POST /api/adopter/bookings', () => {
 
     it('should return 403 if application belongs to a different adopter', async () => {
         jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
-        jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(fakeApplicationOtherAdopter)
+        jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(withDetails(fakeApplicationOtherAdopter))
         jest.spyOn(BookingModel, 'createBooking').mockResolvedValue({
             success: true,
             booking: fakeBooking
@@ -256,7 +256,7 @@ describe('POST /api/adopter/bookings', () => {
 
     it('should return 404 if availability slot not found', async () => {
         jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
-        jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(fakeApplicationSubmitted)
+        jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(withDetails(fakeApplicationSubmitted))
         jest.spyOn(BookingModel, 'createBooking').mockResolvedValue({
             success: false,
             error: 'not_found'
@@ -280,7 +280,7 @@ describe('POST /api/adopter/bookings', () => {
 
     it('should return 409 if slot is already booked', async () => {
         jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
-        jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(fakeApplicationSubmitted)
+        jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(withDetails(fakeApplicationSubmitted))
         jest.spyOn(BookingModel, 'createBooking').mockResolvedValue({
             success: false,
             error: 'already_booked'
@@ -304,7 +304,7 @@ describe('POST /api/adopter/bookings', () => {
 
     it('should return 400 if multi pet guidance needs to be read', async () => {
         jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
-        jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(fakeApplicationSubmitted)
+        jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(withDetails(fakeApplicationSubmitted))
         jest.spyOn(BookingModel, 'createBooking').mockResolvedValue({
             success: false,
             error: 'guidance_required'
@@ -328,7 +328,7 @@ describe('POST /api/adopter/bookings', () => {
 
     it('should return 500 if a database error occurs', async () => {
         jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
-        jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(fakeApplicationSubmitted)
+        jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(withDetails(fakeApplicationSubmitted))
         jest.spyOn(BookingModel, 'createBooking').mockRejectedValue(new Error('Database error'))
 
         const adopterToken = createTestToken({ id: 1, type: 'adopter' })

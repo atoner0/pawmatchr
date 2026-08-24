@@ -6,7 +6,7 @@ import * as MatchModel from '../../src/models/match.js'
 import * as AdopterModel from '../../src/models/adopter.js'
 import * as DogModel from '../../src/models/dog.js'
 import { createTestToken } from '../utils/createTestToken.js'
-import { fakeAdopterFull, fakeAdopterPartial, fakeDogSameShelter, fakeDogUpdated, fakeDogWrongShelter, fakeMatch, fakeMatchResultFromPython, withDog } from '../utils/fakeProfiles.js'
+import { fakeAdopterFull, fakeDogSameShelter, fakeDogUpdated, fakeDogWrongShelter, fakeMatch, fakeMatchResultFromPython, withDog } from '../utils/fakeProfiles.js'
 import * as MatchingService from '../../src/services/matchingService.js'
 
 
@@ -113,7 +113,9 @@ describe('GET /api/adopter/matches', () => {
     it('creates and returns new matches if no cached results, returns 200', async () => {
         jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterFull)
 
-        jest.spyOn(MatchModel, 'getMatchesByAdopterId').mockResolvedValue([])
+        jest.spyOn(MatchModel, 'getMatchesByAdopterId')
+            .mockResolvedValueOnce([])
+            .mockResolvedValueOnce([withDog(fakeMatch)])
 
         jest.spyOn(DogModel, 'getAllAvailableDogs').mockResolvedValue([fakeDogSameShelter, fakeDogUpdated, fakeDogWrongShelter])
 
@@ -122,7 +124,7 @@ describe('GET /api/adopter/matches', () => {
             results: [fakeMatchResultFromPython]
         })
 
-        jest.spyOn(MatchModel, 'createMatches').mockResolvedValue([fakeMatch])
+        jest.spyOn(MatchModel, 'createMatches').mockResolvedValue(undefined)
 
         const adopterToken = createTestToken({ id: 1, type: 'adopter' })
 
@@ -132,6 +134,7 @@ describe('GET /api/adopter/matches', () => {
 
       expect(res.status).toBe(200)
       expect(MatchModel.createMatches).toHaveBeenCalledTimes(1)
+      expect(res.body).toEqual([withDog(fakeMatch)])
     })
 
     it('should return 503 if matching service is unavailable', async () => {
@@ -146,7 +149,7 @@ describe('GET /api/adopter/matches', () => {
             error: 'unavailable'
         })
 
-        jest.spyOn(MatchModel, 'createMatches').mockResolvedValue([fakeMatch])
+        jest.spyOn(MatchModel, 'createMatches').mockResolvedValue(undefined)
 
         const adopterToken = createTestToken({ id: 1, type: 'adopter' })
 
@@ -171,7 +174,7 @@ describe('GET /api/adopter/matches', () => {
             status: 502
         })
 
-        jest.spyOn(MatchModel, 'createMatches').mockResolvedValue([fakeMatch])
+        jest.spyOn(MatchModel, 'createMatches').mockResolvedValue(undefined)
 
         const adopterToken = createTestToken({ id: 1, type: 'adopter' })
 
@@ -196,7 +199,7 @@ describe('GET /api/adopter/matches', () => {
             issues: []
         })
 
-        jest.spyOn(MatchModel, 'createMatches').mockResolvedValue([fakeMatch])
+        jest.spyOn(MatchModel, 'createMatches').mockResolvedValue(undefined)
 
         const adopterToken = createTestToken({ id: 1, type: 'adopter' })
 

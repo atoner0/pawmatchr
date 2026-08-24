@@ -16,7 +16,8 @@ def children_compatibility_batch(
     If adopter has children and dog is unknown with children, score 0.5 and warning flag (no age check)
     If adopter has children and dog is not good with children, excluded by hard filter and not scored
 
-    If the adopter has no children, every dog scores 1 with label "not_weighed" regardless of that dog's good_with_children value, since the weight for this variable will be 0 in that case
+    If the adopter has no children, every dog scores 1 with label "not_weighed" regardless of that dog's 
+    good_with_children value, since the weight for this variable will be 0 in that case
 
     Dogs are scored positionally: dogs[i] corresponds to scores[i],
     warnings[i], and labels[i] in the returned tuple. Callers must not
@@ -40,7 +41,6 @@ def children_compatibility_batch(
         good_with_children == "unknown"
     ]
     
-
     scores = np.select(conditions, [1.0, 1.0, 0.75, 0.5], default=0.0)
     labels = np.select(
         conditions, ["known_compatible", "known_compatible", "age_unknown", "unknown"], default = "not_compatible"

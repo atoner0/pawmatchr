@@ -8,7 +8,7 @@ import * as DogModel from '../../src/models/dog.js'
 import * as AdminModel from '../../src/models/shelterAdmin.js'
 import { createTestToken } from '../utils/createTestToken.js'
 
-import { fakeAdopterPartial, fakeAdmin, fakeFavourites, fakeFavourite, fakeDogSameShelter } from '../utils/fakeProfiles.js'
+import { fakeAdopterPartial, fakeAdmin, fakeFavourite, fakeDogSameShelter, fakeMatchWithDog } from '../utils/fakeProfiles.js'
 
 beforeEach(() => {
   jest.restoreAllMocks()
@@ -18,7 +18,7 @@ describe('GET /api/adopter/favourites', () => {
     it('gets the adopters favourites and returns 200', async () => {
         jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterPartial)
 
-        jest.spyOn(FavouriteModel, 'getFavouritesByAdopter').mockResolvedValue(fakeFavourites)
+        jest.spyOn(FavouriteModel, 'getFavouritesByAdopter').mockResolvedValue([fakeMatchWithDog])
 
         const adopterToken = createTestToken({ id: 1, type: 'adopter' })
 

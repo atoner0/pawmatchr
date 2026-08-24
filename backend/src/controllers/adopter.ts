@@ -1,7 +1,7 @@
 import type { Response } from 'express';
 import { getAdopterById, fillQuestionnaire, updateQuestionnaire, markMatchesReviewed } from '../models/adopter.js';
 import type { AdopterAuthRequest } from '../middleware/auth.js';
-import { createQuestionnaireSchema } from '../types/questionnaireSchema.js';
+import { createQuestionnaireSchema, updateQuestionnaireSchema } from '../types/questionnaireSchema.js';
 
 export const fillQuestionnaireController = async ( req: AdopterAuthRequest, res: Response): Promise<void> => {
     try {
@@ -21,7 +21,7 @@ export const fillQuestionnaireController = async ( req: AdopterAuthRequest, res:
 
 export const updateQuestionnaireController = async ( req: AdopterAuthRequest, res: Response): Promise<void> => {
     try {
-        const answers = createQuestionnaireSchema.partial().safeParse(req.body)
+        const answers = updateQuestionnaireSchema.safeParse(req.body)
             if (!answers.success){
                 res.status(400).json({ message: 'Invalid request', errors: answers.error.issues})
                 return
@@ -51,8 +51,6 @@ export const getQuestionnaire = async ( req: AdopterAuthRequest, res: Response):
             res.status(404).json({ message: 'Profile not found' })
             return
         }
-
-        console.log(profile)
 
         res.status(200).json({adopter: profile})
     } catch (error) {

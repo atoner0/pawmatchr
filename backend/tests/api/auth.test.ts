@@ -3,7 +3,7 @@ import request from 'supertest'
 import app from '../../src/app.js'
 import * as AdopterModel from '../../src/models/adopter.js'
 import bcrypt from 'bcrypt'
-import { fakeAdopterPartial } from '../utils/fakeProfiles.js'
+import { fakeAdopterPartial, fakeAdopterSafe } from '../utils/fakeProfiles.js'
 
 beforeEach(() => {
     jest.restoreAllMocks()
@@ -13,7 +13,7 @@ describe('POST /api/adopter/signup', () => {
     it('should return 201 and a token when details are valid', async () => {
         jest.spyOn(AdopterModel, 'getAdopterByEmail').mockResolvedValue(null)
 
-        jest.spyOn(AdopterModel, 'createAdopter').mockResolvedValue(fakeAdopterPartial)
+        jest.spyOn(AdopterModel, 'createAdopter').mockResolvedValue(fakeAdopterSafe)
 
         const res = await request(app)
             .post('/api/adopter/signup')
@@ -21,7 +21,7 @@ describe('POST /api/adopter/signup', () => {
 
         expect(res.status).toBe(201)
         expect(res.body.token).toBeDefined()
-        expect(res.body.user.password_hash).toBeUndefined()
+        expect(res.body.adopter.password_hash).toBeUndefined()
     })
 
     it('should return 400 if email is already registed', async () => { 
@@ -70,7 +70,7 @@ describe('POST /api/adopter/login', () => {
 
         expect(res.status).toBe(200)
         expect(res.body.token).toBeDefined()
-        expect(res.body.user.password_hash).toBeUndefined()
+        expect(res.body.adopter.password_hash).toBeUndefined()
     })
 
     it('should return 400 if email is not found', async () => { 

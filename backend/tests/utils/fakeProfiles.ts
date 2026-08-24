@@ -30,9 +30,9 @@ export const fakeAdopterFull: Adopter = {
     first_time_owner: true,
     multi_pet_exp: false,
     multi_pet_exp_level: null,
-    age_pref: '3_5',
+    age_pref: ['3_5'],
     gender_pref: 'none',
-    size_pref: 'medium',
+    size_pref: ['medium'],
     shedding_pref: 'low',
     training_commitment: 'basic',
     pref_notes: null,
@@ -53,9 +53,9 @@ export const fakeQuestionnaireInput: QuestionnaireInput = {
     first_time_owner: true,
     multi_pet_exp: false,
     multi_pet_exp_level: null,
-    age_pref: '3_5',
+    age_pref: ['3_5'],
     gender_pref: 'none',
-    size_pref: 'large',
+    size_pref: ['large'],
     shedding_pref: 'low',
     training_commitment: 'basic',
     pref_notes: undefined
@@ -67,6 +67,15 @@ export const fakeAdopterPartial = {
   last_name: "User",
   email: "test@test.com",
   password_hash: "hash",
+  phone: "07700000000",
+  postcode: "BT35 9SP"
+}
+
+export const fakeAdopterSafe = {
+    adopter_id: 1,
+  first_name: "Test",
+  last_name: "User",
+  email: "test@test.com",
   phone: "07700000000",
   postcode: "BT35 9SP"
 }
@@ -111,6 +120,7 @@ export const fakeDogWrongShelter : Dog = {
   gender: "male",
   size: "large",
   colour: ["black"],
+  photo_url: "https://example.com/photo.jpg",
   neutered: true,
   house_trained: true,
   vaccinated: true,
@@ -132,7 +142,7 @@ export const fakeDogWrongShelter : Dog = {
   trigger_notes: null,
   status: "available",
   description: "Friendly and energetic dog looking for a loving home.",
-  intake_date: new Date().toISOString()
+  intake_date: new Date().toISOString(),
 }
 
 export const fakeDogSameShelter : Dog = {
@@ -144,6 +154,7 @@ export const fakeDogSameShelter : Dog = {
   gender: "male",
   size: "small",
   colour: ["brown"],
+  photo_url: "https://example.com/photo.jpg",
   neutered: true,
   house_trained: true,
   vaccinated: true,
@@ -165,7 +176,7 @@ export const fakeDogSameShelter : Dog = {
   trigger_notes: null,
   status: "available",
   description: "Friendly and relaxed dog looking for a loving home.",
-  intake_date: new Date().toISOString()
+  intake_date: new Date().toISOString(),
 }
 
 export const fakeDogUpdated : Dog = {
@@ -177,6 +188,7 @@ export const fakeDogUpdated : Dog = {
   gender: "male",
   size: "small",
   colour: ["brown"],
+  photo_url: "https://example.com/photo.jpg",
   neutered: true,
   house_trained: true,
   vaccinated: true,
@@ -198,7 +210,7 @@ export const fakeDogUpdated : Dog = {
   trigger_notes: null,
   status: "available",
   description: "Friendly and relaxed dog looking for a loving home.",
-  intake_date: new Date().toISOString()
+  intake_date: new Date().toISOString(),
 }
 
 export const fakeDogforCreate = {
@@ -208,6 +220,7 @@ export const fakeDogforCreate = {
   gender: "male",
   size: "small",
   colour: "brown",
+  photo_url: "https://example.com/photo.jpg",
   neutered: "true",
   house_trained: "true",
   vaccinated: "true",
@@ -233,6 +246,7 @@ export const fakeDogforCreateInvalid = {
   age: "8_plus",
   gender: "male", //no size variable
   colour: "brown",
+  photo_url: "https://example.com/photo.jpg",
   neutered: "true",
   house_trained: "true",
   vaccinated: "true",
@@ -259,6 +273,7 @@ export const fakeDogforUpdate = {
   gender: "male",
   size: "small",
   colour: "brown",
+  photo_url: "https://example.com/photo.jpg",
   neutered: "on",
   house_trained: "on",
   vaccinated: "on",
@@ -443,12 +458,22 @@ export const fakeBookingsBookedNotCompleted: BookingProgress[] = [
     { booking_type: 'home_check', status: 'booked', slot: new Date(fakeAvailabilityBooked.slot) }
 ]
 
-export const withDetails = (app: Application, overrides?: Partial<Pick<ApplicationWithDetails, 'dog_name' | 'photo_url' | 'first_name' | 'last_name'>>): ApplicationWithDetails => ({
+export const withDetails = (
+    app: Application, 
+    overrides?: Partial<Pick<ApplicationWithDetails, 
+    'dog_name' | 'photo_url' | 'first_name' | 'last_name' | 'breed' | 'gender' | 'shelter_id' | 'shelter_name' | 'shelter_city'>
+    >
+): ApplicationWithDetails => ({
     ...app,
     dog_name: 'Buddy',
     photo_url: 'https://example.com/photo.jpg',
     first_name: 'Jane',
     last_name: 'Doe',
+    breed: 'Schnauzer',
+    gender: 'male',
+    shelter_id: 1,
+    shelter_name: 'shelter',
+    shelter_city: 'belfast',
     ...overrides
 })
 

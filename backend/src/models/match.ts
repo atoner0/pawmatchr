@@ -45,8 +45,6 @@ export const createMatches = async (
     try {
         await client.query('BEGIN')
 
-        const matches: Match[] = []
-
         for (const result of results) {
             const matchResult = await client.query(
                 `INSERT INTO matches (dog_id, adopter_id, overall_score, fuzzy_score, semantic_score, warnings, explanation)
@@ -68,7 +66,6 @@ export const createMatches = async (
                     result.semantic_score,
                     JSON.stringify(result.warnings),
                     result.explanation
-
                 ]
             )
 

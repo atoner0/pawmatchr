@@ -53,7 +53,7 @@ export const questionnaireObjectSchema = z.object({
 
 export const createQuestionnaireSchema = questionnaireObjectSchema.superRefine((data, ctx) => {
     const noPreferenceConflict = (field: string[], path: string) => {
-        if (field.includes("none") && field.length > 1) {
+        if (field && field.includes("none") && field.length > 1) {
             ctx.addIssue({
                 code: "custom",
                 message: "Cannot select another option if no preference is selected",

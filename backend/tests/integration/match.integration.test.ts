@@ -31,17 +31,7 @@ describe('createMatches (integration, real DB)', () => {
             }
         ]
 
-        const matches = await createMatches(ids.adopterId, results)
-
-        expect(matches).toHaveLength(1)
-        expect(matches[0]).toMatchObject({
-            dog_id: ids.dog2Id,
-            overall_score: 0.8200,
-            fuzzy_score: 0.8500,
-            semantic_score: 0.7500,
-            warnings: [],
-            explanation: 'A fresh match with no prior row'
-        })
+        await createMatches(ids.adopterId, results)
 
         const check = await testPool.query(
             `SELECT * FROM matches WHERE dog_id = $1 AND adopter_id = $2`,
@@ -49,6 +39,14 @@ describe('createMatches (integration, real DB)', () => {
         )
 
         expect(check.rows).toHaveLength(1)
+        expect(check.rows[0]).toMatchObject({
+            dog_id: ids.dog2Id,
+            overall_score: 0.8200,
+            fuzzy_score: 0.8500,
+            semantic_score: 0.7500,
+            warnings: [],
+            explanation: 'A fresh match with no prior row'
+        })
     })
 
     it('upserts correctly on conflict', async () => {
@@ -63,10 +61,15 @@ describe('createMatches (integration, real DB)', () => {
             }
         ]
 
-        const matches = await createMatches(ids.adopterId, updatedResults)
+        await createMatches(ids.adopterId, updatedResults)
 
-        expect(matches).toHaveLength(1)
-        expect(matches[0]).toMatchObject({
+        const check = await testPool.query(
+            `SELECT * FROM matches WHERE dog_id = $1 AND adopter_id = $2`,
+            [ids.dog1Id, ids.adopterId]
+        )
+
+        expect(check.rows).toHaveLength(1)
+        expect(check.rows[0]).toMatchObject({
             match_id: ids.existingMatchId,
             dog_id: ids.dog1Id,
             overall_score: 0.9100,
@@ -75,14 +78,6 @@ describe('createMatches (integration, real DB)', () => {
             warnings: ['Unknown whether this dog is good with cats'],
             explanation: 'An updated match, should overwrite the seeded one'
         })
-
-        const check = await testPool.query(
-            `SELECT * FROM matches WHERE dog_id = $1 AND adopter_id = $2`,
-            [ids.dog1Id, ids.adopterId]
-        )
-
-        expect(check.rows).toHaveLength(1)
-        expect(check.rows[0].match_id).toBe(ids.existingMatchId)
     })
 
     it('rolls back entire batch if one insert fails', async () => {

@@ -27,7 +27,7 @@ export type SizePref = z.infer<typeof SizePrefEnum>
 export type SheddingPref = z.infer<typeof SheddingPrefEnum>
 export type TrainingCommitment = z.infer<typeof TrainingCommitmentEnum>
 
-export const createQuestionnaireSchema = z.object({
+const questionnaireBaseSchema = z.object({
     home_type: HomeTypeEnum,
     home_location: HomeLocationEnum,
     outdoor_space: OutdoorSpaceEnum,
@@ -47,9 +47,11 @@ export const createQuestionnaireSchema = z.object({
     shedding_pref: SheddingPrefEnum,
     training_commitment: TrainingCommitmentEnum,
     pref_notes: z.string().optional(),
-}).superRefine((data, ctx) => {
-    const noPreferenceConflict = (field: string[], path: string) => {
-        if (field.includes("none") && field.length > 1) {
+})
+    
+const noPreferenceConflict = (data: { age_pref?: string[]; size_pref?: string[] }, ctx: z.RefinementCtx) => {
+    const check = (field: string[] | undefined, path: string) => {
+        if (field && field.includes("none") && field.length > 1) {
             ctx.addIssue({
                 code: "custom",
                 message: "Cannot select another option if no preference is selected",
@@ -58,8 +60,13 @@ export const createQuestionnaireSchema = z.object({
         }
     }
 
-    noPreferenceConflict(data.age_pref, "age_pref")
-    noPreferenceConflict(data.size_pref, "size_pref")
-})
+    check(data.age_pref, "age_pref")
+    check(data.size_pref, "size_pref")
+}
+
+export const createQuestionnaireSchema = questionnaireBaseSchema.superRefine(noPreferenceConflict)
+export const updateQuestionnaireSchema = questionnaireBaseSchema.partial().superRefine(noPreferenceConflict)
 
 export type QuestionnaireInput = z.infer<typeof createQuestionnaireSchema>
+
+
