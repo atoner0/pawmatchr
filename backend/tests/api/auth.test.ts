@@ -48,12 +48,17 @@ describe('POST /api/adopter/signup', () => {
     it('should return 500 if a database error occurs', async() => {
         jest.spyOn(AdopterModel, 'getAdopterByEmail').mockRejectedValue(new Error('Database error'))
 
+        /* preventing the console.error from catch blocks cluttering terminal */ 
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+
         const res = await request(app)
             .post('/api/adopter/signup')
             .send({ first_name: 'Jane', last_name: 'Doe', email: 'jane@test.com', password: 'password123', phone: '07700000000', postcode: 'BT35 9SP' })
 
         expect(res.status).toBe(500)
         expect(res.body.message).toBe('Error during signup')
+
+        consoleErrorSpy.mockRestore()
     })
 })
 
@@ -102,11 +107,16 @@ describe('POST /api/adopter/login', () => {
     it('should return 500 if a database error occurs', async() => {
         jest.spyOn(AdopterModel, 'getAdopterByEmail').mockRejectedValue(new Error('Database error'))
 
+        /* preventing the console.error from catch blocks cluttering terminal */ 
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+
         const res = await request(app)
             .post('/api/adopter/login')
             .send({ email: 'jane@test.com', password: 'password123' })
 
         expect(res.status).toBe(500)
         expect(res.body.message).toBe('Error during login')
+
+        consoleErrorSpy.mockRestore()
     })
 })

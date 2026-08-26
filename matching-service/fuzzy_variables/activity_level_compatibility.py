@@ -7,8 +7,6 @@ def activity_level_compatibility_batch(
         adopter: Adopter, dogs: list[Dog]
 ) -> tuple[np.ndarray, list[None], list[str]]:
     """
-    Batch version of activity_level_compatibility, scoring one adopter against many dogs in a single call
-
     Activity level bands converted to minutes (upper bound of each range)
 
     Gap calculated as adopter's minutes - dog's minutes

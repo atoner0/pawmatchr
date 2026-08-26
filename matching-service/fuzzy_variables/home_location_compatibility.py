@@ -6,8 +6,6 @@ def home_location_compatibility_batch(
         adopter: Adopter, dogs: list[Dog]
 ) -> tuple[np.ndarray, list[str | None], list[str]]:
     """
-    Batch version of home_location_compatibility, scoring one adopter against many dogs in a single call
-
     Checks if dog has any location-relevant behavioural flags/known triggers
 
     If none present, all locations score 1.0
@@ -16,8 +14,9 @@ def home_location_compatibility_batch(
         Suburban, score 0.75 with warning flag
         Urban, score 0.25 with warning flag
 
-    Behavioural_flags/known_triggers are variable-length lists per dog, so the flag/trigger membership check is done per-dog via list comprehension rather than a vectorised array op
-        only the resulting boolean per dog is converted to an array.
+    Behavioural_flags/known_triggers are variable-length lists per dog, so the flag/trigger membership check 
+    is done per-dog via list comprehension rather than a vectorised array op
+    Only the resulting boolean per dog is converted to an array.
 
     Dogs are scored positionally: dogs[i] corresponds to scores[i],
     warnings[i], and labels[i] in the returned tuple. Callers must not

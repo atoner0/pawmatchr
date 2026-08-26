@@ -40,7 +40,7 @@
     "start": "npx nodemon",
     "migrate:up": "node-pg-migrate up -m src/db/migrations",
     "migrate:down": "node-pg-migrate down -m src/db/migrations",
-    "test": "jest --forceExit",
+    "test": "jest",
     "test:integration": "jest --config jest.integration.config.cjs --forceExit",
     "seed": "tsx src/db/seed.ts"
   },
@@ -66,7 +66,8 @@
           }
         }
       ]
-    }
+    },
+    "setupFilesAfterEnv": ["<rootDir>/tests/jest.setup.ts"]
   },
   "repository": {
     "type": "git",

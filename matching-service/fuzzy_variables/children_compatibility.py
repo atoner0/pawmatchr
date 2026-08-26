@@ -5,8 +5,6 @@ def children_compatibility_batch(
         adopter: Adopter, dogs: list[Dog]
 ) -> tuple[np.ndarray, list[str | None], list[str]]:
     """
-    Batch version of children_compatibility, scoring one adopter against many dogs in a single call
-
     If adopter has children and dog is good with children:
         If dog is good with any age, score 1
         If dog is good with age that matches adopter's youngest child age, score 1

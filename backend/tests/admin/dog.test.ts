@@ -61,6 +61,9 @@ describe('POST /admin/dogs/', () => {
         jest.spyOn(AdminModel, 'getAdminById').mockResolvedValue(fakeAdmin)
         jest.spyOn(DogModel, 'createDog').mockRejectedValue(new Error('Database error'))
 
+        /* preventing the console.error from catch blocks cluttering terminal */ 
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+
         const agent = request.agent(app)
 
         await agent
@@ -73,6 +76,8 @@ describe('POST /admin/dogs/', () => {
 
         expect(res.status).toBe(500)
         expect(DogModel.createDog).toHaveBeenCalledTimes(1)
+
+        consoleErrorSpy.mockRestore()
     })
 })
 
@@ -153,6 +158,9 @@ describe('GET /admin/dogs', () => {
         jest.spyOn(AdminModel, 'getAdminById').mockResolvedValue(fakeAdmin)
         jest.spyOn(DogModel, 'getDogsByShelterId').mockRejectedValue(new Error('Database error'))
 
+        /* preventing the console.error from catch blocks cluttering terminal */ 
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+
         const agent = request.agent(app)
 
         await agent
@@ -164,6 +172,8 @@ describe('GET /admin/dogs', () => {
 
         expect(res.status).toBe(500)
         expect(DogModel.getDogsByShelterId).toHaveBeenCalledTimes(1)
+
+        consoleErrorSpy.mockRestore()
     })
 })
 
@@ -247,6 +257,9 @@ describe('GET /admin/dogs/:id', () => {
         jest.spyOn(AdminModel, 'getAdminById').mockResolvedValue(fakeAdmin)
         jest.spyOn(DogModel, 'getDogByIdAndShelterId').mockRejectedValue(new Error('Database error'))
 
+        /* preventing the console.error from catch blocks cluttering terminal */ 
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+
         const agent = request.agent(app)
 
         await agent
@@ -258,6 +271,8 @@ describe('GET /admin/dogs/:id', () => {
 
         expect(res.status).toBe(500)
         expect(DogModel.getDogByIdAndShelterId).toHaveBeenCalledTimes(1)
+
+        consoleErrorSpy.mockRestore()
     })
 })
 
@@ -358,6 +373,9 @@ describe('POST /admin/dogs/:id/edit', () => {
         
         jest.spyOn(DogModel, 'updateDog').mockRejectedValue(new Error('Database error'))
 
+        /* preventing the console.error from catch blocks cluttering terminal */ 
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+
         const agent = request.agent(app)
 
         await agent
@@ -370,6 +388,8 @@ describe('POST /admin/dogs/:id/edit', () => {
 
         expect(res.status).toBe(500)
         expect(DogModel.updateDog).toHaveBeenCalledTimes(1)
+
+        consoleErrorSpy.mockRestore()
 
     })
 })
@@ -477,6 +497,9 @@ describe('POST /admin/dogs/:id/delete', () => {
 
         jest.spyOn(DogModel, 'deleteDog').mockRejectedValue(new Error('Database error'))
 
+        /* preventing the console.error from catch blocks cluttering terminal */ 
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+
         const agent = request.agent(app)
 
         await agent
@@ -488,6 +511,8 @@ describe('POST /admin/dogs/:id/delete', () => {
 
         expect(res.status).toBe(500)
         expect(DogModel.deleteDog).toHaveBeenCalledTimes(1)
+
+        consoleErrorSpy.mockRestore()
         
     })
 })

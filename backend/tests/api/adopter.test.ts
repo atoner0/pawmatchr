@@ -55,6 +55,9 @@ describe('GET /api/adopter/questionnaire', () => {
             .mockResolvedValueOnce(fakeAdopterFull)
             .mockRejectedValue(new Error('Database error'))
 
+        /* preventing the console.error from catch blocks cluttering terminal */ 
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+
         const adopterToken = createTestToken({ id: 1, type: 'adopter' })
 
         const res = await request(app)
@@ -63,6 +66,8 @@ describe('GET /api/adopter/questionnaire', () => {
 
         expect(res.status).toBe(500)
         expect(res.body.message).toBe('Error getting profile')
+
+        consoleErrorSpy.mockRestore()
     })
 })
 
@@ -118,6 +123,9 @@ describe('PUT /api/adopter/questionnaire', () => {
 
         jest.spyOn(AdopterModel, 'fillQuestionnaire').mockRejectedValue(new Error('Database error'))
 
+        /* preventing the console.error from catch blocks cluttering terminal */ 
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+
         const res = await request(app)
         .put('/api/adopter/questionnaire')
         .send(fakeQuestionnaireInput)
@@ -125,6 +133,8 @@ describe('PUT /api/adopter/questionnaire', () => {
 
         expect(res.status).toBe(500)
         expect(res.body.message).toBe('Error filling questionnaire')
+
+        consoleErrorSpy.mockRestore()
     })
 })
 
@@ -181,6 +191,9 @@ describe('PATCH /api/adopter/questionnaire', () => {
 
         jest.spyOn(AdopterModel, 'updateQuestionnaire').mockRejectedValue(new Error('Database error'))
 
+        /* preventing the console.error from catch blocks cluttering terminal */ 
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+
         const res = await request(app)
         .patch('/api/adopter/questionnaire')
         .send( {activity_level: 'high'})
@@ -188,5 +201,7 @@ describe('PATCH /api/adopter/questionnaire', () => {
 
         expect(res.status).toBe(500)
         expect(res.body.message).toBe('Error updating questionnaire')
+
+        consoleErrorSpy.mockRestore()
     })
 })

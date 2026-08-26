@@ -48,6 +48,9 @@ describe('GET /api/adopter/favourites', () => {
 
         jest.spyOn(FavouriteModel, 'getFavouritesByAdopter').mockRejectedValue(new Error('Database error'))
 
+        /* preventing the console.error from catch blocks cluttering terminal */ 
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+
         const adopterToken = createTestToken({ id: 1, type: 'adopter' })
 
         const res = await request(app)
@@ -56,6 +59,8 @@ describe('GET /api/adopter/favourites', () => {
 
       expect(res.status).toBe(500)
       expect(res.body.message).toBe('Error fetching adopter favourites')
+
+      consoleErrorSpy.mockRestore()
     })
 })
 
@@ -167,6 +172,9 @@ describe('POST /api/adopter/favourites', () => {
 
         jest.spyOn(FavouriteModel, 'addFavourite').mockRejectedValue(new Error('Database error'))
 
+        /* preventing the console.error from catch blocks cluttering terminal */ 
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+
         const adopterToken = createTestToken({ id: 1, type: 'adopter' })
 
         const res = await request(app)
@@ -176,6 +184,8 @@ describe('POST /api/adopter/favourites', () => {
 
       expect(res.status).toBe(500)
       expect(res.body.message).toBe('Error favouriting dog')
+
+      consoleErrorSpy.mockRestore()
     })
 })
 
@@ -229,6 +239,9 @@ describe('DELETE /api/adopter/favourites/:dogId', () => {
 
         jest.spyOn(FavouriteModel, 'deleteFavourite').mockRejectedValue(new Error('Database error'))
 
+        /* preventing the console.error from catch blocks cluttering terminal */ 
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+
         const adopterToken = createTestToken({ id: 1, type: 'adopter' })
 
         const res = await request(app)
@@ -237,5 +250,7 @@ describe('DELETE /api/adopter/favourites/:dogId', () => {
 
         expect(res.status).toBe(500)
         expect(res.body.message).toBe('Error deleting favourite')
+
+        consoleErrorSpy.mockRestore()
     })
 })

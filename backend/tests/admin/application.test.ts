@@ -37,6 +37,9 @@ describe('GET /admin/applications', () => {
         jest.spyOn(AdminModel, 'getAdminById').mockResolvedValue(fakeAdmin)
         jest.spyOn(ApplicationModel, 'getAppsByShelter').mockRejectedValue(new Error('Database error'))
 
+        /* preventing the console.error from catch blocks cluttering terminal */ 
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+
         const agent = request.agent(app)
 
         await agent
@@ -48,6 +51,8 @@ describe('GET /admin/applications', () => {
 
         expect(res.status).toBe(500)
         expect(ApplicationModel.getAppsByShelter).toHaveBeenCalledTimes(1)
+
+        consoleErrorSpy.mockRestore()
     })
 })
 
@@ -133,6 +138,9 @@ describe('GET /admin/applications/:id', () => {
         jest.spyOn(AdminModel, 'getAdminById').mockResolvedValue(fakeAdmin)
         jest.spyOn(ApplicationModel, 'getAppByIdAndShelter').mockRejectedValue(new Error('Database error'))
 
+        /* preventing the console.error from catch blocks cluttering terminal */ 
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+
         const agent = request.agent(app)
 
         await agent
@@ -144,6 +152,8 @@ describe('GET /admin/applications/:id', () => {
 
         expect(res.status).toBe(500)
         expect(ApplicationModel.getAppByIdAndShelter).toHaveBeenCalledTimes(1)
+
+        consoleErrorSpy.mockRestore()
     })
 })
 
@@ -257,6 +267,9 @@ describe('POST /admin/applications/:id/review', () => {
 
         jest.spyOn(ApplicationModel, 'updateApplicationStatus').mockRejectedValue(new Error('Database error'))
 
+        /* preventing the console.error from catch blocks cluttering terminal */ 
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+
         const agent = request.agent(app)
 
         await agent
@@ -268,6 +281,8 @@ describe('POST /admin/applications/:id/review', () => {
 
         expect(res.status).toBe(500)
         expect(ApplicationModel.updateApplicationStatus).toHaveBeenCalledTimes(1)
+
+        consoleErrorSpy.mockRestore()
     })
 })
 
@@ -463,6 +478,9 @@ describe('POST /admin/applications/:id/approve', () => {
 
         jest.spyOn(ApplicationModel, 'updateApplicationStatus').mockRejectedValue(new Error('Database error'))
 
+        /* preventing the console.error from catch blocks cluttering terminal */ 
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+
         const agent = request.agent(app)
 
         await agent
@@ -474,6 +492,8 @@ describe('POST /admin/applications/:id/approve', () => {
 
         expect(res.status).toBe(500)
         expect(ApplicationModel.updateApplicationStatus).toHaveBeenCalledTimes(1)
+
+        consoleErrorSpy.mockRestore()
     })
 })
 
@@ -587,6 +607,9 @@ describe('POST /admin/applications/:id/reject', () => {
 
         jest.spyOn(ApplicationModel, 'updateApplicationStatus').mockRejectedValue(new Error('Database error'))
 
+        /* preventing the console.error from catch blocks cluttering terminal */ 
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+
         const agent = request.agent(app)
 
         await agent
@@ -598,5 +621,7 @@ describe('POST /admin/applications/:id/reject', () => {
 
         expect(res.status).toBe(500)
         expect(ApplicationModel.updateApplicationStatus).toHaveBeenCalledTimes(1)
+
+        consoleErrorSpy.mockRestore()
     })
 })

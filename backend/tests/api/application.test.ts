@@ -117,6 +117,9 @@ describe('GET /api/adopter/applications/:id', () => {
 
         jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockRejectedValue(new Error('Database error'))
 
+        /* preventing the console.error from catch blocks cluttering terminal */ 
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+
         const adopterToken = createTestToken({ id: 1, type: 'adopter' })
 
         const res = await request(app)
@@ -125,6 +128,8 @@ describe('GET /api/adopter/applications/:id', () => {
 
         expect(res.status).toBe(500)
         expect(res.body.message).toBe('Error fetching adopter application')
+
+        consoleErrorSpy.mockRestore()
     })
 })
 
@@ -205,6 +210,9 @@ describe('POST /api/adopter/applications', () => {
 
         jest.spyOn(ApplicationModel, 'createApplication').mockRejectedValue(new Error('Database error'))
 
+        /* preventing the console.error from catch blocks cluttering terminal */ 
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+
         const adopterToken = createTestToken({ id: 1, type: 'adopter' })
 
         const res = await request(app)
@@ -214,6 +222,8 @@ describe('POST /api/adopter/applications', () => {
 
         expect(res.status).toBe(500)
         expect(res.body.message).toBe('Error creating application')
+
+        consoleErrorSpy.mockRestore()
     })
 })
 
@@ -309,6 +319,9 @@ describe('PATCH /api/adopter/applications/:id/checklist', () => {
         jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(withDetails(fakeApplicationReady))
         jest.spyOn(ApplicationModel, 'updateReadinessCheck').mockRejectedValue(new Error('Database error'))
 
+        /* preventing the console.error from catch blocks cluttering terminal */ 
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+
         const adopterToken = createTestToken({ id: 1, type: 'adopter' })
 
         const res = await request(app)
@@ -318,6 +331,8 @@ describe('PATCH /api/adopter/applications/:id/checklist', () => {
 
         expect(res.status).toBe(500)
         expect(res.body.message).toBe('Error updating readiness checklist')
+
+        consoleErrorSpy.mockRestore()
     })
 })
 
@@ -466,6 +481,9 @@ describe('PATCH /adopter/applications/:id/withdraw', () => {
         jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(withDetails(fakeApplicationSubmitted))
         jest.spyOn(ApplicationModel, 'updateApplicationStatus').mockRejectedValue(new Error('Database error'))
 
+        /* preventing the console.error from catch blocks cluttering terminal */ 
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+
         const adopterToken = createTestToken({ id: 1, type: 'adopter' })
 
         const res = await request(app)
@@ -474,5 +492,7 @@ describe('PATCH /adopter/applications/:id/withdraw', () => {
 
         expect(res.status).toBe(500)
         expect(res.body.message).toBe('Error withdrawing application')
+
+        consoleErrorSpy.mockRestore()
     })
 })

@@ -5,8 +5,6 @@ def size_compatibility_batch(
         adopter: Adopter, dogs: list[Dog]
 ) -> tuple[np.ndarray, list[None], list[str]]:
     """
-    Batch version of size_compatibility, scoring one adopter against many dogs in a single call
-
     If an adopter has no size preference, score 1
     If dog's size is within adopter's selected preferences, score 1
     Otherwise, score 0

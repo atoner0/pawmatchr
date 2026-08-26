@@ -7,8 +7,6 @@ from filters.hard_filters import apply_hard_filters
 from scorer import score_dogs_batch
 from semantic.embeddings import get_embedding
 
-
-
 def _load_ranking_cases():
     adopters = load_adopters("tests/tuning/adopters.csv")
     dogs = load_dogs("tests/tuning/dogs.csv")

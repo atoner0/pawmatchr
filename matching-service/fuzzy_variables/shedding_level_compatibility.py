@@ -6,8 +6,6 @@ def shedding_level_compatibility_batch(
         adopter: Adopter, dogs: list[Dog]
 ) -> tuple[np.ndarray, list[None], list[str]]:
     """
-    Batch version of shedding_level_compatibility, scoring one adopter against many dogs in a single call
-
     Adopter selects the maximum shedding level they can tolerate
     If adopter's rank >= dog's shedding rank, adopter can tolerate that much (or more), score 1
     Otherwise, score 0

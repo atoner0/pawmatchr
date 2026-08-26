@@ -71,14 +71,16 @@ def run_report(output_path: str = "tests/tuning/ranking_report.txt"):
             f"excluded = {actually_excluded} | expected excluded = {set(case.expected_excluded)} | match = {exclusion_match} \n"
         )
 
-        for result, factor_list in zip(results, factors):
-            lines.append(
-                f"\t{result.dog_id} - overall: {result.overall_score:.3f}, "
-                f"fuzzy: {result.fuzzy_score:.3f}, semantic: {result.semantic_score:.3f}"
-            )
-            for f in factor_list:
-                warning_str = f", warning={f.warning}" if f.warning else ""
-                lines.append(f"\t{f.variable}: score={f.score}, weight={f.weight}, label={f.label}{warning_str}\n")
+        ## If want to see how each factor was scored/ranked, uncomment below:
+
+        # for result, factor_list in zip(results, factors):
+        #     lines.append(
+        #         f"\t{result.dog_id} - overall: {result.overall_score:.3f}, "
+        #         f"fuzzy: {result.fuzzy_score:.3f}, semantic: {result.semantic_score:.3f}"
+        #     )
+        #     for f in factor_list:
+        #         warning_str = f", warning={f.warning}" if f.warning else ""
+        #         lines.append(f"\t{f.variable}: score={f.score}, weight={f.weight}, label={f.label}{warning_str}\n")
 
     with open(output_path, "w") as f:
         f.write("\n".join(lines))

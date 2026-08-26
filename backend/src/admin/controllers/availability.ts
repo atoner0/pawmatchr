@@ -103,6 +103,8 @@ export const postEditAvailability = async (req: AdminAuthRequest, res: Response)
             res.status(400).render('availability/edit', { 
                 title: 'Edit Availability Slot',
                 user: req.user,
+                slot: slot,
+                availability_id: availabilityId,
                 errors: result.error.issues,
                 formData: req.body
             })

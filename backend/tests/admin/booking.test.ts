@@ -47,6 +47,9 @@ describe('GET /admin/bookings', () => {
         jest.spyOn(BookingModel, 'getBookingStats').mockResolvedValue(fakeBookingStats)
         jest.spyOn(BookingModel, 'getUpcomingBookingsByShelter').mockResolvedValue([fakeBookingWithDetails])
 
+        /* preventing the console.error from catch blocks cluttering terminal */ 
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+
         const agent = request.agent(app)
 
         await agent
@@ -60,6 +63,8 @@ describe('GET /admin/bookings', () => {
         expect(BookingModel.getBookingsByShelter).toHaveBeenCalledTimes(1)
         expect(BookingModel.getBookingStats).not.toHaveBeenCalled()
         expect(BookingModel.getUpcomingBookingsByShelter).not.toHaveBeenCalled()
+
+        consoleErrorSpy.mockRestore()
     })
 })
 
@@ -175,6 +180,9 @@ describe('GET /admin/bookings/:id', () => {
         jest.spyOn(ApplicationModel, 'getAppByIdAndShelter').mockResolvedValue(withDetails(fakeApplicationSubmitted))
         jest.spyOn(AdopterModel, 'getAdopterById').mockResolvedValue(fakeAdopterFull)
 
+        /* preventing the console.error from catch blocks cluttering terminal */ 
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+
         const agent = request.agent(app)
 
         await agent
@@ -188,6 +196,8 @@ describe('GET /admin/bookings/:id', () => {
         expect(BookingModel.getBookingByIdAndShelter).toHaveBeenCalledTimes(1)      
         expect(ApplicationModel.getAppByIdAndShelter).not.toHaveBeenCalled()
         expect(AdopterModel.getAdopterById).not.toHaveBeenCalled()
+
+        consoleErrorSpy.mockRestore()
     })
 }) 
 
@@ -291,6 +301,9 @@ describe('POST /admin/bookings/:id/complete', () => {
         jest.spyOn(BookingModel, 'getBookingByIdAndShelter').mockResolvedValue(fakeBookingWithDetails)
         jest.spyOn(BookingModel, 'updateBookingStatus').mockRejectedValue(new Error('Database error'))
 
+        /* preventing the console.error from catch blocks cluttering terminal */ 
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+
 
         const agent = request.agent(app)
 
@@ -303,6 +316,8 @@ describe('POST /admin/bookings/:id/complete', () => {
 
         expect(res.status).toBe(500)
         expect(BookingModel.updateBookingStatus).toHaveBeenCalledTimes(1) 
+
+        consoleErrorSpy.mockRestore()
     })
 })
 
@@ -406,6 +421,9 @@ describe('POST /admin/bookings/:id/cancel', () => {
         jest.spyOn(BookingModel, 'getBookingByIdAndShelter').mockResolvedValue(fakeBookingWithDetails)
         jest.spyOn(BookingModel, 'updateBookingStatus').mockRejectedValue(new Error('Database error'))
 
+        /* preventing the console.error from catch blocks cluttering terminal */ 
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+
 
         const agent = request.agent(app)
 
@@ -418,5 +436,7 @@ describe('POST /admin/bookings/:id/cancel', () => {
 
         expect(res.status).toBe(500)
         expect(BookingModel.updateBookingStatus).toHaveBeenCalledTimes(1) 
+
+        consoleErrorSpy.mockRestore()
     })
 })

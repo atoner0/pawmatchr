@@ -3,3 +3,6 @@
 # where pytest is invoked from, without needing an __init__.py in tests/.
 pythonpath = ["."]
 asyncio_mode = "auto"
+filterwarnings = [
+    "ignore:Using .httpx. with .starlette.testclient. is deprecated:"
+]

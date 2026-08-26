@@ -1,4 +1,4 @@
-Ranking test report - generated 2026-08-17T13:00:12
+Ranking test report - generated 2026-08-26T10:18:07
 
 
 RT01: 
@@ -7,116 +7,12 @@ expected order = [1, 9, 3]
 2/2 pairs correct  
 excluded = set() | expected excluded = set() | match = True 
 
-	1 - overall: 0.884, fuzzy: 1.000, semantic: 0.613
-	age: score=1.0, weight=0.04, label=match
-
-	size: score=1.0, weight=0.04, label=match
-
-	alone_tolerance: score=1.0, weight=0.18, label=within_tolerance
-
-	activity_level: score=1.0, weight=0.18, label=aligned
-
-	shedding_level: score=1.0, weight=0.04, label=match
-
-	training_level: score=1.0, weight=0.1, label=meets_requirement
-
-	outdoor_space: score=1.0, weight=0.0792, label=ideal
-
-	home_type: score=1.0, weight=0.05280000000000001, label=ideal
-
-	9 - overall: 0.714, fuzzy: 1.000, semantic: 0.046
-	age: score=1.0, weight=0.04, label=match
-
-	size: score=1.0, weight=0.04, label=match
-
-	alone_tolerance: score=1.0, weight=0.18, label=within_tolerance
-
-	activity_level: score=1.0, weight=0.18, label=aligned
-
-	shedding_level: score=1.0, weight=0.04, label=match
-
-	training_level: score=1.0, weight=0.1, label=meets_requirement
-
-	outdoor_space: score=1.0, weight=0.066, label=ideal
-
-	home_type: score=1.0, weight=0.048, label=ideal
-
-	3 - overall: 0.530, fuzzy: 0.677, semantic: 0.188
-	age: score=1.0, weight=0.04, label=match
-
-	size: score=1.0, weight=0.04, label=match
-
-	alone_tolerance: score=0.0, weight=0.18, label=exceeds_tolerance
-
-	activity_level: score=1.0, weight=0.18, label=aligned
-
-	shedding_level: score=1.0, weight=0.04, label=match
-
-	training_level: score=0.5, weight=0.1, label=one_level_below
-
-	outdoor_space: score=1.0, weight=0.0792, label=ideal
-
-	home_type: score=1.0, weight=0.05280000000000001, label=ideal
-
 
 RT02: 
 actual order = 2(0.901), 6(0.352), 10(0.209)  
 expected order = [2, 6, 10] 
 2/2 pairs correct  
 excluded = set() | expected excluded = set() | match = True 
-
-	2 - overall: 0.901, fuzzy: 0.921, semantic: 0.855
-	age: score=1.0, weight=0.02, label=match
-
-	size: score=1.0, weight=0.04, label=match
-
-	alone_tolerance: score=1.0, weight=0.15, label=within_tolerance
-
-	activity_level: score=1.0, weight=0.15, label=aligned
-
-	shedding_level: score=1.0, weight=0.02, label=match
-
-	training_level: score=1.0, weight=0.198, label=meets_requirement
-
-	outdoor_space: score=0.0, weight=0.051, label=not_acceptable
-
-	home_type: score=1.0, weight=0.018000000000000002, label=ideal
-
-	6 - overall: 0.352, fuzzy: 0.256, semantic: 0.578
-	age: score=1.0, weight=0.02, label=match
-
-	size: score=1.0, weight=0.04, label=match
-
-	alone_tolerance: score=0.0, weight=0.15, label=exceeds_tolerance
-
-	activity_level: score=0.0, weight=0.15, label=adopter_less_active
-
-	shedding_level: score=0.0, weight=0.02, label=no_match
-
-	training_level: score=0.5, weight=0.198, label=one_level_below
-
-	outdoor_space: score=0.0, weight=0.06, label=not_acceptable
-
-	home_type: score=0.5, weight=0.02, label=poor
-
-	home_location: score=0.25, weight=0.08800000000000001, label=high_risk, warning=Dog has behavioural traits that may be challenging in an urban environment
-
-	10 - overall: 0.209, fuzzy: 0.089, semantic: 0.489
-	age: score=1.0, weight=0.02, label=match
-
-	size: score=1.0, weight=0.04, label=match
-
-	alone_tolerance: score=0.0, weight=0.15, label=exceeds_tolerance
-
-	activity_level: score=0.0, weight=0.15, label=adopter_less_active
-
-	shedding_level: score=0.0, weight=0.02, label=no_match
-
-	training_level: score=0.0, weight=0.198, label=far_below
-
-	outdoor_space: score=0.0, weight=0.072, label=not_acceptable
-
-	home_type: score=0.0, weight=0.022000000000000002, label=not_acceptable
 
 
 RT03: 
@@ -125,63 +21,6 @@ expected order = [7, 8, 5]
 2/2 pairs correct  
 excluded = {12} | expected excluded = {12} | match = True 
 
-	7 - overall: 0.776, fuzzy: 0.922, semantic: 0.436
-	age: score=1.0, weight=0.04, label=match
-
-	size: score=1.0, weight=0.04, label=match
-
-	alone_tolerance: score=1.0, weight=0.18, label=within_tolerance
-
-	activity_level: score=0.6666666666666666, weight=0.18, label=adopter_more_active
-
-	shedding_level: score=1.0, weight=0.04, label=match
-
-	good_with_children: score=1.0, weight=0.1, label=known_compatible
-
-	training_level: score=1.0, weight=0.1, label=meets_requirement
-
-	outdoor_space: score=1.0, weight=0.051, label=ideal
-
-	home_type: score=1.0, weight=0.036000000000000004, label=ideal
-
-	8 - overall: 0.772, fuzzy: 1.000, semantic: 0.241
-	age: score=1.0, weight=0.04, label=match
-
-	size: score=1.0, weight=0.04, label=match
-
-	alone_tolerance: score=1.0, weight=0.18, label=within_tolerance
-
-	activity_level: score=1.0, weight=0.18, label=aligned
-
-	shedding_level: score=1.0, weight=0.04, label=match
-
-	good_with_children: score=1.0, weight=0.1, label=known_compatible
-
-	training_level: score=1.0, weight=0.1, label=meets_requirement
-
-	outdoor_space: score=1.0, weight=0.06, label=ideal
-
-	home_type: score=1.0, weight=0.04, label=ideal
-
-	5 - overall: 0.655, fuzzy: 0.936, semantic: 0.000
-	age: score=1.0, weight=0.04, label=match
-
-	size: score=1.0, weight=0.04, label=match
-
-	alone_tolerance: score=1.0, weight=0.18, label=within_tolerance
-
-	activity_level: score=1.0, weight=0.18, label=aligned
-
-	shedding_level: score=1.0, weight=0.04, label=match
-
-	good_with_children: score=0.5, weight=0.1, label=unknown, warning=Unknown whether this dog is good with children
-
-	training_level: score=1.0, weight=0.1, label=meets_requirement
-
-	outdoor_space: score=1.0, weight=0.06, label=ideal
-
-	home_type: score=1.0, weight=0.04, label=ideal
-
 
 RT04: 
 actual order = 9(0.878), 1(0.594)  
@@ -189,110 +28,9 @@ expected order = [9, 1]
 1/1 pairs correct  
 excluded = {11} | expected excluded = {11} | match = True 
 
-	9 - overall: 0.878, fuzzy: 0.963, semantic: 0.681
-	age: score=1.0, weight=0.04, label=match
-
-	size: score=1.0, weight=0.04, label=match
-
-	alone_tolerance: score=1.0, weight=0.15, label=within_tolerance
-
-	activity_level: score=1.0, weight=0.15, label=aligned
-
-	shedding_level: score=1.0, weight=0.04, label=match
-
-	good_with_dogs: score=1.0, weight=0.13799999999999998, label=known_compatible
-
-	training_level: score=1.0, weight=0.1, label=meets_requirement
-
-	outdoor_space: score=0.75, weight=0.066, label=acceptable
-
-	home_type: score=0.75, weight=0.048, label=acceptable
-
-	1 - overall: 0.594, fuzzy: 0.768, semantic: 0.187
-	age: score=1.0, weight=0.04, label=match
-
-	size: score=1.0, weight=0.04, label=match
-
-	alone_tolerance: score=1.0, weight=0.15, label=within_tolerance
-
-	activity_level: score=0.0, weight=0.15, label=adopter_less_active
-
-	shedding_level: score=1.0, weight=0.04, label=match
-
-	good_with_dogs: score=1.0, weight=0.13799999999999998, label=known_compatible
-
-	training_level: score=1.0, weight=0.1, label=meets_requirement
-
-	outdoor_space: score=0.75, weight=0.0792, label=acceptable
-
-	home_type: score=0.75, weight=0.05280000000000001, label=acceptable
-
 
 RT05: 
 actual order = 9(0.810), 2(0.772), 5(0.614)  
 expected order = [9, 2, 5] 
 2/2 pairs correct  
 excluded = set() | expected excluded = set() | match = True 
-
-	9 - overall: 0.810, fuzzy: 0.879, semantic: 0.649
-	age: score=1.0, weight=0.04, label=match
-
-	size: score=1.0, weight=0.04, label=match
-
-	alone_tolerance: score=1.0, weight=0.15, label=within_tolerance
-
-	activity_level: score=1.0, weight=0.15, label=aligned
-
-	shedding_level: score=1.0, weight=0.04, label=match
-
-	good_with_cats: score=0.5, weight=0.102, label=unknown, warning=Unknown whether this dog is good with cats
-
-	good_with_children: score=0.5, weight=0.1, label=unknown, warning=Unknown whether this dog is good with children
-
-	training_level: score=1.0, weight=0.1, label=meets_requirement
-
-	outdoor_space: score=1.0, weight=0.066, label=ideal
-
-	home_type: score=1.0, weight=0.048, label=ideal
-
-	2 - overall: 0.772, fuzzy: 0.889, semantic: 0.499
-	age: score=1.0, weight=0.04, label=match
-
-	size: score=0.0, weight=0.04, label=no_match
-
-	alone_tolerance: score=1.0, weight=0.15, label=within_tolerance
-
-	activity_level: score=0.6666666666666666, weight=0.15, label=adopter_more_active
-
-	shedding_level: score=1.0, weight=0.04, label=match
-
-	good_with_cats: score=1.0, weight=0.102, label=known_compatible
-
-	good_with_children: score=1.0, weight=0.1, label=known_compatible
-
-	training_level: score=1.0, weight=0.1, label=meets_requirement
-
-	outdoor_space: score=1.0, weight=0.051, label=ideal
-
-	home_type: score=1.0, weight=0.036000000000000004, label=ideal
-
-	5 - overall: 0.614, fuzzy: 0.877, semantic: 0.000
-	age: score=1.0, weight=0.04, label=match
-
-	size: score=1.0, weight=0.04, label=match
-
-	alone_tolerance: score=1.0, weight=0.15, label=within_tolerance
-
-	activity_level: score=1.0, weight=0.15, label=aligned
-
-	shedding_level: score=1.0, weight=0.04, label=match
-
-	good_with_cats: score=0.5, weight=0.102, label=unknown, warning=Unknown whether this dog is good with cats
-
-	good_with_children: score=0.5, weight=0.1, label=unknown, warning=Unknown whether this dog is good with children
-
-	training_level: score=1.0, weight=0.1, label=meets_requirement
-
-	outdoor_space: score=1.0, weight=0.06, label=ideal
-
-	home_type: score=1.0, weight=0.04, label=ideal

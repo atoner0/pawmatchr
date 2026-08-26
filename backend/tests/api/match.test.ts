@@ -42,9 +42,14 @@ describe('callMatchingService', () => {
     it('returns unavailable when fetch throws', async () => {
         jest.spyOn(global, 'fetch').mockRejectedValue(new Error('Network error'))
 
+        /* preventing the console.error from catch blocks cluttering terminal */ 
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+
         const result = await MatchingService.callMatchingService(fakeAdopterFull, [fakeDogSameShelter])
 
         expect(result).toEqual({ success: false, error: 'unavailable'})
+
+        consoleErrorSpy.mockRestore()
     })
 
     it('returns unavailable when timeout abort triggers', async () => {
@@ -58,6 +63,7 @@ describe('callMatchingService', () => {
                 })
             })
         )
+
 
         const resultPromise = MatchingService.callMatchingService(fakeAdopterFull, [fakeDogSameShelter])
 
@@ -75,9 +81,14 @@ describe('callMatchingService', () => {
             new Response(JSON.stringify({ results: [fakeMatchResultFromPython] }), { status: 500 })
         )
 
+        /* preventing the console.error from catch blocks cluttering terminal */ 
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+
         const result = await MatchingService.callMatchingService(fakeAdopterFull, [fakeDogSameShelter])
 
         expect(result).toEqual({ success: false, error: 'service_error', status: 500 })
+
+        consoleErrorSpy.mockRestore()
     })
 
     it('returns contract mismatch if schema validation fails', async () => {
@@ -235,6 +246,9 @@ describe('GET /api/adopter/matches', () => {
 
         jest.spyOn(MatchModel, 'createMatches').mockRejectedValue(new Error('Database error'))
 
+        /* preventing the console.error from catch blocks cluttering terminal */ 
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+
         const adopterToken = createTestToken({ id: 1, type: 'adopter' })
 
         const res = await request(app)
@@ -243,6 +257,8 @@ describe('GET /api/adopter/matches', () => {
 
         expect(res.status).toBe(500)
         expect(res.body.message).toBe('Something went wrong generating matches')
+
+        consoleErrorSpy.mockRestore()
     })
 
 })

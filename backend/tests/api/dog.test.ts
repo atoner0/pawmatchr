@@ -36,11 +36,16 @@ describe('GET /api/dogs/:id', () => {
   it('should return 500 if a database error occurs', async() => {
     jest.spyOn(DogModel, 'getDogById').mockRejectedValue(new Error('Database error'))
 
+    /* preventing the console.error from catch blocks cluttering terminal */ 
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+
     const res = await request(app)
       .get('/api/dogs/4')
 
       expect(res.status).toBe(500)
       expect(res.body.message).toBe('Error during dog search')
+
+      consoleErrorSpy.mockRestore()
   })
 })
 
@@ -67,11 +72,16 @@ describe('GET /api/dogs/available', () => {
   it('should return 500 if a database error occurs', async() => {
     jest.spyOn(DogModel, 'getAllAvailableDogs').mockRejectedValue(new Error('Database error'))
 
+    /* preventing the console.error from catch blocks cluttering terminal */ 
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+
     const res = await request(app)
       .get('/api/dogs/available')
 
       expect(res.status).toBe(500)
       expect(res.body.message).toBe('Error fetching available dogs')
+
+      consoleErrorSpy.mockRestore()
   })
 })
 

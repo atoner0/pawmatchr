@@ -5,8 +5,6 @@ def home_type_compatibility_batch(
         adopter: Adopter, dogs: list[Dog]
 ) -> tuple[np.ndarray, list[None], list[str]]:
     """
-    Batch version of home_type_compatibility, scoring one adopter against many dogs in a single call
-
     Dog's activity level and size both determine how demanding a home type is required.
 
     If dog activity level is high/very high OR dog size is large/giant:

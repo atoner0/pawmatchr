@@ -1,4 +1,5 @@
 from tests.helpers import make_adopter, make_dog
+import numpy as np
 
 from weighting.weight_adjustments import (
     adjust_dog_compatibility_weight,
@@ -6,8 +7,11 @@ from weighting.weight_adjustments import (
     adjust_child_compatibility_weight,
     adjust_training_level_weight,
     adjust_outdoor_space_weight,
+    adjust_outdoor_space_weight_batch,
     adjust_home_type_weight,
+    adjust_home_type_weight_batch,
     adjust_home_location_weight,
+    adjust_home_location_weight_batch,
     EXTENSIVE_MULTI_PET_MODIFIER,
     SEVERAL_MULTI_PET_MODIFIER,
     ONCE_TWICE_MULTI_PET_MODIFIER,
@@ -137,6 +141,68 @@ class TestOutdoorSpaceAdjustment:
 
         assert adjust_outdoor_space_weight(1.0, dog) == OUTDOOR_HIGH_ACTIVITY_MODIFIER * OUTDOOR_LARGE_SIZE_MODIFIER
 
+class TestOutdoorSpaceAdjustmentBatch:
+    def test_high_activity_weight_adjustment(self):
+        dogs = [make_dog(activity_level="high", size="medium")]
+
+        result = adjust_outdoor_space_weight_batch(1.0, dogs)
+
+        np.testing.assert_allclose(result, [OUTDOOR_HIGH_ACTIVITY_MODIFIER])
+
+    def test_low_activity_weight_adjustment(self):
+        dogs = [make_dog(activity_level="low", size="medium")]
+        
+        result = adjust_outdoor_space_weight_batch(1.0, dogs)
+        
+        np.testing.assert_allclose(result, [OUTDOOR_LOW_ACTIVITY_MODIFIER])
+
+    def test_no_weight_adjustment(self):
+        dogs = [make_dog(activity_level="medium", size="medium")]
+        
+        result = adjust_outdoor_space_weight_batch(1.0, dogs)
+        
+        np.testing.assert_allclose(result, [1.0])
+
+    def test_large_size_weight_adjustment(self):
+        dogs = [make_dog(activity_level="medium", size="large")]
+
+        result = adjust_outdoor_space_weight_batch(1.0, dogs)
+
+        np.testing.assert_allclose(result, [OUTDOOR_LARGE_SIZE_MODIFIER])
+
+    def test_large_size_low_activity_weight_adjustment(self):
+        dogs = [make_dog(activity_level="low", size="large")]
+
+        result = adjust_outdoor_space_weight_batch(1.0, dogs)
+
+        np.testing.assert_allclose(result, [OUTDOOR_LOW_ACTIVITY_MODIFIER * OUTDOOR_LARGE_SIZE_MODIFIER])
+
+    def test_large_size_high_activity_weight_adjustment(self):
+        dogs = [make_dog(activity_level="high", size="large")]
+
+        result = adjust_outdoor_space_weight_batch(1.0, dogs)
+
+        np.testing.assert_allclose(result, [OUTDOOR_HIGH_ACTIVITY_MODIFIER * OUTDOOR_LARGE_SIZE_MODIFIER])
+
+    def test_preserves_dog_order(self):
+        dogs = [
+            make_dog(activity_level="high", size="medium"),
+            make_dog(activity_level="low", size="medium"),
+            make_dog(activity_level="medium", size="large")
+        ]
+
+        result = adjust_outdoor_space_weight_batch(1.0, dogs)
+
+        np.testing.assert_allclose(
+            result,
+            [OUTDOOR_HIGH_ACTIVITY_MODIFIER, OUTDOOR_LOW_ACTIVITY_MODIFIER, OUTDOOR_LARGE_SIZE_MODIFIER]
+        )
+
+    def test_empty_dog_list(self):
+        result = adjust_outdoor_space_weight_batch(1.0, [])
+
+        assert len(result) == 0
+
 class TestHomeTypeAdjustment:
     def test_high_dog_activity_weight_adjustment(self):
         dog = make_dog(activity_level="high", size="medium")
@@ -167,6 +233,68 @@ class TestHomeTypeAdjustment:
         dog = make_dog(activity_level="low", size="large")
 
         assert adjust_home_type_weight(1.0, dog) == HOME_LARGE_SIZE_MODIFIER * HOME_LOW_ACTIVITY_MODIFIER
+
+class TestHomeTypeAdjustmentBatch:
+    def test_high_activity_weight_adjustment(self):
+        dogs = [make_dog(activity_level="high", size="medium")]
+
+        result = adjust_home_type_weight_batch(1.0, dogs)
+
+        np.testing.assert_allclose(result, [HOME_HIGH_ACTIVITY_MODIFIER])
+
+    def test_low_activity_weight_adjustment(self):
+        dogs = [make_dog(activity_level="low", size="medium")]
+        
+        result = adjust_home_type_weight_batch(1.0, dogs)
+        
+        np.testing.assert_allclose(result, [HOME_LOW_ACTIVITY_MODIFIER])
+
+    def test_no_weight_adjustment(self):
+        dogs = [make_dog(activity_level="medium", size="medium")]
+        
+        result = adjust_home_type_weight_batch(1.0, dogs)
+        
+        np.testing.assert_allclose(result, [1.0])
+
+    def test_large_size_weight_adjustment(self):
+        dogs = [make_dog(activity_level="medium", size="large")]
+
+        result = adjust_home_type_weight_batch(1.0, dogs)
+
+        np.testing.assert_allclose(result, [HOME_LARGE_SIZE_MODIFIER])
+
+    def test_large_size_low_activity_weight_adjustment(self):
+        dogs = [make_dog(activity_level="low", size="large")]
+
+        result = adjust_home_type_weight_batch(1.0, dogs)
+
+        np.testing.assert_allclose(result, [HOME_LOW_ACTIVITY_MODIFIER * HOME_LARGE_SIZE_MODIFIER])
+
+    def test_large_size_high_activity_weight_adjustment(self):
+        dogs = [make_dog(activity_level="high", size="large")]
+
+        result = adjust_home_type_weight_batch(1.0, dogs)
+
+        np.testing.assert_allclose(result, [HOME_HIGH_ACTIVITY_MODIFIER * HOME_LARGE_SIZE_MODIFIER])
+
+    def test_preserves_dog_order(self):
+        dogs = [
+            make_dog(activity_level="high", size="medium"),
+            make_dog(activity_level="low", size="medium"),
+            make_dog(activity_level="medium", size="large")
+        ]
+
+        result = adjust_home_type_weight_batch(1.0, dogs)
+
+        np.testing.assert_allclose(
+            result,
+            [HOME_HIGH_ACTIVITY_MODIFIER, HOME_LOW_ACTIVITY_MODIFIER, HOME_LARGE_SIZE_MODIFIER]
+        )
+
+    def test_empty_dog_list(self):
+        result = adjust_home_type_weight_batch(1.0, [])
+
+        assert len(result) == 0
 
 class TestHomeLocationAdjustment:
     def test_no_weight_when_no_flags(self):
@@ -204,4 +332,76 @@ class TestHomeLocationAdjustment:
         adopter = make_adopter(first_time_owner=False, training_commitment="basic")
 
         assert adjust_home_location_weight(1.0, adopter, dog) == 1.0
+
+class TestHomeLocationAdjustmentBatch:
+    def test_no_weight_when_no_flags(self):
+        dogs = [make_dog(behavioural_flags=[], known_triggers=[])]
+        adopter = make_adopter()
+
+        result = adjust_home_location_weight_batch(1.0, adopter, dogs)
+
+        np.testing.assert_allclose(result, [0.0])
+
+    def test_experienced_owner_intensive_training_weight_adjustment(self):
+        dogs = [make_dog(behavioural_flags=["Excessive barking"], known_triggers=[])]
+        adopter = make_adopter(first_time_owner=False, training_commitment="intensive")
+
+        result = adjust_home_location_weight_batch(1.0, adopter, dogs)
+        
+        np.testing.assert_allclose(result, [EXPERIENCED_OWNER_MODIFIER])
+
+    def test_first_time_owner_weight_adjustment(self):
+        dogs = [make_dog(behavioural_flags=["Excessive barking"], known_triggers=[])]
+        adopter = make_adopter(first_time_owner=True)
+        
+        result = adjust_home_location_weight_batch(1.0, adopter, dogs)
+
+        np.testing.assert_allclose(result, [FIRST_TIME_OWNER_MODIFIER])
+
+    def test_no_weight_when_flags_not_location_related(self):
+        dogs = [make_dog(behavioural_flags=["Pulls on lead"], known_triggers=["Fast movement"])]
+        adopter = make_adopter()
+
+        result = adjust_home_location_weight_batch(1.0, adopter, dogs)
+        
+        np.testing.assert_allclose(result, [0.0])
+
+    def test_no_weight_adjustment_flag(self):
+        dogs = [make_dog(behavioural_flags=["Excessive barking"], known_triggers=[])]
+        adopter = make_adopter(first_time_owner=False, training_commitment="basic")
+
+        result = adjust_home_location_weight_batch(1.0, adopter, dogs)
+        
+        np.testing.assert_allclose(result, [1.0])
+
+    def test_no_weight_adjustment_trigger(self):
+        dogs = [make_dog(behavioural_flags=[], known_triggers=["Loud noises"])]
+        adopter = make_adopter(first_time_owner=False, training_commitment="basic")
+
+        result = adjust_home_location_weight_batch(1.0, adopter, dogs)
+        
+        np.testing.assert_allclose(result, [1.0])
+
+    def test_same_dog_different_adopter_profiles_across_batch(self):
+        dogs = [
+            make_dog(behavioural_flags=["Excessive barking"], known_triggers=[]),
+            make_dog(behavioural_flags=[], known_triggers=[]),
+            make_dog(behavioural_flags=["Reactive to dogs"], known_triggers=[]),
+        ]
+
+        adopter = make_adopter(first_time_owner=True)
+
+        result = adjust_home_location_weight_batch(1.0, adopter, dogs)
+
+        np.testing.assert_allclose(
+            result,
+            [FIRST_TIME_OWNER_MODIFIER, 0.0, FIRST_TIME_OWNER_MODIFIER]
+        )
+
+    def test_empty_dog_list(self):
+        adopter = make_adopter()
+
+        result = adjust_home_location_weight_batch(1.0, adopter, [])
+
+        assert len(result) == 0
     

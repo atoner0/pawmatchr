@@ -102,6 +102,9 @@ describe('GET /api/adopter/bookings/:applicationId', () => {
         jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(withDetails(fakeApplicationSubmitted))
         jest.spyOn(BookingModel, 'getBookingByApplication').mockRejectedValue(new Error('Database error'))
 
+        /* preventing the console.error from catch blocks cluttering terminal */ 
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+
         const adopterToken = createTestToken({ id: 1, type: 'adopter' })
 
         const res = await request(app)
@@ -110,6 +113,8 @@ describe('GET /api/adopter/bookings/:applicationId', () => {
 
         expect(res.status).toBe(500)
         expect(res.body.message).toBe('Error fetching bookings')
+
+        consoleErrorSpy.mockRestore()
     })
 }) 
 
@@ -331,6 +336,9 @@ describe('POST /api/adopter/bookings', () => {
         jest.spyOn(ApplicationModel, 'getOneAdopterApp').mockResolvedValue(withDetails(fakeApplicationSubmitted))
         jest.spyOn(BookingModel, 'createBooking').mockRejectedValue(new Error('Database error'))
 
+        /* preventing the console.error from catch blocks cluttering terminal */ 
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+
         const adopterToken = createTestToken({ id: 1, type: 'adopter' })
 
         const res = await request(app)
@@ -345,5 +353,7 @@ describe('POST /api/adopter/bookings', () => {
 
       expect(res.status).toBe(500)
         expect(res.body.message).toBe('Error creating booking')
+
+        consoleErrorSpy.mockRestore()
     })
 })

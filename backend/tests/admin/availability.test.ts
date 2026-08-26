@@ -35,6 +35,9 @@ describe('GET /admin/availability', () => {
         jest.spyOn(AdminModel, 'getAdminById').mockResolvedValue(fakeAdmin)
         jest.spyOn(AvailabilityModel, 'getAvailabilityByShelter').mockRejectedValue(new Error('Database error'))
 
+        /* preventing the console.error from catch blocks cluttering terminal */ 
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+
         const agent = request.agent(app)
 
         await agent
@@ -46,6 +49,8 @@ describe('GET /admin/availability', () => {
 
         expect(res.status).toBe(500)
         expect(AvailabilityModel.getAvailabilityByShelter).toHaveBeenCalledTimes(1)
+
+        consoleErrorSpy.mockRestore()
     })
 })
 
@@ -99,6 +104,9 @@ describe('POST /admin/availability', () => {
         jest.spyOn(AdminModel, 'getAdminById').mockResolvedValue(fakeAdmin)
         jest.spyOn(AvailabilityModel, 'createAvailability').mockRejectedValue(new Error('Database error'))
 
+        /* preventing the console.error from catch blocks cluttering terminal */ 
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+
         const agent = request.agent(app)
 
         await agent
@@ -111,6 +119,8 @@ describe('POST /admin/availability', () => {
 
         expect(res.status).toBe(500)
         expect(AvailabilityModel.createAvailability).toHaveBeenCalledTimes(1)
+
+        consoleErrorSpy.mockRestore()
     })
 })
 
@@ -176,6 +186,9 @@ describe('GET /admin/availability/:id/edit', () => {
         jest.spyOn(AdminModel, 'getAdminById').mockResolvedValue(fakeAdmin)
         jest.spyOn(AvailabilityModel, 'getAvailabilityByIdAndShelter').mockRejectedValue(new Error('Database error'))
 
+        /* preventing the console.error from catch blocks cluttering terminal */ 
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+
         const agent = request.agent(app)
 
         await agent
@@ -187,6 +200,8 @@ describe('GET /admin/availability/:id/edit', () => {
 
         expect(res.status).toBe(500)
         expect(AvailabilityModel.getAvailabilityByIdAndShelter).toHaveBeenCalledTimes(1)
+
+        consoleErrorSpy.mockRestore()
     })
 })
 
@@ -310,6 +325,9 @@ describe('POST /admin/availability/:id/edit', () => {
 
         jest.spyOn(AvailabilityModel, 'updateAvailability').mockRejectedValue(new Error('Database error'))
 
+        /* preventing the console.error from catch blocks cluttering terminal */ 
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+
         const agent = request.agent(app)
 
         await agent
@@ -322,6 +340,8 @@ describe('POST /admin/availability/:id/edit', () => {
 
         expect(res.status).toBe(500)
         expect(AvailabilityModel.updateAvailability).toHaveBeenCalledTimes(1)
+
+        consoleErrorSpy.mockRestore()
     })
 })
 
@@ -421,6 +441,9 @@ describe('POST /admin/availability/:id/delete', () => {
 
         jest.spyOn(AvailabilityModel, 'deleteAvailability').mockRejectedValue(new Error('Database error'))
 
+        /* preventing the console.error from catch blocks cluttering terminal */ 
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+
         const agent = request.agent(app)
 
         await agent
@@ -433,6 +456,8 @@ describe('POST /admin/availability/:id/delete', () => {
 
         expect(res.status).toBe(500)
         expect(AvailabilityModel.deleteAvailability).toHaveBeenCalledTimes(1)
+
+        consoleErrorSpy.mockRestore()
     })
 })
 

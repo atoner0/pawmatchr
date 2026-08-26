@@ -5,8 +5,6 @@ def age_compatibility_batch(
         adopter: Adopter, dogs: list[Dog]
 ) -> tuple[np.ndarray, list[None], list[str]]:
     """
-    Batch version of age_compatibility, scoring one adopter against many dogs in a single call
-
     If an adopter has no age preference, score 1
     If dog's age band is within adopter's selected preferences, score 1
     Otherwise, score 0

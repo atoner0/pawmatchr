@@ -7,9 +7,6 @@ def alone_tolerance_compatibility_batch(
         adopter: Adopter, dogs: list[Dog]
 ) -> tuple[np.ndarray, list[None], list[str]]:
     """
-    Batch version of alone_tolerance_compatibility, scoring one adopter
-    against many dogs in a single call.
-
     Hourly bands converted to upper band, treating time left alone as the
     maximum for each case.
 

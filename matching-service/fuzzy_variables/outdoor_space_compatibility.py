@@ -6,8 +6,6 @@ def outdoor_space_compatibility_batch(
         adopter: Adopter, dogs: list[Dog]
 ) -> tuple[np.ndarray, list[None], list[str]]:
     """
-    Batch version of outdoor_space_compatibility, scoring one adopter against many dogs in a single call
-
     Adopter's outdoor space maps directly to a fixed score. List of dogs used to determine batch length.
 
     Dog activity level/size do affect this variable's weight, but this is handled in weight_adjustments.py

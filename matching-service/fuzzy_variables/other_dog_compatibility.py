@@ -5,8 +5,6 @@ def other_dog_compatibility_batch(
         adopter: Adopter, dogs: list[Dog]
 ) -> tuple[np.ndarray, list[str | None], list[str]]:
     """
-    Batch version of other_dog_compatibility, scoring one adopter against many dogs in a single call
-
     If an adopter has dog as existing pet and dog is good with dogs, score 1
     If an adopter has dog as existing pet and dog is unknown with dogs, score 0.5 with warning flag
     Dog not good with dogs is excluded by hard filter and therefore not scored
