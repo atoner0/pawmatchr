@@ -15,7 +15,7 @@ export const adminSignin = async ( req: Request, res: Response): Promise<void> =
     try {
         const result = loginSchema.safeParse(req.body)
             if (!result.success){
-                res.render('login', { title: 'Shelter Login', error: 'Invalid request' })
+                res.render('login', { title: 'Shelter Login', error: 'Invalid request', layout: false })
                 return
             }
             
@@ -23,13 +23,13 @@ export const adminSignin = async ( req: Request, res: Response): Promise<void> =
         
             const admin = await getAdminByEmail(email)
             if (!admin) {
-                res.render('login', { title: 'Shelter Login', error: 'Invalid details' })
+                res.render('login', { title: 'Shelter Login', error: 'Invalid details', layout: false })
                 return
             }
     
             const valid = await bcrypt.compare(password, admin.password_hash)
             if (!valid) {
-                res.render('login', { title: 'Shelter Login', error: 'Invalid details' })
+                res.render('login', { title: 'Shelter Login', error: 'Invalid details', layout: false })
                 return
             }
 
@@ -38,7 +38,7 @@ export const adminSignin = async ( req: Request, res: Response): Promise<void> =
     
     } catch (error) {
         console.error(error)
-        res.render('login', { title: 'Shelter Login', error: 'Something went wrong, please try again' })
+        res.render('login', { title: 'Shelter Login', error: 'Something went wrong, please try again', layout: false })
     }
 }
 

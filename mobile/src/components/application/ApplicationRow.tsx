@@ -4,6 +4,7 @@ import { ApplicationWithDetails } from "@/types/application";
 import { formatDate, formatDateAccessible } from "@/lib/formatDate";
 import { colors, radii, spacing, typography } from "@/constants/theme";
 import { capitaliseFirst } from "@/lib/formatText";
+import { applicationStatusLabels } from "@/constants/statusLabels";
 
 type Props = {
     application: ApplicationWithDetails;
@@ -24,7 +25,7 @@ export default function ApplicationRow({ application, onPress }: Props) {
                     >
                         Submitted: {formatDate(application.submitted_at)}
                     </Text>
-                    <Text style={typography.cardSubtitle}>Status: {capitaliseFirst(application.status)}</Text>
+                    <Text style={typography.cardSubtitle}>{`Status: ${applicationStatusLabels[application.status]}`}</Text>
                 </View>
                 <Ionicons name="chevron-forward" size={20}/>
             </View>

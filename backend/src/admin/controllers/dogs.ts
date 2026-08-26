@@ -63,7 +63,7 @@ export const postCreateDog = async (req: AdminAuthRequest, res: Response): Promi
             medical_issues: [].concat(req.body.medical_issues ?? []),
             behavioural_flags: [].concat(req.body.behavioural_flags ?? []),
             known_triggers: [].concat(req.body.known_triggers ?? []),
-            children_age: req.body.children_age ?? null
+            children_age: req.body.children_age || null
         }
 
         const result = createDogSchema.safeParse(normalised)
@@ -77,9 +77,9 @@ export const postCreateDog = async (req: AdminAuthRequest, res: Response): Promi
             return
         }
 
-        const { name, breed, age, gender, size, colour, neutered, house_trained, vaccinated, good_with_dogs, good_with_cats, good_with_children, children_age, alone_tolerance, activity_level, training_level, coat_length, coat_type, shedding_level, medical_issues, medical_notes, behavioural_flags, behavioural_notes, known_triggers, trigger_notes, description } = result.data
+        const { name, breed, age, gender, size, colour, photo_url, neutered, house_trained, vaccinated, good_with_dogs, good_with_cats, good_with_children, children_age, alone_tolerance, activity_level, training_level, coat_length, coat_type, shedding_level, medical_issues, medical_notes, behavioural_flags, behavioural_notes, known_triggers, trigger_notes, description } = result.data
 
-        const dog = await createDog(shelterId, name, breed, age, gender, size, colour, neutered, house_trained, vaccinated, good_with_dogs, good_with_cats, good_with_children, children_age ?? null, alone_tolerance, activity_level, training_level, coat_length, coat_type, shedding_level, medical_issues ?? [], medical_notes ?? null, behavioural_flags ?? [], behavioural_notes ?? null, known_triggers ?? [], trigger_notes ?? null, description)
+        const dog = await createDog(shelterId, name, breed, age, gender, size, colour, photo_url, neutered, house_trained, vaccinated, good_with_dogs, good_with_cats, good_with_children, children_age ?? null, alone_tolerance, activity_level, training_level, coat_length, coat_type, shedding_level, medical_issues ?? [], medical_notes ?? null, behavioural_flags ?? [], behavioural_notes ?? null, known_triggers ?? [], trigger_notes ?? null, description)
 
         res.redirect(`/admin/dogs/`)
 
@@ -137,7 +137,7 @@ export const postUpdateDog = async (req: AdminAuthRequest, res: Response): Promi
             medical_issues: [].concat(req.body.medical_issues ?? []),
             behavioural_flags: [].concat(req.body.behavioural_flags ?? []),
             known_triggers: [].concat(req.body.known_triggers ?? []),
-            children_age: req.body.children_age ?? null
+            children_age: req.body.children_age || null
         }
 
         const result = updateDogSchema.safeParse(normalised)

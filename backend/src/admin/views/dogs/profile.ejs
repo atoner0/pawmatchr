@@ -105,7 +105,7 @@
             <h5 class="flags-title">Medical Issues</h5>
             <div class="flag-pills">
                 <% dog.medical_issues.forEach(issue => { %>
-                    <span class="flag-pill"><%= issue %></span>
+                    <span class="flag-pill"><%= capitaliseFirst(issue) %></span>
                 <% }) %>
             </div>
             <p class="flag-notes"><%= dog.medical_notes || 'No further notes' %></p>
@@ -114,7 +114,7 @@
             <h5 class="flags-title">Behavioural Flags</h5>
             <div class="flag-pills">
                 <% dog.behavioural_flags.forEach(flag => { %>
-                    <span class="flag-pill"><%= flag %></span>
+                    <span class="flag-pill"><%= capitaliseFirst(flag) %></span>
                 <% }) %>
             </div>
             <p class="flag-notes"><%= dog.behavioural_notes || 'No further notes' %></p>
@@ -123,7 +123,7 @@
             <h5 class="flags-title">Known Triggers</h5>
             <div class="flag-pills">
                 <% dog.known_triggers.forEach(trigger => { %>
-                    <span class="flag-pill"><%= trigger %></span>
+                    <span class="flag-pill"><%= capitaliseFirst(trigger) %></span>
                 <% }) %>
             </div>
             <p class="flag-notes"><%= dog.trigger_notes || 'No further notes' %></p>

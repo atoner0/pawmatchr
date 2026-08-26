@@ -1,4 +1,13 @@
 <form action="/admin/dogs" method="POST">
+    <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                <% errors.forEach(err => { %>
+                    <li><%= err.path.join('.') %>: <%= err.message %></li>
+                <% }) %>
+            </ul>
+        </div>
+    <% } %>
     <div class="card mb-4">
         <div class="card-header">
             <h5 class="mb-0">Basic Information</h5>
@@ -397,7 +406,32 @@
     document.querySelectorAll('input[name="good_with_children"]').forEach(radio => {
         radio.addEventListener('change', function() {
             const childrenAgeField = document.getElementById('children_age_field')
+            const childrenAgeSelect = document.getElementById('children_age')
+            const isVisible = this.value === 'yes'
+
             childrenAgeField.style.display = this.value === 'yes' ? 'block' : 'none'
+            childrenAgeSelect.required = isVisible
         })
     })  
+
+    function setupNoneKnownExclusivity(groupName) {
+        const checkboxes = document.querySelectorAll(`input[name="${groupName}"]`)
+        const noneCheckbox = document.querySelector(`input[name="${groupName}"][value="none known"]`)
+
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', function() {
+                if (this === noneCheckbox && this.checked) {
+                    checkboxes.forEach(other => {
+                        if (other !== noneCheckbox) other.checked = false
+                    })
+                } else if (this !== noneCheckbox && this.checked) {
+                    noneCheckbox.checked = false
+                }
+            })
+        })
+    }
+
+    setupNoneKnownExclusivity('medical_issues')
+    setupNoneKnownExclusivity('behavioural_flags')
+    setupNoneKnownExclusivity('known_triggers')
 </script>
