@@ -34,8 +34,27 @@
     <% } %>
 </div>
 
+<div class="applications-toolbar">
+    <label for="statusFilter" class="visually-hidden">Select Status</label>
+    <select id="statusFilter" class="btn btn-filter-search">
+        <option value="">All Statuses</option>
+        <option value="booked">Booked</option>
+        <option value="completed">Completed</option>
+        <option value="cancelled">Cancelled</option>
+    </select>
+    <label for="visitFilter" class="visually-hidden">Select Visit Type</label>
+    <select id="visitFilter" class="btn btn-filter-search">
+        <option value="">All Types</option>
+        <option value="initial_meet">Initial Meet</option>
+        <option value="home_check">Home Check</option>
+        <option value="pet_introduction">Pet Introduction</option>
+    </select>
+    <label for="searchInput" class="visually-hidden">Search adopter or dog...</label>
+    <input type="text" id="searchInput" class="btn btn-filter-search" placeholder="Search adopter or dog..." />
+</div>
+
 <h4>All bookings</h4>
-<table class="table bookings-table">
+<table class="table bookings-table" id="bookingsTable">
     <thead>
         <tr>
             <th>Date/Time</th>
@@ -47,7 +66,7 @@
     </thead>
     <tbody>
         <% bookings.forEach(b => { %>
-            <tr>
+            <tr data-status="<%= b.status %>" data-visit="<%= b.booking_type %>" data-search="<%= (b.first_name + ' ' + b.last_name + ' ' + b.dog_name).toLowerCase() %>">
                 <td><a href="/admin/bookings/<%= b.booking_id %>"><%= new Date(b.slot).toLocaleString() %></a></td>
                 <td><%= b.dog_name %></td>
                 <td><%= b.first_name %> <%= b.last_name %></td>
@@ -57,3 +76,27 @@
         <% }) %>
     </tbody>
 </table>
+
+<script>
+    const statusFilter = document.getElementById('statusFilter')
+    const visitFilter = document.getElementById('visitFilter')
+    const searchInput = document.getElementById('searchInput')
+    const rows = document.querySelectorAll('#bookingsTable tbody tr')
+
+    function applyFilters() {
+        const status = statusFilter.value
+        const visit = visitFilter.value
+        const search = searchInput.value.toLowerCase()
+
+        rows.forEach(row => {
+            const matchesStatus = !status || row.dataset.status === status
+            const matchesVisit = !visit || row.dataset.visit === visit
+            const matchesSearch = !search || row.dataset.search.includes(search)
+            row.style.display = (matchesStatus && matchesVisit && matchesSearch) ? '' : 'none'
+        })
+    }
+
+    statusFilter.addEventListener('change', applyFilters)
+    visitFilter.addEventListener('change', applyFilters)
+    searchInput.addEventListener('input', applyFilters)
+</script>

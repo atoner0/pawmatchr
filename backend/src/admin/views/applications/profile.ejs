@@ -30,7 +30,7 @@
                         <div class="summary-label">Outdoor space</div>
                         <div class="summary-value"><%= capitaliseFirst(adopter.outdoor_space) %></div>
                         <div class="summary-label">Children</div>
-                        <div class="summary-value"><%= capitaliseFirst(adopter.children) ? childrenAgeLabel(adopter.youngest_child_age) : 'None' %></div>
+                        <div class="summary-value"><%= adopter.children ? childrenAgeLabel(adopter.youngest_child_age) : 'None' %></div>
                         <div class="summary-label">Activity Level</div>
                         <div class="summary-value"><%= capitaliseFirst(adopter.activity_level) %></div>
                     </div>
