@@ -56,7 +56,7 @@
                         <strong><%= app.first_name %> <%= app.last_name %> &rarr; <%= app.dog_name %></strong><br>
                         <span class="visit-meta">Submitted <%= app.submitted_at ? new Date(app.submitted_at).toLocaleDateString() : 'N/A' %></span>
                     </span>
-                    <span class="badge-status badge-<%= app.status %>"><%= capitaliseFirst(app.status) %></span>
+                    <span class="badge-status badge-<%= app.status %>"><%= capitaliseFirst(app.status.replace('_', ' ')) %></span>
                 </a>
             <% }) %>
         <% } %>
