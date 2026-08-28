@@ -300,7 +300,7 @@
                 <fieldset>
                     <legend class="form-label h6">Medical Issues</legend>
                     <div class="row">
-                        <% ['epilepsy', 'diabetes', 'hip dysplasia', 'heart condition', 'skin condition', 'allergies', 'dental issues', 'mobility issues', 'anxiety', 'requires medication', 'none known'].forEach(c => { %>
+                        <% ['epilepsy', 'diabetes', 'hip dysplasia', 'heart condition', 'skin condition', 'allergies', 'dental issues', 'mobility issues', 'anxiety', 'requires medication'].forEach(c => { %>
                             <% const medicalId = 'medical-' + c.toLowerCase().replace(/\s+/g, '-'); %>
                             <div class="col-4">
                                 <div class="form-check">
@@ -329,7 +329,7 @@
                 <fieldset>
                    <legend class="form-label h6">Behavioural Issues</legend>
                     <div class="row">
-                        <% ['pulls on lead', 'jumps at people', 'separation anxiety', 'reactive to dogs', 'resource guarding', 'not recall trained', 'excessive barking', 'destructive when alone', 'none known'].forEach(c => { %>
+                        <% ['pulls on lead', 'jumps at people', 'separation anxiety', 'reactive to dogs', 'resource guarding', 'not recall trained', 'excessive barking', 'destructive when alone'].forEach(c => { %>
                             <% const behaviouralId = 'behavioural-' + c.toLowerCase().replace(/\s+/g, '-'); %>
                             <div class="col-4">
                                 <div class="form-check">
@@ -351,7 +351,7 @@
                 <fieldset>
                   <legend class="form-label h6">Known Triggers</legend>
                     <div class="row">
-                        <% ['loud noises', 'strangers', 'other dogs', 'cats', 'children', 'fast movement', 'cars', 'none known'].forEach(c => { %>
+                        <% ['loud noises', 'strangers', 'other dogs', 'cats', 'children', 'fast movement', 'cars'].forEach(c => { %>
                             <% const triggersId = 'trigger-' + c.toLowerCase().replace(/\s+/g, '-'); %>
                             <div class="col-4">
                                 <div class="form-check">
@@ -414,24 +414,4 @@
         })
     })  
 
-    function setupNoneKnownExclusivity(groupName) {
-        const checkboxes = document.querySelectorAll(`input[name="${groupName}"]`)
-        const noneCheckbox = document.querySelector(`input[name="${groupName}"][value="none known"]`)
-
-        checkboxes.forEach(cb => {
-            cb.addEventListener('change', function() {
-                if (this === noneCheckbox && this.checked) {
-                    checkboxes.forEach(other => {
-                        if (other !== noneCheckbox) other.checked = false
-                    })
-                } else if (this !== noneCheckbox && this.checked) {
-                    noneCheckbox.checked = false
-                }
-            })
-        })
-    }
-
-    setupNoneKnownExclusivity('medical_issues')
-    setupNoneKnownExclusivity('behavioural_flags')
-    setupNoneKnownExclusivity('known_triggers')
 </script>

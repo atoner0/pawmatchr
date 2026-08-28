@@ -87,7 +87,12 @@ export default function SwipeScreen() {
     if (matches.length === 0) {
         return (
             <View style={styles.centered}>
-                <Text style={typography.placeholder}>No matches available right now</Text>
+                <Text style={typography.placeholder}>{error || "No matches available right now"}</Text>
+                {error ? (
+                    <Pressable onPress={() => router.replace("/(protected)/(drawer)/(tabs)/matches/swipe")}>
+                        <Text style={typography.button}>Tap to retry</Text>
+                    </Pressable>
+                ) : null}
             </View>
         )
     }

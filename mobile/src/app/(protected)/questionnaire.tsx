@@ -12,12 +12,14 @@ import { useRouter } from "expo-router"
 import { QuestionnaireResponse } from "@/types/adopter"
 import { colors, radii, spacing, typography } from "@/constants/theme"
 import { SafeAreaView } from "react-native-safe-area-context"
+import { useAdopter } from "@/context/AdopterContext"
 
 export default function QuestionnaireScreen() {
     const [step, setStep] = useState(0)
     const [error, setError] = useState("");
 
     const router = useRouter()
+    const { refetch } = useAdopter()
 
     const stepSchemas = [
         livingSituationSchema,
@@ -77,6 +79,8 @@ export default function QuestionnaireScreen() {
                 method: 'PUT',
                 body: JSON.stringify(data)
             })
+
+            await refetch()
 
             router.replace('/(protected)/(drawer)/(tabs)/matches/swipe')
         } catch (err) {
