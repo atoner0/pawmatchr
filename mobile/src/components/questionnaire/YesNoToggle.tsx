@@ -36,6 +36,7 @@ export function YesNoToggle({ title, label, value, onChange}: Props) {
     )
 }
 
+/*** AI assisted (Claude) - styling generated based on mock up designs ***/
 const styles = StyleSheet.create({
     field: {
         gap: spacing.sm,

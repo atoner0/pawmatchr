@@ -30,6 +30,7 @@ export default function BookingRow({ booking, onPress }: Props) {
     )
 }
 
+/*** AI assisted (Claude) - styling generated based on mock up designs ***/
 const styles = StyleSheet.create({
     container: {
         flexDirection: "row",

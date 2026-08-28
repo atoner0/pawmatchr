@@ -23,6 +23,7 @@ def activity_level_compatibility_batch(
     This variable never produces a warning, so warnings is always a list
     of None matching the length of dogs.
     """
+    ### AI-assisted (Claude) - Vectorisation from scalar activity_level_compatibility function ###
     adopter_mins = ACTIVITY_LEVEL_MINS[adopter.activity_level]
     dog_mins = np.array(
         [ACTIVITY_LEVEL_MINS[dog.activity_level] for dog in dogs], dtype=float

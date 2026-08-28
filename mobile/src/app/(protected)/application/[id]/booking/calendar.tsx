@@ -161,6 +161,7 @@ export default function BookingCalendar() {
     )
 }
 
+/*** AI assisted (Claude) - styling generated based on mock up designs ***/
 const styles = StyleSheet.create({
     safeArea: {
         flex: 1,

@@ -14,6 +14,8 @@ def run_report(output_path: str = "tests/tuning/ranking_report.txt"):
     dogs = load_dogs("tests/tuning/dogs.csv")
     cases = load_ranking_test_cases("tests/tuning/ranking_test_cases.csv", adopters, dogs)
 
+    ### AI-assisted (Claude) - ###
+
     lines = [f"Ranking test report - generated {datetime.now().isoformat(timespec='seconds')}\n"]
 
     for case in cases:

@@ -303,6 +303,7 @@ export default function ViewApplication() {
     )
 }
 
+/*** AI assisted (Claude) - styling generated based on mock up designs ***/
 const styles = StyleSheet.create({
     container: {
         flex: 1,

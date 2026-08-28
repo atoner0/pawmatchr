@@ -15,6 +15,8 @@ def cat_compatibility_batch(
     warnings[i], and labels[i] in the returned tuple. Callers must not
     reorder dogs between calling this function and consuming its output.
     """
+    ### AI-assisted (Claude) - Vectorisation from scalar cat_compatibility function 
+    ### Format learned here used across rest of compatibility functions (dog + children) without AI assistance ###
     if "cat" not in adopter.current_pet_type:
         scores = np.ones(len(dogs))
         labels = ["not_weighed"] * len(dogs)

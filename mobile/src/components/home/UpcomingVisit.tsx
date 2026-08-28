@@ -29,6 +29,7 @@ export default function UpcomingVisitCard({ booking }: Props) {
     )
 }
 
+/*** AI assisted (Claude) - styling generated based on mock up designs ***/
 const styles = StyleSheet.create({
     container: {
         flexDirection: "row",

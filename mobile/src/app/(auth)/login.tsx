@@ -76,6 +76,8 @@ export default function Login() {
   );
 }
 
+
+/*** AI assisted (Claude) - styling generated based on mock up designs ***/
 const styles = StyleSheet.create({
   screen: {
     flex: 1,

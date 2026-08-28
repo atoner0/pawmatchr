@@ -9,6 +9,7 @@ export default function ProfilePlaceholder() {
     )
 }
 
+/*** AI assisted (Claude) - styling generated based on mock up designs ***/
 const styles = StyleSheet.create({
     container: {
         paddingVertical: 12,

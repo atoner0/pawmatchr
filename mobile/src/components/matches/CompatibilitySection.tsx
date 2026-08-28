@@ -64,6 +64,7 @@ export default function CompatibilitySection({ match }: Props) {
     )
 }
 
+/*** AI assisted (Claude) - styling generated based on mock up designs ***/
 const styles = StyleSheet.create({
     section: { 
         gap: spacing.sm,

@@ -30,6 +30,7 @@ def trapezoidal_batch(x: np.ndarray, a: float, b: float, c: float, d: float) -> 
     Denominators are guarded to avoid divide-by-zero warnings when a == b or c == d
         Resulting values are never selected in those cases
     """
+    ### AI-assisted (Claude) - Vectorisation from scalar trapezoidal function ###
     x = np.asarray(x, dtype=float)
 
     rising_denom = (b - a) if (b - a) != 0 else 1.0

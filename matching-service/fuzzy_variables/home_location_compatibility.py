@@ -22,6 +22,8 @@ def home_location_compatibility_batch(
     warnings[i], and labels[i] in the returned tuple. Callers must not
     reorder dogs between calling this function and consuming its output.
     """
+    ### AI-assisted (Claude) - Vectorisation from scalar home_location_compatibility function 
+    ### Format learned here used across rest of ordinal functions without AI assistance ###
     has_relevant = np.array([
         any(f in LOCATION_FLAGS for f in dog.behavioural_flags)
         or any(t in LOCATION_TRIGGERS for t in dog.known_triggers)

@@ -42,6 +42,7 @@ export default function MatchHeader({ match }: Props) {
     )
 }
 
+/*** AI assisted (Claude) - styling generated based on mock up designs ***/
 const styles = StyleSheet.create({
     container: {
         gap: spacing.sm + 2,

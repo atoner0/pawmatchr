@@ -99,6 +99,7 @@ export default function AttributeGrid({ match }: Props) {
     )
 }
 
+/*** AI assisted (Claude) - styling generated based on mock up designs ***/
 const styles = StyleSheet.create({
     boxContainer: { 
         flexDirection: "row",

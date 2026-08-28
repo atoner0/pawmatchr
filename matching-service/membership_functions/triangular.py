@@ -24,6 +24,7 @@ def triangular_batch(x: np.ndarray, a: float, b: float, c: float) -> np.ndarray:
     Denominators are guarded to avoid divide-by-zero warnings when a == b or b == c
         Resulting values are never selected in those cases
     """
+    ### AI-assisted (Claude) - Vectorisation from scalar triangular function ###
     x = np.asarray(x, dtype=float)
 
     # guard to not divide by 0, 1.0 may be "wrong" but doesn't matter, result won't be selected in final output

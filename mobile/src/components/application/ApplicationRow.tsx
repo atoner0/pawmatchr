@@ -34,6 +34,7 @@ export default function ApplicationRow({ application, onPress }: Props) {
     )
 }
 
+/*** AI assisted (Claude) - styling generated based on mock up designs ***/
 const styles = StyleSheet.create({
     container: { 
         flexDirection: "row",

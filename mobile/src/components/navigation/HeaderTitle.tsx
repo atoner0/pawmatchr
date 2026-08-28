@@ -15,6 +15,7 @@ export default function HeaderTitle({ title }: Props) {
     )
 }
 
+/*** AI assisted (Claude) - styling generated based on mock up designs ***/
 const styles = StyleSheet.create({
     container: {
         flexDirection: "row",

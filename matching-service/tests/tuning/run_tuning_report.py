@@ -16,6 +16,8 @@ BANDS = {
     "very_low": (0.0, 0.299)
 }
 
+### AI-assisted (Claude) - ###
+
 def classify_band(score: float) -> str:
     for band, (low, high) in BANDS.items():
         if low <= score <= high:

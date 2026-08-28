@@ -9,6 +9,7 @@ export default function SettingsPlaceholder() {
     )
 }
 
+/*** AI assisted (Claude) - styling generated based on mock up designs ***/
 const styles = StyleSheet.create({
     container: {
         paddingVertical: 12,

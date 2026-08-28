@@ -1,3 +1,5 @@
+/*** AI assisted (Claude) - styling consts based on most reused aspects in mock up designs ***/
+
 export const colors = {
   background: "#DCE3EE",
   card: "#fffaf4",

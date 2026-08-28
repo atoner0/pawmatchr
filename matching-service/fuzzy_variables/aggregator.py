@@ -91,6 +91,8 @@ def aggregate_fuzzy_score_batch(
     home_location_weight = adjust_home_location_weight_batch(weights["home_location"], adopter, dogs)
     variable_results["home_location"] = (scores, warnings, labels, home_location_weight)
 
+    ### AI-assisted (Claude) - Vectorisation from scalar aggregator function 
+
     # build matrices, broadcast scalar weights to full arrays
     # every variable's weight row has the same shape regardless of if shape was constant or per dog
     score_rows = []

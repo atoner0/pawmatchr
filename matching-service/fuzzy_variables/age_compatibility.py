@@ -16,6 +16,8 @@ def age_compatibility_batch(
     This variable never produces a warning, so warnings is always a list
     of None matching the length of dogs.
     """
+    ### AI-assisted (Claude) - Vectorisation from scalar age_compatibility function 
+    ### Format learned here used across rest of binary functions without AI assistance ###
     if "none" in adopter.age_pref:
         scores = np.ones(len(dogs))
         labels = ["match"] * len(dogs)

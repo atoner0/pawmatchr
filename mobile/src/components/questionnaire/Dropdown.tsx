@@ -37,6 +37,7 @@ export function Dropdown<T>({ title, label, options, value, onChange, error}: Pr
     ) 
 }
 
+/*** AI assisted (Claude) - styling generated based on mock up designs ***/
 const styles = StyleSheet.create({
     field: {
        gap: spacing.sm,

@@ -24,6 +24,7 @@ export function CheckBox({ label, isChecked, accessibilityLabel, onPress }: Prop
     )
 }
 
+/*** AI assisted (Claude) - styling generated based on mock up designs ***/
 const styles = StyleSheet.create({
     row: {
         flexDirection: "row", 

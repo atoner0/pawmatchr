@@ -30,6 +30,7 @@ export default function TagList({ label, tags, notes }: Props) {
     )
 }
 
+/*** AI assisted (Claude) - styling generated based on mock up designs ***/
 const styles = StyleSheet.create({
     group: { 
         gap: spacing.sm,

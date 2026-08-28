@@ -1,4 +1,4 @@
-# matplotlib histogram formatting based on DelftStack tutorial:
+### matplotlib histogram formatting based on DelftStack tutorial: ###
 # How to Plot Two Histograms Together in Matplotlib
 # Available at: https://www.delftstack.com/howto/matplotlib/how-to-plot-two-histograms-in-one-plot-in-matplotlib/
 

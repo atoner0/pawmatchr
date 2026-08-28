@@ -1,3 +1,4 @@
+/*** AI assisted (Claude) - styling consts based on most reused aspects in mock up designs ***/
 :root {
     --color-background: #DCE3EE;
     --color-card: #fffaf4;
@@ -28,7 +29,7 @@
     --tag-alert-text: #7A2E24;
 }
 
-
+/*** AI assisted (Claude) - styling generated based on mock up designs ***/
 
 body {
     background-color: var(--color-background);

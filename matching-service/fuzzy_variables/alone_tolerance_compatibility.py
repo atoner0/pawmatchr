@@ -28,6 +28,7 @@ def alone_tolerance_compatibility_batch(
     of None matching the length of dogs - kept in the return signature for
     consistency with other fuzzy variables that do produce warnings.
     """
+    ### AI-assisted (Claude) - Vectorisation from scalar alone_tolerance_compatibility function ###
     adopter_hours = HOURS_UPPER_BOUND[adopter.hours_alone]
     dog_hours = np.array(
         [HOURS_UPPER_BOUND[dog.alone_tolerance] for dog in dogs], dtype=float
