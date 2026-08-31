@@ -9,7 +9,8 @@ def other_dog_compatibility_batch(
     If an adopter has dog as existing pet and dog is unknown with dogs, score 0.5 with warning flag
     Dog not good with dogs is excluded by hard filter and therefore not scored
 
-    If the adopter has no dog, every dog scores 1 with label "not_weighed" regardless of that dog's good_with_dogs value, since the weight for this variable will be 0 in that case
+    If the adopter has no dog, every dog scores 1 with label "not_weighed" regardless 
+    of that dog's good_with_dogs value, since the weight for this variable will be 0 in that case
 
     Dogs are scored positionally: dogs[i] corresponds to scores[i],
     warnings[i], and labels[i] in the returned tuple. Callers must not

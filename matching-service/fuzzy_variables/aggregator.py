@@ -28,10 +28,13 @@ def aggregate_fuzzy_score_batch(
         adopter: Adopter, dogs: list[Dog], profile_name: str
 ) -> tuple[np.ndarray, list[list[str]], list[list[ScoringFactor]]]:
     """
-    Runs all 12 fuzzy variable functions against an adopter/dog pair, applies conditional weight adjustments, and collapses the results into a single weighted-average fuzzy score per dog
+    Runs all 12 fuzzy variable functions against an adopter/dog pair, 
+    applies conditional weight adjustments, and collapses the results 
+    into a single weighted-average fuzzy score per dog
 
     Score/weight computation is fully vectorised across all dogs at once.
-    Per-dog ScoringFactor lists are built via a lightweight Python loop after the numeric work is done, since the variables included vary per dog
+    Per-dog ScoringFactor lists are built via a lightweight Python loop 
+    after the numeric work is done, since the variables included vary per dog
 
     Variables with a weight of 0 are excluded entirely from the weighted average
 

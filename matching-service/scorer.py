@@ -16,8 +16,6 @@ def score_dog(
         ) -> tuple[MatchResult, list[ScoringFactor]]:
     """
     Scalar wrapper around score_dogs_batch, scoring a single adopter/dog pair.
-
-    Temporary scaffolding for the batch migration
     """
     results, factors = score_dogs_batch(
         adopter, [dog], adopter_embedding, dog_embedding.reshape(1, -1)
@@ -31,9 +29,11 @@ def score_dogs_batch(
         dog_embeddings: np.ndarray
 ) -> tuple[list[MatchResult], list[list[ScoringFactor]]]:
     """
-    Combines the fuzzy score and semantic score into a single blended score per dog, using the 70/30 split (may be adjusted in tuning stage). Explanation generation handled elsewhere.
+    Combines the fuzzy score and semantic score into a single blended score per dog, 
+    using the 70/30 split. Explanation generation handled elsewhere.
 
-    Profile selection depends only on the adopter, so it's computed once and reused across every dog in the batch, rather than reselected per dog.
+    Profile selection depends only on the adopter, so it's computed once and reused 
+    across every dog in the batch, rather than reselected per dog.
 
     Dogs are scored positionally: dogs[i] corresponds to results[i] and
     factors[i] in the returned tuple, and dog_embeddings[i] must be the

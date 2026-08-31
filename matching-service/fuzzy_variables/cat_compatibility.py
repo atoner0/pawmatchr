@@ -6,10 +6,13 @@ def cat_compatibility_batch(
 ) -> tuple[np.ndarray, list[str | None], list[str]]:
     """
     If an adopter has cat as existing pet and dog is good with cats, score 1
-    If an adopter has cat as existing pet and dog is unknown with cats, score 0.5 with warning flag
+    If an adopter has cat as existing pet and dog is unknown with cats, score 0.5 
+    with warning flag
     Dog not good with cats is excluded by hard filter and therefore not scored
 
-    If the adopter has no cat, every dog scores 1 with label "not_weighed" regardless of that dog's good_with_cats value, since the weight for this variable will be 0 in that case
+    If the adopter has no cat, every dog scores 1 with label "not_weighed" 
+    regardless of that dog's good_with_cats value, since the weight for this 
+    variable will be 0 in that case
 
     Dogs are scored positionally: dogs[i] corresponds to scores[i],
     warnings[i], and labels[i] in the returned tuple. Callers must not
