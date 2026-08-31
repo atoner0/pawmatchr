@@ -1,93 +1,144 @@
-# pawmatchr
+# Pawmatchr
 
+Pawmatchr is a dog adoption matching platform that pairs prospective adopters with rescue dogs using a hybrid fuzzy logic and semantic similarity matching algorithm. The system is built as three components:
 
+- **`backend`** - Node.js/Express/TypeScript REST API, owns the PostgreSQL database and orchestrates the matching flow. Also produces the server-rendered shelter admin web app.
+- **`matching-service`** - Python/FastAPI microservice running the fuzzy logic + semantic scoring algorithm
+- **`mobile`** - React Native/Expo adopter-facing app
 
-## Getting started
+## Prerequisites
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+- [Docker](https://www.docker.com/) and Docker Compose
+- [Node.js](https://nodejs.org/) for running the mobile app locally
+- [Expo Go](https://expo.dev/go) app (for physical device) and/or [Android Studio](https://developer.android.com/studio) (for emulator)
+- An OpenAI API key
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
-
+## Project Structure
 ```
-cd existing_repo
-git remote add origin https://gitlab.eeecs.qub.ac.uk/40365038/pawmatchr.git
-git branch -M main
-git push -uf origin main
+pawmatchr/
+|--- backend/ # Node.js/Express/TypeScript API + EJS
+|--- matching-service/ # Python/FastAPI matching microservice
+|--- mobile/ # React Native/Expo adopter app
+|--- docker-compose.yml
+---- README.md
 ```
 
-## Integrate with your tools
+## Getting Started
 
-- [ ] [Set up project integrations](https://gitlab.eeecs.qub.ac.uk/40365038/pawmatchr/-/settings/integrations)
+### 1. Clone the repository
+```bash
+git clone https://github.com/atoner0/pawmatchr
+cd pawmatchr
+```
 
-## Collaborate with your team
+### 2. Configure environment variables
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+Copy the provided `.env.example` files where present and fill in the required values (`OPENAI_API_KEY`, `JWT_SECRET`, `SESSION_SECRET`), or create the `.env` files manually as below.
 
-## Test and Deploy
+Create a `.env` file inside **`backend/`**:
 
-Use the built-in continuous integration in GitLab.
+```dotenv
+PORT=3000
+DATABASE_URL=postgresql://postgres:postgres@db:5432/pawmatchr
+JWT_SECRET=
+MATCHING_SERVICE_URL=http://matching-service:5001
+NODE_ENV=development
+SESSION_SECRET=
+```
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+Create a `.env` file inside **`matching-service/`**:
 
-***
+```dotenv
+OPENAI_API_KEY=
+DEBUG=true
+SEMANTIC_MODEL_NAME=all-MiniLM-L6-v2
+FUZZY_WEIGHT=0.7
+SEMANTIC_WEIGHT=0.3
+PORT=5001
+```
 
-# Editing this README
+All fields except `OPENAI_API_KEY` have defaults set in `config.py`, so only `OPENAI_API_KEY` is strictly reqruired, the rest are shown here for visibility/override. Note `FUZZY_WEIGHT` and `SEMANTIC_WEIGHT` must sum to 1, enforced on startup.
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+### 3. Start the backend, matching service, and database via Docker Compose
 
-## Suggestions for a good README
+From the project root:
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+```bash
+docker compose up --build
+```
 
-## Name
-Choose a self-explaining name for your project.
+This starts three containers:
+| Service | Container | Port
+| --- | --- | --- |
+| PostgreSQL 17 | `pawmatchr_db` | `5432` |
+| Matching service (FastAPI) | `pawmatchr_matching_service` | `5001` |
+| Backend (Express) | `pawmatchr_backend` | `3000` |
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+The database is initialised from any SQL files in `backend/src/db` on first run (via the Postgres image's `docker-entrypoint-initdb.d` mechanism)
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+### 4. Seed data (optional)
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+With the containers running:
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+```bash
+docker compose exec backend npm run seed
+```
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+### 5. Start the mobile app
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+The mobile app is not containerised and runs separately from the `mobile/` folder:
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+```bash
+cd mobile
+npm install
+npm run start
+```
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+This opens the Expo developer tools. From there:
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+- Press `a` to open in an Android emulator (requires Android Studio configured), or
+- Scan the QR code with the Expo Go app on a physical device
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+The mobile app expects the backend API to be reachable - if testing on a physical device or emulator, ensure `MATCHING_SERVICE_URL`/API base URL configuration points to your machine's local network IP rather than `localhost`, since the emulator/device does not share the host's network namespace.
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+### Access
+| App | URL |
+| --- | --- |
+| Backend API | `http://localhost:3000` |
+| Matching service | `http://localhost:5001` |
+| Admin web app | `http://localhost:3000/admin` |
+| Mobile app | via Expo Go / emulator
 
-## License
-For open source projects, say how it is licensed.
+## Running Tests
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+Tests are run inside the running containers, rather than on the host, since dependencies are installed onto the container image only (`backend/node_modules` is excluded from the host bind mount). Ensure the containers are running first (`docker compose up`) before running any of the commands below.
+
+### Backend
+
+Integration tests run against a separate `pawmatchr_test` database rather than the `pawmatchr` database. The connections string is set directly in `tests/jest.setup.ts` and overrides whatver `DATABASE_URL` is set in `backend/.env`. Both `pawmatchr` and `pawmatchr_test` are created and schema'd automatically on first start up via the init scripts in `backend/src/db` (mounted into Postgres' `docker-entrypoint-initdb.d`), so no manual setup is required
+
+```bash
+docker compose exec backend npm test                    # unit tests (Jest)
+docker compose exec backend npm run test:integration    # integration tests (Jest + Supertest, requires test DB)
+```
+
+### Matching service
+
+```bash
+docker compose exec matching-service pytest
+```
+
+## Tech stack
+| Component | Stack |
+| --- | --- |
+| Mobile app | React Native, Expo, TypeScript, React Hook Form + Zod |
+| Backend | Node.js, Express, TypeScript, Zod, node-pg-migrate |
+| Matching service | Python, FastAPI, NumPy, sentence-transformers (`all-MiniLM-L6-v2`), OpenAI (`gpt-4.1-mini`) |
+| Admin web app | EJS, express-ejs-layouts, Bootstrap 5 |
+| Database | PostgreSQL 17
+
+## Notes
+
+- `docker compose up` mounts `backend/` and `matching-service/` as volumes, so code changes are reflected without rebuilding the image. The backend runs via `npm run dev` and picks up changes automatically. The mathcing service's hot reload is controlled by the `DEBUG` setting (`reload=settings.debug` in `app.py`), ensure `DEBUG=true` in `matching-service/.env` for changes to be picked up automatically
+- `node_modules` inside the backend container is exlcuded from the host mount to avoid platform-specific binary conflicts between host and container. This is also why backend commands are run via `docker compose exec` rather than directly on the host
+
