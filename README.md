@@ -57,7 +57,7 @@ SEMANTIC_WEIGHT=0.3
 PORT=5001
 ```
 
-All fields except `OPENAI_API_KEY` have defaults set in `config.py`, so only `OPENAI_API_KEY` is strictly reqruired, the rest are shown here for visibility/override. Note `FUZZY_WEIGHT` and `SEMANTIC_WEIGHT` must sum to 1, enforced on startup.
+All fields except `OPENAI_API_KEY` have defaults set in `config.py`, so only `OPENAI_API_KEY` is strictly required, the rest are shown here for visibility/override. Note `FUZZY_WEIGHT` and `SEMANTIC_WEIGHT` must sum to 1, enforced on startup.
 
 ### 3. Start the backend, matching service, and database via Docker Compose
 
@@ -115,7 +115,7 @@ Tests are run inside the running containers, rather than on the host, since depe
 
 ### Backend
 
-Integration tests run against a separate `pawmatchr_test` database rather than the `pawmatchr` database. The connections string is set directly in `tests/jest.setup.ts` and overrides whatver `DATABASE_URL` is set in `backend/.env`. Both `pawmatchr` and `pawmatchr_test` are created and schema'd automatically on first start up via the init scripts in `backend/src/db` (mounted into Postgres' `docker-entrypoint-initdb.d`), so no manual setup is required
+Integration tests run against a separate `pawmatchr_test` database rather than the `pawmatchr` database. The connections string is set directly in `tests/jest.setup.ts` and overrides whatever `DATABASE_URL` is set in `backend/.env`. Both `pawmatchr` and `pawmatchr_test` are created and schema'd automatically on first start up via the init scripts in `backend/src/db` (mounted into Postgres' `docker-entrypoint-initdb.d`), so no manual setup is required
 
 ```bash
 docker compose exec backend npm test                    # unit tests (Jest)
@@ -139,6 +139,6 @@ docker compose exec matching-service pytest
 
 ## Notes
 
-- `docker compose up` mounts `backend/` and `matching-service/` as volumes, so code changes are reflected without rebuilding the image. The backend runs via `npm run dev` and picks up changes automatically. The mathcing service's hot reload is controlled by the `DEBUG` setting (`reload=settings.debug` in `app.py`), ensure `DEBUG=true` in `matching-service/.env` for changes to be picked up automatically
-- `node_modules` inside the backend container is exlcuded from the host mount to avoid platform-specific binary conflicts between host and container. This is also why backend commands are run via `docker compose exec` rather than directly on the host
+- `docker compose up` mounts `backend/` and `matching-service/` as volumes, so code changes are reflected without rebuilding the image. The backend runs via `npm run dev` and picks up changes automatically. The matching service's hot reload is controlled by the `DEBUG` setting (`reload=settings.debug` in `app.py`), ensure `DEBUG=true` in `matching-service/.env` for changes to be picked up automatically
+- `node_modules` inside the backend container is excluded from the host mount to avoid platform-specific binary conflicts between host and container. This is also why backend commands are run via `docker compose exec` rather than directly on the host
 

@@ -16,7 +16,7 @@ BANDS = {
     "very_low": (0.0, 0.299)
 }
 
-### AI-assisted (Claude) - ###
+### AI-assisted (Claude) - Report generation ###
 
 def classify_band(score: float) -> str:
     for band, (low, high) in BANDS.items():

@@ -24,7 +24,7 @@ describe('POST /api/adopter/signup', () => {
         expect(res.body.adopter.password_hash).toBeUndefined()
     })
 
-    it('should return 400 if email is already registed', async () => { 
+    it('should return 400 if email is already registered', async () => { 
         jest.spyOn(AdopterModel, 'getAdopterByEmail').mockResolvedValue(fakeAdopterPartial)
 
         const res = await request(app)

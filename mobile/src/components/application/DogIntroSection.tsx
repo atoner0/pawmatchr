@@ -29,7 +29,7 @@ export default function DogIntroSection() {
             <View style={styles.block}>
                 <Text style={styles.blockTitle}>Some nervousness is normal</Text>
                 <Text style={styles.blockText}>
-                    Shelter dogs often behave differenly in a shelter setting. Lead-pulling, over-excitement, or initial shyness are common and don't necessarily reflect how they'll be at home. Staff are watching for something more specific: sustained growling, lunging, or an overall inability to settle.
+                    Shelter dogs often behave differently in a shelter setting. Lead-pulling, over-excitement, or initial shyness are common and don't necessarily reflect how they'll be at home. Staff are watching for something more specific: sustained growling, lunging, or an overall inability to settle.
                 </Text>
             </View>
 

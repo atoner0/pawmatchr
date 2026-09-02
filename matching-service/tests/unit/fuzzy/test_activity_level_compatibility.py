@@ -58,7 +58,7 @@ class TestActivityLevelCompatibilityBatchScalarCases:
         assert warnings[0] is None
         assert labels[0] == "adopter_more_active"
 
-    def test_gap_at_a_boundaryl(self):
+    def test_gap_at_a_boundary(self):
         adopter = make_adopter(activity_level="low")
         dog = make_dog(activity_level = "high")
 

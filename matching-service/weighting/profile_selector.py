@@ -4,7 +4,7 @@ MULTI_PET_TYPES = {"dog", "cat"}
 
 def select_profile(adopter: Adopter) -> str:
     """
-    Selects the weighting profile for an adopter based on prior dog ownership experience, and whether they currentl have a dog or cat
+    Selects the weighting profile for an adopter based on prior dog ownership experience, and whether they currently have a dog or cat
 
     Adopters with other pet types (not dog/cat) are treated as "no pets" for profile purposes, since those pet types don't factor into the multi-pet weight adjustments
     """

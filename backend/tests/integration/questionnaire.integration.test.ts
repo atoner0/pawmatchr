@@ -19,7 +19,7 @@ describe('updateQuestionnaire invalidates matches (integration, real DB)', () =>
         await clearMatchTestData()
     })
 
-    it('updates the adopter and deletes their existing matches, both commited together', async () => {
+    it('updates the adopter and deletes their existing matches, both committed together', async () => {
         const updated = await updateQuestionnaire(ids.adopterId, { activity_level: 'high' })
 
         expect(updated.activity_level).toBe('high')
@@ -43,7 +43,7 @@ describe('fillQuestionnaire invalidates matches (integration, real DB)', () => {
         await clearMatchTestData()
     })
 
-    it('fills the adopter questionnaire fields and deletes their existing matches, both commited together', async () => {
+    it('fills the adopter questionnaire fields and deletes their existing matches, both committed together', async () => {
         const filled = await fillQuestionnaire(ids.adopterId, fakeQuestionnaireInput)
 
         expect(filled.home_type).toBe(fakeQuestionnaireInput.home_type)

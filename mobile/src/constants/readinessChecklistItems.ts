@@ -23,7 +23,7 @@ export const readinessChecklistSections: ChecklistSection[] = [
     {
         title: "Time Commitment",
         items: [
-            { id: "time_1", label: "I can commit to the daily exericse and mental stimulation this dog needs" },
+            { id: "time_1", label: "I can commit to the daily exercise and mental stimulation this dog needs" },
             { id: "time_2", label: "I have a plan for the dog's care during work hours or if I travel" },
             { id: "time_3", label: "I understand that settling in, training, and bonding can take weeks to months, especially for a rescue dog" },
             { id: "time_4", label: "I am prepared to seek professional support if behavioural issues arise, rather than assuming I should manage alone" }
