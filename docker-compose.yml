@@ -1,3 +1,5 @@
+### AI assisted (Claude) - healthcheck addition to fix matches not loading error ###
+
 services:
   db:
     image: postgres:17
@@ -12,6 +14,11 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./backend/src/db:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   matching-service:
     build:
@@ -24,6 +31,12 @@ services:
       - "5001:5001"
     volumes:
       - ./matching-service:/app
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5001/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 40s
 
   backend:
     build: 
@@ -38,8 +51,10 @@ services:
       - ./backend:/app
       - /app/node_modules
     depends_on:
-      - db
-      - matching-service
+      db:
+        condition: service_healthy
+      matching-service:
+        condition: service_healthy
 
 volumes:
  pgdata:

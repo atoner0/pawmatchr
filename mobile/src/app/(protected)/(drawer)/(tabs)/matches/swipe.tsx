@@ -17,10 +17,8 @@ export default function SwipeScreen() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("")
 
-    useFocusEffect(
-        useCallback(() => {
-            const fetchMatches = async () => {
-                setLoading(true);
+    const fetchMatches = useCallback(async () => {
+        setLoading(true);
                 setError("");
                 try {
                     const data = await getMatches();
@@ -32,9 +30,12 @@ export default function SwipeScreen() {
                 } finally {
                     setLoading(false);
                 }
-            };
-            fetchMatches();
         }, [])
+
+    useFocusEffect(
+        useCallback(() => {
+            fetchMatches();
+        }, [fetchMatches])
     )
 
     useEffect(() => {
@@ -89,7 +90,7 @@ export default function SwipeScreen() {
             <View style={styles.centered}>
                 <Text style={typography.placeholder}>{error || "No matches available right now"}</Text>
                 {error ? (
-                    <Pressable onPress={() => router.replace("/(protected)/(drawer)/(tabs)/matches/swipe")} style={styles.retryButton}>
+                    <Pressable onPress={fetchMatches} style={styles.retryButton}>
                         <Text style={typography.button}>Retry</Text>
                     </Pressable>
                 ) : null}
