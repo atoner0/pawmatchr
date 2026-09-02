@@ -89,8 +89,8 @@ export default function SwipeScreen() {
             <View style={styles.centered}>
                 <Text style={typography.placeholder}>{error || "No matches available right now"}</Text>
                 {error ? (
-                    <Pressable onPress={() => router.replace("/(protected)/(drawer)/(tabs)/matches/swipe")}>
-                        <Text style={typography.button}>Tap to retry</Text>
+                    <Pressable onPress={() => router.replace("/(protected)/(drawer)/(tabs)/matches/swipe")} style={styles.retryButton}>
+                        <Text style={typography.button}>Retry</Text>
                     </Pressable>
                 ) : null}
             </View>
@@ -168,5 +168,11 @@ const styles = StyleSheet.create({
     errorText: {
         color: colors.danger,
         textAlign: "center",
+    },
+    retryButton: {
+        backgroundColor: colors.navyMid,
+        borderRadius: radii.pill,
+        paddingVertical: spacing.sm + 6,
+        alignItems: "center",
     },
 });

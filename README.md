@@ -20,7 +20,7 @@ pawmatchr/
 |--- matching-service/ # Python/FastAPI matching microservice
 |--- mobile/ # React Native/Expo adopter app
 |--- docker-compose.yml
----- README.md
+|--- README.md
 ```
 
 ## Getting Started

@@ -3,5 +3,11 @@
         <h4 class="alert-heading">Error</h4>
         <p><%= message %></p>
     </div>
-    <a href="/admin/dashboard" class="btn btn-secondary">Back to Dashboard</a>
+    <button id="go-back" class="btn-secondary">Back</button>
 </div>
+
+<script>
+    document.getElementById("go-back").addEventListener("click", () => {
+        history.back();
+    })
+</script>
