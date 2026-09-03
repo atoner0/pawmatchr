@@ -61,6 +61,8 @@ All fields except `OPENAI_API_KEY` have defaults set in `config.py`, so only `OP
 
 ### 3. Start the backend, matching service, and database via Docker Compose
 
+On first startup, the matching service can take up to ~40 seconds to become ready, as it loads the sentence-transformers model into memory. A Docker Compose healthcheck ensures the backend waits until the matching service reports healthy before accepting requests.
+
 From the project root:
 
 ```bash
@@ -68,7 +70,7 @@ docker compose up --build
 ```
 
 This starts three containers:
-| Service | Container | Port
+| Service | Container | Port |
 | --- | --- | --- |
 | PostgreSQL 17 | `pawmatchr_db` | `5432` |
 | Matching service (FastAPI) | `pawmatchr_matching_service` | `5001` |
@@ -107,7 +109,7 @@ The mobile app expects the backend API to be reachable - if testing on a physica
 | Backend API | `http://localhost:3000` |
 | Matching service | `http://localhost:5001` |
 | Admin web app | `http://localhost:3000/admin` |
-| Mobile app | via Expo Go / emulator
+| Mobile app | via Expo Go / emulator |
 
 ## Running Tests
 
@@ -132,10 +134,10 @@ docker compose exec matching-service pytest
 | Component | Stack |
 | --- | --- |
 | Mobile app | React Native, Expo, TypeScript, React Hook Form + Zod |
-| Backend | Node.js, Express, TypeScript, Zod, node-pg-migrate |
+| Backend | Node.js, Express, TypeScript, Zod |
 | Matching service | Python, FastAPI, NumPy, sentence-transformers (`all-MiniLM-L6-v2`), OpenAI (`gpt-4.1-mini`) |
 | Admin web app | EJS, express-ejs-layouts, Bootstrap 5 |
-| Database | PostgreSQL 17
+| Database | PostgreSQL 17 |
 
 ## Notes
 
